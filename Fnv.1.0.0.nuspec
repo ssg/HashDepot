@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Fnv</id>
+        <version>1.0.0</version>
+        <title>FNV Hash Library</title>
+        <authors>Sedat Kapanoglu</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Fast, simple and tested hash functions for FNV-1 and FNV-1a algorithms.</description>
+    </metadata>
+    <files>
+        <file src="src\bin\Release\Fnv.dll" target="lib\net20\Fnv.dll" />
+        <file src="src\bin\Release\Fnv.pdb" target="lib\net20\Fnv.pdb" />
+    </files>
+</package>

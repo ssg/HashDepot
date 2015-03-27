@@ -1,0 +1,8 @@
+packages
+.nuget
+*.ncrunchsolution*
+bin
+obj
+_NCrunch*
+*.suo
+*.user
