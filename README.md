@@ -1,5 +1,5 @@
 # fnv
-A straightforward implementation of FNV-1 and FNV-1a hash algorithm implementation for .NET. Usage is very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
+A straightforward implementation of FNV-1 and FNV-1a hash algorithm for .NET. Usage is very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
 
     using Fnv;
     var buffer = Encoding.ASCII.GetBytes("some string");
