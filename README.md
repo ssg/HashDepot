@@ -10,7 +10,7 @@ There is a Nuget package called `Fnv` for your convenience.
 # technical notes
 I started out creating a full blown `HashAlgorithm` implementation first but it seemed more suitable for cryptographic hash algorithms. FNV-series are more oriented towards hashing simple data, like ASCII strings. So I kept them as static functions.
 
-I wanted this to be well tested (and wanted to give [xUnit.net](https://xunit.github.io/) a shot) so I adapted the [original test vectors](http://www.isthe.com/chongo/src/fnv/test_fnv.c) provided by the creators the algorithm: Glenn Fowler, Landon Curt Noll and Phong Vo, hence the name FNV.
+I wanted this to be well tested (and wanted to give [xUnit.net](https://xunit.github.io/) a shot) so I adapted the [original test vectors](http://www.isthe.com/chongo/src/fnv/test_fnv.c) provided by the creators of the algorithm: Glenn Fowler, Landon Curt Noll and Phong Vo, hence the name FNV.
 
 # license
 MIT License. See LICENSE file for details
