@@ -1,5 +1,9 @@
 # HashDepot
-I seem to be implementing certain hash functions that are absent in .NET framework. I decided to converge them into a library. My goals are to have well-tested and Nuget package name is `HashDepot`. Currently supports FNV1, FNV1a and SipHash.
+I seem to be implementing certain hash functions that are absent in .NET framework. I decided to converge them into a library. My goals are to have well-tested and performant implementations. It currently supports FNV1, FNV1a and SipHash.
+
+To install it on NuGet:
+
+    Install-Package HashDepot
 
 ## FNV
 A straightforward implementation of FNV-1 and FNV-1a hash algorithm for .NET. Usage is very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
