@@ -6,3 +6,4 @@ obj
 _NCrunch*
 *.suo
 *.user
+*.nupkg
