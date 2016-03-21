@@ -39,11 +39,6 @@ namespace HashDepot.Test
             return repeat(text, 10);
         }
 
-        private static byte[] repeat100(string text)
-        {
-            return repeat(text, 100);
-        }
-
         private static byte[] repeat500(string text)
         {
             return repeat(text, 500);
@@ -52,11 +47,6 @@ namespace HashDepot.Test
         private static byte[] repeat10(byte[] buffer)
         {
             return repeat(buffer, 10);
-        }
-
-        private static byte[] repeat100(byte[] buffer)
-        {
-            return repeat(buffer, 100);
         }
 
         private static byte[] repeat500(byte[] buffer)
