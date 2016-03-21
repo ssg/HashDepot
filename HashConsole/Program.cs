@@ -1,8 +1,6 @@
-﻿/// <summary>
-/// This is for debugging the code in release mode without
+﻿/// This is for debugging the code in release mode without
 /// test framework (NCrunch) instrumentation, so I can see generated
 /// assembly code easily.
-/// </summary>
 
 using HashDepot;
 
