@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>HashDepot</id>
+        <version>1.0.0</version>
+        <title>HashDepot</title>
+        <authors>Sedat Kapanoglu</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Implementations of various hash algoritms: SipHash, FNV1, FNV1a</description>
+    </metadata>
+    <files>
+        <file src="src\bin\Release\HashDepot.dll" target="lib\net45\HashDepot.dll" />
+        <file src="src\bin\Release\HashDepot.pdb" target="lib\net45\HashDepot.pdb" />
+    </files>
+</package>

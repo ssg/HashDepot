@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
+// MIT License - see LICENSE file for details
 
-namespace Fnv
+using System;
+
+namespace HashDepot
 {
     /// <summary>
     /// FNV-1 Hash functions

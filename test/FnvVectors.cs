@@ -1,19 +1,22 @@
-﻿using System;
+﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
+// MIT License - see LICENSE file for details
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fnv.Test
+namespace HashDepot.Test
 {
     // adapted from: http://www.isthe.com/chongo/src/fnv/test_fnv.c (public domain)
-    public static class Vectors
+    public static class FnvVectors
     {
-        public static IEnumerable<TestVector> GetFnv1TestVectors()
+        public static IEnumerable<FnvTestVector> GetFnv1TestVectors()
         {
             return getTestVectors(fnv1Results32, fnv1Results64);
         }
 
-        public static IEnumerable<TestVector> GetFnv1aTestVectors()
+        public static IEnumerable<FnvTestVector> GetFnv1aTestVectors()
         {
             return getTestVectors(fnv1aResults32, fnv1aResults64);
         }
@@ -78,10 +81,10 @@ namespace Fnv.Test
             return result;
         }
 
-        private static IEnumerable<TestVector> getTestVectors(uint[] results32, ulong[] results64)
+        private static IEnumerable<FnvTestVector> getTestVectors(uint[] results32, ulong[] results64)
         {
             var bytes = getTestBytes();
-            return Enumerable.Range(0, bytes.Length).Select(n => new TestVector()
+            return Enumerable.Range(0, bytes.Length).Select(n => new FnvTestVector()
             {
                 Buffer = bytes[n],
                 ExpectedResult32 = results32[n],
@@ -89,7 +92,7 @@ namespace Fnv.Test
             });
         }
 
-        static ulong[] fnv1Results64 = new ulong[]
+        private static ulong[] fnv1Results64 = new ulong[]
         {
             0xcbf29ce484222325,
             0xaf63bd4c8601b7be,
@@ -296,7 +299,7 @@ namespace Fnv.Test
             0xe6be57375ad89b99,
         };
 
-        static ulong[] fnv1aResults64 = new ulong[]
+        private static ulong[] fnv1aResults64 = new ulong[]
         {
             0xcbf29ce484222325,
             0xaf63dc4c8601ec8c,
@@ -503,7 +506,7 @@ namespace Fnv.Test
             0x39e9f18f2f85e221,
         };
 
-        static uint[] fnv1Results32 = new uint[]
+        private static uint[] fnv1Results32 = new uint[]
         {
             0x811c9dc5,
             0x050c5d7e,
@@ -712,7 +715,7 @@ namespace Fnv.Test
 
         /* FNV-1a 32 bit test vectors */
 
-        static uint[] fnv1aResults32 = new uint[]
+        private static uint[] fnv1aResults32 = new uint[]
         {
             0x811c9dc5,
             0xe40c292c,
