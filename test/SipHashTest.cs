@@ -3,7 +3,7 @@
 
 using System;
 using System.Diagnostics;
-using Xunit;
+using NUnit.Framework;
 
 namespace HashDepot.Test
 {
@@ -82,7 +82,7 @@ namespace HashDepot.Test
 
         private static readonly byte[] key = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
-        [Fact]
+        [Test]
         public void Hash64_TestVectors()
         {
             const int numVectors = 64;
@@ -96,20 +96,20 @@ namespace HashDepot.Test
                 var result = SipHash.Hash64(buffer, key);
                 var expectedResult = BitConverter.ToUInt64(vectors[i], startIndex: 0);
                 Debug.WriteLine("testing iteration #" + i);
-                Assert.Equal(expectedResult, result);
+                Assert.AreEqual(expectedResult, result);
             }
         }
 
-        [Fact]
+        [Test]
         public void Hash64_NullArgs_Throws()
         {
             Assert.Throws<ArgumentNullException>(() => SipHash.Hash64(null, key));
             Assert.Throws<ArgumentNullException>(() => SipHash.Hash64(key, null));
         }
 
-        [Theory]
-        [InlineData(15)]
-        [InlineData(17)]
+        [Test]
+        [TestCase(15)]
+        [TestCase(17)]
         public void Hash64_InvalidKeyLength_Throws(int keyLength)
         {
             var invalidKey = new byte[keyLength];
