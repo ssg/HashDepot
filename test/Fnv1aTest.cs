@@ -9,6 +9,7 @@ using NUnit.Framework;
 namespace HashDepot.Test
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.Children)]
     public class Fnv1aTest
     {
         [Test]
