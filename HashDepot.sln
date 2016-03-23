@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashDepot", "src\HashDepot.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashDepot.Test", "test\HashDepot.Test.csproj", "{99006766-8054-46CA-9338-CB491400E9DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashConsole", "HashConsole\HashConsole.csproj", "{762FE398-F875-4F93-8561-65B4EFB1F596}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,16 +49,6 @@ Global
 		{99006766-8054-46CA-9338-CB491400E9DA}.Release|ARM.ActiveCfg = Release|Any CPU
 		{99006766-8054-46CA-9338-CB491400E9DA}.Release|x64.ActiveCfg = Release|Any CPU
 		{99006766-8054-46CA-9338-CB491400E9DA}.Release|x86.ActiveCfg = Release|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Release|Any CPU.Build.0 = Release|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Release|ARM.ActiveCfg = Release|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Release|x64.ActiveCfg = Release|Any CPU
-		{762FE398-F875-4F93-8561-65B4EFB1F596}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
