@@ -3,7 +3,7 @@
 
 I have been implementing various hash functions that are absent in .NET framework. 
 I decided to converge them into a library. My primary goals are to provide well-tested and 
-performant implementations. The library currently supports FNV1, FNV1a and SipHash.
+performant implementations. The library currently supports [FNV-1](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash), [FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1a_hash) and [SipHash](https://131002.net/siphash/).
 
 To install it on NuGet:
 
