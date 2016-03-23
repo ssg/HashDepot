@@ -2,11 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>HashDepot</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>HashDepot</title>
         <authors>Sedat Kapanoglu</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Tested and performant implementations of various hash algoritms: SipHash, FNV (FNV-1, FNV-1a)</description>
+        <releaseNotes>Updated package description only</releaseNotes>
     </metadata>
     <files>
         <file src="src\bin\Release\HashDepot.dll" target="lib\net45\HashDepot.dll" />
