@@ -1,5 +1,7 @@
 # HashDepot
-I seem to be implementing certain hash functions that are absent in .NET framework. I decided to converge them into a library. My goals are to have well-tested and performant implementations. It currently supports FNV1, FNV1a and SipHash.
+I have been implementing various hash functions that are absent in .NET framework. 
+I decided to converge them into a library. My primary goals are to provide well-tested and 
+performant implementations. The library currently supports FNV1, FNV1a and SipHash.
 
 To install it on NuGet:
 
