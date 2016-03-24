@@ -5,5 +5,5 @@ install:
   - nuget install NUnit.Runners -Version 3.2.0 -OutputDirectory bin
 script:
   - xbuild /p:Configuration=Release HashDepot.sln
-  - mono ./bin/NUnit.Runners.3.2.0/tools/nunit-console.exe ./test/bin/Release/HashDepot.Test.dll
+  - mono ./bin/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./test/bin/Release/HashDepot.Test.dll
 

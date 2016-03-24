@@ -7,3 +7,4 @@ _NCrunch*
 *.suo
 *.user
 *.nupkg
+TestResult.xml
