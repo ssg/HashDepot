@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>HashDepot</id>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
         <title>HashDepot</title>
         <authors>Sedat Kapanoglu</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Tested and performant implementations of various hash algoritms: SipHash, FNV (FNV-1, FNV-1a)</description>
+        <description>Tested and performant implementations of various hash algoritms: SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</description>
         <releaseNotes>Updated package description only</releaseNotes>
     </metadata>
     <files>
