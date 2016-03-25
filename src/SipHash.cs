@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace HashDepot
 {
-    public class SipHash
+    public static class SipHash
     {
         private const int keyLength = 16;
         private const int ulongSize = sizeof(ulong);
@@ -39,7 +39,7 @@ namespace HashDepot
             ulong v3 = initv3 ^ k1;
 
             int length = buffer.Length;
-            int end = length - length % 8;
+            int end = length - (length % 8);
 
             for (int n = 0; n < end; n += ulongSize)
             {
@@ -50,7 +50,7 @@ namespace HashDepot
             }
 
             ulong lastWord = (((ulong)length) << 56)
-                | partialBytesToUint64(buffer, end, length & 7);
+                | Bits.PartialBytesToUInt64(buffer, end, length & 7);
 
             v3 ^= lastWord;
             sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
@@ -62,12 +62,6 @@ namespace HashDepot
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ulong rotateLeft(ulong value, byte bits)
-        {
-            return (value << bits) | (value >> (64 - bits));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void sipRound(int rounds, ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
         {
             // trying to modify rounds itself disables inlining
@@ -75,36 +69,23 @@ namespace HashDepot
             for (int i = 0; i < rounds; i++)
             {
                 v0 += v1;
-                v1 = rotateLeft(v1, 13);
+                v1 = Bits.RotateLeft(v1, 13);
                 v1 ^= v0;
-                v0 = rotateLeft(v0, 32);
+                v0 = Bits.RotateLeft(v0, 32);
 
                 v2 += v3;
-                v3 = rotateLeft(v3, 16);
+                v3 = Bits.RotateLeft(v3, 16);
                 v3 ^= v2;
 
                 v2 += v1;
-                v1 = rotateLeft(v1, 17);
+                v1 = Bits.RotateLeft(v1, 17);
                 v1 ^= v2;
-                v2 = rotateLeft(v2, 32);
+                v2 = Bits.RotateLeft(v2, 32);
 
                 v0 += v3;
-                v3 = rotateLeft(v3, 21);
+                v3 = Bits.RotateLeft(v3, 21);
                 v3 ^= v0;
             }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ulong partialBytesToUint64(byte[] buffer, int offset, int leftBytes)
-        {
-            ulong result = 0;
-            // trying to modify leftBytes would invalidate inlining
-            // need to use local variable instead
-            for (int i = leftBytes - 1; i >= 0; --i)
-            {
-                result |= ((ulong)buffer[offset + i]) << (i << 3);
-            }
-            return result;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

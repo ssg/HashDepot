@@ -13,7 +13,9 @@ namespace HashDepot.Test
         public override string ToString()
         {
             return BitConverter.ToString(Buffer) 
+                + "_"
                 + ExpectedResult32.ToString() 
+                + "_"
                 + ExpectedResult64.ToString();
         }
     }

@@ -8,7 +8,7 @@ namespace HashDepot
     /// <summary>
     /// FNV-1 Hash functions
     /// </summary>
-    public class Fnv1
+    public static class Fnv1
     {
         /// <summary>
         /// Calculate 32-bit FNV-1 hash value

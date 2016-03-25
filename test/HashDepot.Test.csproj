@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitsTest.cs" />
     <Compile Include="Fnv1aTest.cs" />
     <Compile Include="Fnv1Test.cs" />
+    <Compile Include="MurmurHash3Test.cs" />
+    <Compile Include="MurmurTestVector.cs" />
     <Compile Include="SipHashTest.cs" />
     <Compile Include="FnvTestVector.cs" />
     <Compile Include="FnvVectors.cs" />
