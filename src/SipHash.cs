@@ -51,29 +51,33 @@ namespace HashDepot
             ulong v3 = initv3 ^ k1;
 
             int length = buffer.Length;
-            int end = length - (length % 8);
+            int left;
+            int numUlongs = Math.DivRem(length, 8, out left);
 
             fixed (byte* bufPtr = buffer)
             {
-                for (ulong* pInput = (ulong*)bufPtr, pEnd = pInput + (length / 8); pInput != pEnd; pInput++)
+                ulong* pInput = (ulong*)bufPtr;
+                for (ulong* pEnd = pInput + numUlongs; pInput != pEnd; pInput++)
                 {
                     ulong m = *pInput;
                     v3 ^= m;
                     sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
                     v0 ^= m;
                 }
+                ulong lastWord = (((ulong)length) << 56);
+                if (left > 0)
+                {
+                    lastWord |= Bits.PartialBytesToUInt64((byte*)pInput, left);
+                }
+
+                v3 ^= lastWord;
+                sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
+                v0 ^= lastWord;
+
+                v2 ^= finalVectorXor;
+                sipRound(dRounds, ref v0, ref v1, ref v2, ref v3);
+                return v0 ^ v1 ^ v2 ^ v3;
             }
-
-            ulong lastWord = (((ulong)length) << 56)
-                | Bits.PartialBytesToUInt64(buffer, end, length & 7);
-
-            v3 ^= lastWord;
-            sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
-            v0 ^= lastWord;
-
-            v2 ^= finalVectorXor;
-            sipRound(dRounds, ref v0, ref v1, ref v2, ref v3);
-            return v0 ^ v1 ^ v2 ^ v3;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
