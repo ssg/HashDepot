@@ -6,13 +6,13 @@ using System.Runtime.CompilerServices;
 
 namespace HashDepot
 {
+    /// <summary>
+    /// SipHash 2-4 algorithm
+    /// </summary>
     public static class SipHash
     {
         private const int keyLength = 16;
-        private const int ulongSize = sizeof(ulong);
 
-        private const int cRounds = 2;
-        private const int dRounds = 4;
         private const ulong initv0 = 0x736f6d6570736575U;
         private const ulong initv1 = 0x646f72616e646f6dU;
         private const ulong initv2 = 0x6c7967656e657261U;
@@ -51,8 +51,9 @@ namespace HashDepot
             ulong v3 = initv3 ^ k1;
 
             int length = buffer.Length;
+            ulong lastWord = (ulong)length << 56;
             int left;
-            int numUlongs = Math.DivRem(length, 8, out left);
+            int numUlongs = Math.DivRem(length, sizeof(ulong), out left);
 
             fixed (byte* bufPtr = buffer)
             {
@@ -61,50 +62,60 @@ namespace HashDepot
                 {
                     ulong m = *pInput;
                     v3 ^= m;
-                    sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
+                    sipRoundC(ref v0, ref v1, ref v2, ref v3);
                     v0 ^= m;
                 }
-                ulong lastWord = (((ulong)length) << 56);
                 if (left > 0)
                 {
                     lastWord |= Bits.PartialBytesToUInt64((byte*)pInput, left);
                 }
 
                 v3 ^= lastWord;
-                sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
+                sipRoundC(ref v0, ref v1, ref v2, ref v3);
                 v0 ^= lastWord;
 
                 v2 ^= finalVectorXor;
-                sipRound(dRounds, ref v0, ref v1, ref v2, ref v3);
+                sipRoundD(ref v0, ref v1, ref v2, ref v3);
                 return v0 ^ v1 ^ v2 ^ v3;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void sipRound(int rounds, ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+        private static void sipRoundC(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
         {
-            // trying to modify rounds itself disables inlining
-            // that's why we use a separate local variable
-            for (int i = 0; i < rounds; i++)
-            {
-                v0 += v1;
-                v1 = Bits.RotateLeft(v1, 13);
-                v1 ^= v0;
-                v0 = Bits.RotateLeft(v0, 32);
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+        }
 
-                v2 += v3;
-                v3 = Bits.RotateLeft(v3, 16);
-                v3 ^= v2;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+        {
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+            sipRound(ref v0, ref v1, ref v2, ref v3);
+        }
 
-                v2 += v1;
-                v1 = Bits.RotateLeft(v1, 17);
-                v1 ^= v2;
-                v2 = Bits.RotateLeft(v2, 32);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+        {
+            v0 += v1;
+            v1 = Bits.RotateLeft(v1, 13);
+            v1 ^= v0;
+            v0 = Bits.RotateLeft(v0, 32);
 
-                v0 += v3;
-                v3 = Bits.RotateLeft(v3, 21);
-                v3 ^= v0;
-            }
+            v2 += v3;
+            v3 = Bits.RotateLeft(v3, 16);
+            v3 ^= v2;
+
+            v2 += v1;
+            v1 = Bits.RotateLeft(v1, 17);
+            v1 ^= v2;
+            v2 = Bits.RotateLeft(v2, 32);
+
+            v0 += v3;
+            v3 = Bits.RotateLeft(v3, 21);
+            v3 ^= v0;
         }
     }
 }
