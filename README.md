@@ -14,7 +14,9 @@ To install it on NuGet:
 
 ## SipHash
 SipHash is resistant to hash-flood attacks against hashtables and uses
-a key parameter to ensure HMAC-like authenticity yet faster. Unfortuantely a native .NET implementation does not exist. It is my take on it, and it is really fast for a managed environment. It's standard SipHash-2-4 implementation with 64-bit. To use it:
+a key parameter to ensure HMAC-like authenticity yet faster. Unfortuantely a native 
+.NET implementation does not exist. It is my take on it, and it is really fast for a 
+managed environment. It's standard SipHash-2-4 implementation with 64-bit. To use it:
 
     using HashDepot;
     var buffer = Encoding.ASCII.GetBytes("some string");
@@ -25,7 +27,8 @@ Note: The largest buffer size supported for hashing is 2GB. Streaming
 hashing is not supported.
 
 ## MurmurHash3
-MurmurHash3 provides a good balance between performance and homogenity but is essentially prone to hash-flood attacks (trivial to force collisions). An example use is:
+MurmurHash3 provides a good balance between performance and homogenity but is 
+essentially prone to hash-flood attacks (trivial to force collisions). An example use is:
 
     using HashDepot;
     var buffer = Encoding.ASCII.GetBytes("some string");
@@ -33,15 +36,29 @@ MurmurHash3 provides a good balance between performance and homogenity but is es
     uint result = MurmurHash3.Hash32(buffer, seed);
 
 ## FNV
-A straightforward implementation of FNV-1 and FNV-1a hash algorithm for .NET. Usage is very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
+A straightforward implementation of FNV-1 and FNV-1a hash algorithm for .NET. Usage is 
+very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
 
     using HashDepot;
     var buffer = Encoding.ASCII.GetBytes("some string");
     uint result = Fnv1a.Hash32(buffer); // 32-bit hash
     ulong result = Fnv1a.Hash64(buffer); // 64-bit hash
   
-I started out creating a full blown `HashAlgorithm` implementation first but it seemed more suitable for cryptographic hash algorithms. FNV-series are more oriented towards hashing simple data, like ASCII strings. So I kept them as static functions.
+I started out creating a full blown `HashAlgorithm` implementation first but it seemed more 
+suitable for cryptographic hash algorithms. FNV-series are more oriented towards hashing 
+simple data, like ASCII strings. So I kept them as static functions.
 
+# Benchmarks
+
+1000 iterations over 1048576 bytes of buffer
+
+Name                  | Ops/sec
+----------------------|---------------------------
+Checksum (32-bit)     |    2644.77
+Fnv1a (32-bit)        |     860.60
+Fnv1a (64-bit)        |     854.30
+MurmurHash3 (32-bit)  |    1864.88
+SipHash (64-bit)      |    1513.68
 
 # License
 MIT License. See LICENSE file for details
