@@ -12,8 +12,6 @@ namespace benchmark
             new Benchmark("Checksum", 32, (buf) => Checksum.Hash32(buf)),
             new Benchmark("Fnv1a", 32, (buf) => Fnv1a.Hash32(buf)),
             new Benchmark("Fnv1a", 64, (buf) => Fnv1a.Hash64(buf)),
-            new Benchmark("Fnv1", 32, (buf) => Fnv1.Hash32(buf)),
-            new Benchmark("Fnv1", 64, (buf) => Fnv1.Hash64(buf)),
             new Benchmark("MurmurHash3", 32, (buf) => MurmurHash3.Hash32(buf, 0)),
             new Benchmark("SipHash", 64, (buf) => SipHash.Hash64(buf, sipHashKey)),
         };
