@@ -58,9 +58,10 @@ namespace HashDepot
             fixed (byte* bufPtr = buffer)
             {
                 ulong* pInput = (ulong*)bufPtr;
-                for (ulong* pEnd = pInput + numUlongs; pInput != pEnd; pInput++)
+                ulong* pEnd = pInput + numUlongs;
+                while (pInput != pEnd)
                 {
-                    ulong m = *pInput;
+                    ulong m = *pInput++;
                     v3 ^= m;
                     sipRoundC(ref v0, ref v1, ref v2, ref v3);
                     v0 ^= m;

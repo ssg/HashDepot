@@ -33,7 +33,7 @@ namespace HashDepot
             // need to use local variable instead
             for (int i = 0; i < leftBytes; i++)
             {
-                result |= ((ulong)*ptr++) << (i << 3);
+                result |= ((ulong)ptr[i]) << (i << 3);
             }
             return result;
         }
@@ -44,14 +44,14 @@ namespace HashDepot
             Debug.Assert(leftBytes > 0 && leftBytes < 4);
             // a switch/case approach is slightly faster than the loop but .net
             // refuses to inline it due to larger code size.
-            uint result = *ptr++;
+            uint result = *ptr;
             if (leftBytes > 1)
             {
-                result |= (uint)(*ptr++ << 8);
+                result |= (uint)(ptr[1] << 8);
             }
             if (leftBytes > 2)
             {
-                result |= (uint)(*ptr++ << 16);
+                result |= (uint)(ptr[2] << 16);
             }
             return result;
         }
