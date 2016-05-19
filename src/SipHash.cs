@@ -24,14 +24,26 @@ namespace HashDepot
         /// <param name="buffer">Input buffer</param>
         /// <param name="key">16-byte key</param>
         /// <returns>64-bit hash value</returns>
-        public static ulong Hash64(byte[] buffer, byte[] key)
+        public static unsafe ulong Hash64(byte[] buffer, byte[] key)
         {
-            validateArguments(buffer, key);
-
             const ulong finalVectorXor = 0xFF;
 
-            ulong k0 = BitConverter.ToUInt64(key, 0);
-            ulong k1 = BitConverter.ToUInt64(key, 8);
+            Require.NotNull(buffer, "buffer");
+            Require.NotNull(key, "key");
+
+            if (key.Length != keyLength)
+            {
+                throw new ArgumentException("key must be 16-bytes long", "key");
+            }
+
+            ulong k0;
+            ulong k1;
+            fixed (byte* keyPtr = key)
+            {
+                ulong* pKey = (ulong*)keyPtr;
+                k0 = *pKey++;
+                k1 = *pKey;
+            }
 
             ulong v0 = initv0 ^ k0;
             ulong v1 = initv1 ^ k1;
@@ -41,12 +53,15 @@ namespace HashDepot
             int length = buffer.Length;
             int end = length - (length % 8);
 
-            for (int n = 0; n < end; n += ulongSize)
+            fixed (byte* bufPtr = buffer)
             {
-                ulong m = BitConverter.ToUInt64(buffer, n);
-                v3 ^= m;
-                sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
-                v0 ^= m;
+                for (ulong* pInput = (ulong*)bufPtr, pEnd = pInput + (length / 8); pInput != pEnd; pInput++)
+                {
+                    ulong m = *pInput;
+                    v3 ^= m;
+                    sipRound(cRounds, ref v0, ref v1, ref v2, ref v3);
+                    v0 ^= m;
+                }
             }
 
             ulong lastWord = (((ulong)length) << 56)
@@ -85,23 +100,6 @@ namespace HashDepot
                 v0 += v3;
                 v3 = Bits.RotateLeft(v3, 21);
                 v3 ^= v0;
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void validateArguments(byte[] buffer, byte[] key)
-        {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException("key");
-            }
-            if (key.Length != keyLength)
-            {
-                throw new ArgumentException("key must be 16-bytes long", "key");
             }
         }
     }
