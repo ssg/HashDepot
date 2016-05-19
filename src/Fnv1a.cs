@@ -15,22 +15,15 @@ namespace HashDepot
         /// </summary>
         public static uint Hash32(byte[] buffer)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
-
             const uint offsetBasis32 = 2166136261;
             const uint prime32 = 16777619;
 
+            Require.NotNull(buffer, "buffer");
+
             uint result = offsetBasis32;
-            unchecked
+            foreach (var b in buffer)
             {
-                foreach (byte b in buffer)
-                {
-                    result ^= b;
-                    result *= prime32;
-                }
+                result = prime32 * (result ^ b);
             }
             return result;
         }
@@ -40,22 +33,15 @@ namespace HashDepot
         /// </summary>
         public static ulong Hash64(byte[] buffer)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
-
             const ulong offsetBasis64 = 14695981039346656037;
             const ulong prime64 = 1099511628211;
 
+            Require.NotNull(buffer, "buffer");
+
             ulong result = offsetBasis64;
-            unchecked
+            foreach (var b in buffer)
             {
-                foreach (byte b in buffer)
-                {
-                    result ^= b;
-                    result *= prime64;
-                }
+                result = prime64 * (result ^ b);
             }
             return result;
         }

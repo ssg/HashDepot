@@ -6,7 +6,7 @@ using System;
 namespace HashDepot
 {
     /// <summary>
-    /// FNV-1 Hash functions
+    /// FNV-1 Hash functions.
     /// </summary>
     public static class Fnv1
     {
@@ -24,13 +24,10 @@ namespace HashDepot
             const uint prime = 16777619;
 
             uint result = offsetBasis;
-            unchecked
+            foreach (byte b in buffer)
             {
-                foreach (byte b in buffer)
-                {
-                    result *= prime;
-                    result ^= b;
-                }
+                result *= prime;
+                result ^= b;
             }
             return result;
         }
@@ -49,13 +46,10 @@ namespace HashDepot
             const ulong prime = 1099511628211;
 
             ulong result = offsetBasis;
-            unchecked
+            foreach (byte b in buffer)
             {
-                foreach (byte b in buffer)
-                {
-                    result *= prime;
-                    result ^= b;
-                }
+                result *= prime;
+                result ^= b;
             }
             return result;
         }
