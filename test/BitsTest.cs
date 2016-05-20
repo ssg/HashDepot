@@ -41,24 +41,30 @@ namespace HashDepot.Test
         [TestCase(0xAABBCCU, 3)]
         [TestCase(0xAABBU, 2)]
         [TestCase(0xAAU, 1)]
-        public void PartialBytesToUInt64(ulong input, int len)
+        public unsafe void PartialBytesToUInt64(ulong input, int len)
         {
             var buffer = BitConverter.GetBytes(input);
             var testBuffer = new byte[len];
             Array.Copy(buffer, testBuffer, len);
-            Assert.AreEqual(input, Bits.PartialBytesToUInt64(testBuffer, 0, len));
+            fixed (byte* bufPtr = testBuffer)
+            {
+                Assert.AreEqual(input, Bits.PartialBytesToUInt64(bufPtr, len));
+            }
         }
 
         [Test]
         [TestCase(0xAABBCCU, 3)]
         [TestCase(0xAABBU, 2)]
         [TestCase(0xAAU, 1)]
-        public void PartialBytesToUInt32(uint input, int len)
+        public unsafe void PartialBytesToUInt32(uint input, int len)
         {
             var buffer = BitConverter.GetBytes(input);
             var testBuffer = new byte[len];
             Array.Copy(buffer, testBuffer, len);
-            Assert.AreEqual(input, Bits.PartialBytesToUInt32(testBuffer, 0, len));
+            fixed (byte* bufPtr = buffer)
+            {
+                Assert.AreEqual(input, Bits.PartialBytesToUInt32(bufPtr, len));
+            }
         }
     }
 }

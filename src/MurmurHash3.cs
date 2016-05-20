@@ -15,17 +15,16 @@ namespace HashDepot
             const uint c1 = 0xcc9e2d51;
             const uint c2 = 0x1b873593;
 
-            unchecked
-            {
-                value *= c1;
-                value = Bits.RotateLeft(value, 15);
-                value *= c2;
-                hash ^= value;
-            }
+            value *= c1;
+            value = Bits.RotateLeft(value, 15);
+            value *= c2;
+            hash ^= value;
         }
 
-        public static uint Hash32(byte[] buffer, uint seed)
+        public static unsafe uint Hash32(byte[] buffer, uint seed)
         {
+            Require.NotNull(buffer, "buffer");
+
             const int uintSize = sizeof(uint);
             const uint final1 = 0x85ebca6b;
             const uint final2 = 0xc2b2ae35;
@@ -34,29 +33,32 @@ namespace HashDepot
 
             uint hash = seed;
             int length = buffer.Length;
-            int end = length - length % uintSize;
-            for (int i = 0; i < end; i += uintSize)
+            int leftBytes;
+            int numUInts = Math.DivRem(length, uintSize, out leftBytes);
+            fixed (byte* bufPtr = buffer)
             {
-                uint k = BitConverter.ToUInt32(buffer, i);
-                murmurRound(ref k, ref hash);
-                hash = Bits.RotateLeft(hash, 13);
-                hash *= m;
-                hash += n;
+                uint* pInput = (uint*)bufPtr;
+                for (uint* pEnd = pInput + numUInts; pInput != pEnd; pInput++)
+                {
+                    uint k = *pInput;
+                    murmurRound(ref k, ref hash);
+                    hash = Bits.RotateLeft(hash, 13);
+                    hash *= m;
+                    hash += n;
+                }
+                if (leftBytes > 0)
+                {
+                    uint remaining = Bits.PartialBytesToUInt32((byte*)pInput, leftBytes);
+                    murmurRound(ref remaining, ref hash);
+                }
             }
-            int left = length - end;
-            if (left > 0)
-            {
-                uint remaining = Bits.PartialBytesToUInt32(buffer, end, left);
-                murmurRound(ref remaining, ref hash);
-            }
-
             hash ^= (uint)length;
 
             // finalization mix
             hash ^= hash >> 16;
-            hash = unchecked(hash * final1);
+            hash *= final1;
             hash ^= hash >> 13;
-            hash = unchecked(hash * final2);
+            hash *= final2;
             hash ^= hash >> 16;
             return hash;
         }
