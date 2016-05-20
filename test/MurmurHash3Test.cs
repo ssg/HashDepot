@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Text;
 using NUnit.Framework;
 
 namespace HashDepot.Test
@@ -49,5 +50,28 @@ namespace HashDepot.Test
             uint result = MurmurHash3.Hash32(Encoding.UTF8.GetBytes(text), seed);
             Assert.AreEqual(expectedResult, result);
         }
+
+        [Test]
+        [Ignore("not finished the implementation yet")]
+        [TestCase("The quick brown fox jumps over the lazy dog", "213163D23B7F8A73E516C07E727345F9", 0x9747b28cU)]
+        [TestCase("The quick brown fox jumps over the lazy cog", "94618270B057CDB83CF873585B456F55", 0x9747b28cU)]
+        [TestCase("THE QUICK BROWN FOX JUMPS OVER THE LAZY COG", "DD904D9A52D2FB5E71EAD0546624BEA0", 0x9747b28cU)]
+        [TestCase("the quick brown fox jumps over the lazy dog", "A8FA6851BD2C21CDF33E80C8968B74D0", 0x9747b28cU)]
+        [TestCase("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", "6C8AD027E39089788AD2CB67789CA4CF", 0x9747b28cU)]
+        [TestCase("the quick brown fox jumps over the lazy cog", "714C9A5ADD16AA271F90A72183FD2BE0", 0x9747b28cU)]
+        [TestCase("The quick brown fox jumps over the lazy dog", "6C1B07BC7BBC4BE347939AC4A93C437A", 0U)]
+        [TestCase("The quick brown fox jumps over the lazy cog", "9A2685FF70A98C653E5C8EA6EAE3FE43", 0U)]
+        [TestCase("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", "C9FB0A32011820A64B3C7A60B06C3982", 0U)]
+        [TestCase("THE QUICK BROWN FOX JUMPS OVER THE LAZY COG", "24B0E694C86C766A6C8FD44492BB010B", 0U)]
+        [TestCase("the quick brown fox jumps over the lazy dog", "B386ADE2FEE9E4BC7F4B6E4074E3E20A", 0U)]
+        [TestCase("the quick brown fox jumps over the lazy cog", "3222507256FE092F24D124BB1E8D7586", 0U)]         
+        public void Hash128_ReturnsExpectedVersions(string text, string expectedHash, uint seed)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(text);
+            byte[] expectedResult = SoapHexBinary.Parse(expectedHash).Value;
+            byte[] result = MurmurHash3.Hash128(buffer, seed);
+            CollectionAssert.AreEqual(expectedResult, result);
+        }
+
     }
 }

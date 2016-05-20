@@ -63,59 +63,105 @@ namespace HashDepot
             return hash;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void murmur128Round(ref uint kn, ref uint hn, uint hm, uint cn, uint cm, uint n, int kr, int hr)
+        public static unsafe byte[] Hash128(byte[] buffer, uint seed)
         {
-            const uint m = 5;
-
-            kn *= cn;
-            kn = Bits.RotateLeft(kn, kr);
-            kn *= cm;
-            hn ^= kn;
-            hn = Bits.RotateLeft(hn, hr);
-            hn += hm;
-            hn = hn * m + n;
-        }
-
-        public static byte[] Hash128(byte[] buffer, uint seed)
-        {
-            const int outputLength = 16;
             const int blockSize = 16;
-            const uint c1 = 0x239b961b;
-            const uint c2 = 0xab0e9789;
-            const uint c3 = 0x38b34ae5;
-            const uint c4 = 0xa1e38b93;
 
-            const uint n1 = 0x561ccd1b;
-            const uint n2 = 0x0bcaa747;
-            const uint n3 = 0x96cd1c35;
-            const uint n4 = 0x32ac3b17;
+            const ulong c1 = 0x87c37b91114253d5UL;
+            const ulong c2 = 0x4cf5ad432745937fUL;
 
-            var result = new byte[outputLength];
+            Require.NotNull(buffer, "buffer");
 
-            uint h1 = seed;
-            uint h2 = seed;
-            uint h3 = seed;
-            uint h4 = seed;
+            var result = new byte[16];
+
+            ulong h1 = seed;
+            ulong h2 = seed;
 
             int length = buffer.Length;
-            int end = length - length % blockSize;
+            int leftBytes;
+            int blockLen = Math.DivRem(length, blockSize, out leftBytes);
 
-            for (int i = 0; i < end; i+= blockSize)
+            fixed (byte* bufPtr = buffer)
             {
-                int offset = i * 4;
-                uint k1 = BitConverter.ToUInt32(buffer, offset);
-                uint k2 = BitConverter.ToUInt32(buffer, offset + 4);
-                uint k3 = BitConverter.ToUInt32(buffer, offset + 8);
-                uint k4 = BitConverter.ToUInt32(buffer, offset + 12);
+                ulong* pItem = (ulong*)bufPtr;
+                ulong* pEnd = (ulong*)bufPtr + blockLen;
+                while (pItem != pEnd)
+                {
+                    ulong ik1 = *pItem++;
+                    ulong ik2 = *pItem++;
 
-                murmur128Round(ref k1, ref h1, h2, c1, c2, n1, 15, 19);
-                murmur128Round(ref k2, ref h2, h3, c2, c3, n2, 16, 17);
-                murmur128Round(ref k3, ref h3, h4, c3, c4, n3, 17, 15);
-                murmur128Round(ref k4, ref h4, h1, c4, c1, n4, 18, 13);
+                    murmur128Round(ref ik1, ref h1, c1, c2, h2, 31, 27, 0x52dce729U);
+                    murmur128Round(ref ik2, ref h2, c2, c1, h1, 33, 31, 0x38495ab5U);
+                }
+
+                byte* pTail = (byte*)pItem;
+                ulong k1 = 0;
+                ulong k2 = 0;
+
+                if (leftBytes > 8)
+                {
+                    k2 = Bits.PartialBytesToUInt64(pTail + 8, leftBytes - 8);
+                    tailRound(ref k2, ref h2, c2, c1, 33);
+                    leftBytes = 8;
+                }
+
+                if (leftBytes > 0)
+                {
+                    k1 = Bits.PartialBytesToUInt64(pTail, leftBytes);
+                    tailRound(ref k1, ref h1, c1, c2, 31);
+                }
+
+                h1 ^= (ulong)length;
+                h2 ^= (ulong)length;
+
+                h1 += h2;
+                h2 += h1;
+
+                fmix64(ref h1);
+                fmix64(ref h2);
+
+                h1 += h2;
+                h2 += h1;
+
+                fixed (byte* outputPtr = result)
+                {
+                    ulong* pOutput = (ulong*)outputPtr;
+                    pOutput[0] = h1;
+                    pOutput[1] = h2;
+                }
+                return result;
             }
-            /// not finished
-            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void murmur128Round(ref ulong k, ref ulong h, ulong c1, ulong c2, ulong hn, int krot, int hrot, uint x)
+        {
+            k *= c1;
+            k = Bits.RotateLeft(k, krot);
+            k *= c2;
+            h ^= k;
+            h = Bits.RotateLeft(h, hrot);
+            h += hn;
+            h = h * 5 + x;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void fmix64(ref ulong h)
+        {
+            h ^= h >> 33;
+            h *= 0xff51afd7ed558ccdUL;
+            h ^= h >> 33;
+            h *= 0xc4ceb9fe1a85ec53UL;
+            h ^= h >> 33;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void tailRound(ref ulong k, ref ulong h, ulong c1, ulong c2, int rot)
+        {
+            k *= c1;
+            k = Bits.RotateLeft(k, rot);
+            k *= c2;
+            h ^= k;
         }
     }
 }

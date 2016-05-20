@@ -53,6 +53,7 @@ namespace HashDepot.Test
         }
 
         [Test]
+        [TestCase(0xAABBCCDDU, 4)]
         [TestCase(0xAABBCCU, 3)]
         [TestCase(0xAABBU, 2)]
         [TestCase(0xAAU, 1)]

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace HashDepot
@@ -41,7 +42,10 @@ namespace HashDepot
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe uint PartialBytesToUInt32(byte* ptr, int leftBytes)
         {
-            Debug.Assert(leftBytes > 0 && leftBytes < 4);
+            if (leftBytes > 3)
+            {
+                return *((uint*)ptr);
+            }
             // a switch/case approach is slightly faster than the loop but .net
             // refuses to inline it due to larger code size.
             uint result = *ptr;
