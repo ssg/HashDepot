@@ -1,6 +1,7 @@
-﻿using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
+﻿using System.Text;
 using NUnit.Framework;
+using SimpleBase;
+using HashDepot;
 
 namespace HashDepot.Test
 {
@@ -68,7 +69,7 @@ namespace HashDepot.Test
         public void Hash128_ReturnsExpectedVersions(string text, string expectedHash, uint seed)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(text);
-            byte[] expectedResult = SoapHexBinary.Parse(expectedHash).Value;
+            byte[] expectedResult = Base16.Decode(expectedHash);
             byte[] result = MurmurHash3.Hash128(buffer, seed);
             CollectionAssert.AreEqual(expectedResult, result);
         }

@@ -16,7 +16,7 @@ namespace benchmark
             new Benchmark("SipHash", 64, (buf) => SipHash.Hash64(buf, sipHashKey)),
         };
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
 #if DEBUG
             Console.WriteLine("WARNING: DEBUG MODE");

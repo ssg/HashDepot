@@ -33,8 +33,8 @@ namespace HashDepot
 
             uint hash = seed;
             int length = buffer.Length;
-            int leftBytes;
-            int numUInts = Math.DivRem(length, uintSize, out leftBytes);
+            int numUInts = length / uintSize;
+            int leftBytes = length % uintSize;
             fixed (byte* bufPtr = buffer)
             {
                 uint* pInput = (uint*)bufPtr;
@@ -78,8 +78,8 @@ namespace HashDepot
             ulong h2 = seed;
 
             int length = buffer.Length;
-            int leftBytes;
-            int blockLen = Math.DivRem(length, blockSize, out leftBytes);
+            int leftBytes = length % blockSize;
+            int blockLen = length / blockSize;
 
             fixed (byte* bufPtr = buffer)
             {

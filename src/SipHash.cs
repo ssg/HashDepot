@@ -52,8 +52,8 @@ namespace HashDepot
 
             int length = buffer.Length;
             ulong lastWord = (ulong)length << 56;
-            int left;
-            int numUlongs = Math.DivRem(length, sizeof(ulong), out left);
+            int numUlongs = length / sizeof(ulong);
+            int left = length % sizeof(ulong);
 
             fixed (byte* bufPtr = buffer)
             {

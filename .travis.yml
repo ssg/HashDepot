@@ -1,8 +1,9 @@
 language: csharp
 solution: HashDepot.sln
+mono: none
+dist: trusty
+dotnet: 1.0.3
 install:
-  - nuget restore HashDepot.sln
-  - nuget install NUnit.Runners -Version 3.2.0 -OutputDirectory bin
+  - dotnet restore
 script:
-  - xbuild /p:Configuration=Release HashDepot.sln
-  - mono ./bin/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./test/bin/Release/HashDepot.Test.dll
+  - dotnet test test/HashDepotTest.csproj

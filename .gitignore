@@ -1,6 +1,6 @@
 packages
 .nuget
-*.ncrunchsolution*
+*.ncrunch*
 bin
 obj
 _NCrunch*
