@@ -56,15 +56,16 @@ simple data, like ASCII strings. So I kept them as static functions.
 
 # Benchmarks
 
+CPU: Intel Core i7-7700K Kaby Lake @ 3.60Ghz
 1000 iterations over 1048576 bytes of buffer
 
 Name                  | Ops/sec
 ----------------------|---------------------------
-Checksum (32-bit)     |    2644.77
-Fnv1a (32-bit)        |     860.60
-Fnv1a (64-bit)        |     854.30
-MurmurHash3 (32-bit)  |    1864.88
-SipHash (64-bit)      |    1513.68
+Checksum (32-bit)     |    2754.57
+Fnv1a (32-bit)        |     906.26
+Fnv1a (64-bit)        |     945.38
+MurmurHash3 (32-bit)  |    3421.65
+SipHash (64-bit)      |    2226.59
 
 # License
 MIT License. See LICENSE file for details
