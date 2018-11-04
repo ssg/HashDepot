@@ -25,7 +25,7 @@ namespace benchmark
         public void Test()
         {
             var buf = new byte[BufSize];
-            Stopwatch w = Stopwatch.StartNew();
+            var w = Stopwatch.StartNew();
             for (int i = 0; i < Iterations; i++)
             {
                 HashFunc(buf);

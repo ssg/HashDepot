@@ -18,7 +18,7 @@ namespace HashDepot
             const uint offsetBasis32 = 2166136261;
             const uint prime32 = 16777619;
 
-            Require.NotNull(buffer, "buffer");
+            Require.NotNull(buffer, nameof(buffer));
 
             uint result = offsetBasis32;
             foreach (var b in buffer)
@@ -36,7 +36,7 @@ namespace HashDepot
             const ulong offsetBasis64 = 14695981039346656037;
             const ulong prime64 = 1099511628211;
 
-            Require.NotNull(buffer, "buffer");
+            Require.NotNull(buffer, nameof(buffer));
 
             ulong result = offsetBasis64;
             foreach (var b in buffer)

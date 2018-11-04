@@ -28,12 +28,12 @@ namespace HashDepot
         {
             const ulong finalVectorXor = 0xFF;
 
-            Require.NotNull(buffer, "buffer");
-            Require.NotNull(key, "key");
+            Require.NotNull(buffer, nameof(buffer));
+            Require.NotNull(key, nameof(key));
 
             if (key.Length != keyLength)
             {
-                throw new ArgumentException("key must be 16-bytes long", "key");
+                throw new ArgumentException("key must be 16-bytes long", nameof(key));
             }
 
             ulong k0;

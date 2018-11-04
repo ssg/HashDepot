@@ -15,10 +15,7 @@ namespace HashDepot
         /// </summary>
         public static uint Hash32(byte[] buffer)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
+            Require.NotNull(buffer, nameof(buffer));
 
             const uint offsetBasis = 2166136261;
             const uint prime = 16777619;
@@ -37,10 +34,7 @@ namespace HashDepot
         /// </summary>
         public static ulong Hash64(byte[] buffer)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
+            Require.NotNull(buffer, nameof(buffer));
 
             const ulong offsetBasis = 14695981039346656037;
             const ulong prime = 1099511628211;
