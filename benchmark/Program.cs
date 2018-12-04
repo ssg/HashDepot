@@ -7,7 +7,7 @@ namespace benchmark
     {
         private static readonly byte[] sipHashKey = new byte[16];
 
-        private static Benchmark[] benchmarks = new[]
+        private static readonly Benchmark[] benchmarks = new[]
         {
             new Benchmark("Checksum", 32, (buf) => Checksum.Hash32(buf)),
             new Benchmark("Fnv1a", 32, (buf) => Fnv1a.Hash32(buf)),
