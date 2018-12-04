@@ -1,10 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>HashDepot</AssemblyName>
+    <Version>2.0.0</Version>
+    <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
+    <Authors>Sedat Kapanoglu</Authors>
     <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+
     <PackageId>HashDepot</PackageId>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageLicense>Apache-2.0</PackageLicense>
+    <PackageTags>siphash murmurhash fnv fnv1 fnv1a</PackageTags>
+    <PackageReleaseNotes>
+      <![CDATA[
+- .NET Standard 1.3 support      
+      ]]>
+    </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>

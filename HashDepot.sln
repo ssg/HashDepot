@@ -8,14 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34D97138-4E86-41C6-BA85-05B80AE1D7A4}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		HashDepot.nuspec = HashDepot.nuspec
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashDepot", "src\HashDepot.csproj", "{894B4F2A-B9B6-4C3D-8A41-3799D8998B7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashDepot", "src\HashDepot.csproj", "{894B4F2A-B9B6-4C3D-8A41-3799D8998B7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashDepotTest", "test\HashDepotTest.csproj", "{99006766-8054-46CA-9338-CB491400E9DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashDepotTest", "test\HashDepotTest.csproj", "{99006766-8054-46CA-9338-CB491400E9DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "benchmark", "benchmark\benchmark.csproj", "{775818E5-E9F3-4875-9FF2-6F1A3BB9E69A}"
 EndProject
@@ -70,5 +69,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89FADC05-58B4-4CAD-BC64-83D074BA681E}
 	EndGlobalSection
 EndGlobal
