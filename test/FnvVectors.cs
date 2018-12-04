@@ -82,7 +82,7 @@ namespace HashDepot.Test
             });
         }
 
-        private static ulong[] fnv1Results64 = new ulong[]
+        private static readonly ulong[] fnv1Results64 = new ulong[]
         {
             0xcbf29ce484222325,
             0xaf63bd4c8601b7be,
@@ -289,7 +289,7 @@ namespace HashDepot.Test
             0xe6be57375ad89b99,
         };
 
-        private static ulong[] fnv1aResults64 = new ulong[]
+        private static readonly ulong[] fnv1aResults64 = new ulong[]
         {
             0xcbf29ce484222325,
             0xaf63dc4c8601ec8c,
@@ -496,7 +496,7 @@ namespace HashDepot.Test
             0x39e9f18f2f85e221,
         };
 
-        private static uint[] fnv1Results32 = new uint[]
+        private static readonly uint[] fnv1Results32 = new uint[]
         {
             0x811c9dc5,
             0x050c5d7e,
@@ -705,7 +705,7 @@ namespace HashDepot.Test
 
         /* FNV-1a 32 bit test vectors */
 
-        private static uint[] fnv1aResults32 = new uint[]
+        private static readonly uint[] fnv1aResults32 = new uint[]
         {
             0x811c9dc5,
             0xe40c292c,

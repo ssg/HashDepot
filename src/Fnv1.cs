@@ -16,7 +16,23 @@ namespace HashDepot
         public static uint Hash32(byte[] buffer)
         {
             Require.NotNull(buffer, nameof(buffer));
+            return Hash32(buffer.AsSpan());
+        }
 
+        /// <summary>
+        /// Calculate 64-bit FNV-1 hash value
+        /// </summary>
+        public static ulong Hash64(byte[] buffer)
+        {
+            Require.NotNull(buffer, nameof(buffer));
+            return Hash64(buffer.AsSpan());
+        }
+
+        /// <summary>
+        /// Calculate 32-bit FNV-1 hash value
+        /// </summary>
+        public static uint Hash32(ReadOnlySpan<byte> buffer)
+        {
             const uint offsetBasis = 2166136261;
             const uint prime = 16777619;
 
@@ -32,10 +48,8 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit FNV-1 hash value
         /// </summary>
-        public static ulong Hash64(byte[] buffer)
+        public static ulong Hash64(ReadOnlySpan<byte> buffer)
         {
-            Require.NotNull(buffer, nameof(buffer));
-
             const ulong offsetBasis = 14695981039346656037;
             const ulong prime = 1099511628211;
 

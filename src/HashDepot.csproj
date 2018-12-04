@@ -26,4 +26,7 @@
     <None Remove="HashDepot.ncrunchproject" />
     <None Remove="HashDepot.v2.ncrunchproject" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.1" />
+  </ItemGroup>
 </Project>

@@ -24,12 +24,22 @@ namespace HashDepot
         /// <param name="buffer">Input buffer</param>
         /// <param name="key">16-byte key</param>
         /// <returns>64-bit hash value</returns>
-        public static unsafe ulong Hash64(byte[] buffer, byte[] key)
+        public static ulong Hash64(byte[] buffer, byte[] key)
         {
-            const ulong finalVectorXor = 0xFF;
-
             Require.NotNull(buffer, nameof(buffer));
             Require.NotNull(key, nameof(key));
+            return Hash64(buffer.AsSpan(), key.AsSpan());
+        }
+
+        /// <summary>
+        /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+        /// </summary>
+        /// <param name="buffer">Input buffer</param>
+        /// <param name="key">16-byte key</param>
+        /// <returns>64-bit hash value</returns>
+        public static unsafe ulong Hash64(ReadOnlySpan<byte> buffer, ReadOnlySpan<byte> key)
+        {
+            const ulong finalVectorXor = 0xFF;
 
             if (key.Length != keyLength)
             {

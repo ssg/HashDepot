@@ -8,7 +8,6 @@ namespace HashDepot
 {
     public static class MurmurHash3
     {
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void murmurRound(ref uint value, ref uint hash)
         {
@@ -21,10 +20,19 @@ namespace HashDepot
             hash ^= value;
         }
 
-        public static unsafe uint Hash32(byte[] buffer, uint seed)
+        /// <summary>
+        /// Calculate 32-bit MurmurHash3 hash value
+        /// </summary>
+        public static uint Hash32(byte[] buffer, uint seed)
         {
-            Require.NotNull(buffer, "buffer");
+            return Hash32(buffer.AsSpan(), seed);
+        }
 
+        /// <summary>
+        /// Calculate 32-bit MurmurHash3 hash value
+        /// </summary>
+        public static unsafe uint Hash32(ReadOnlySpan<byte> buffer, uint seed)
+        {
             const int uintSize = sizeof(uint);
             const uint final1 = 0x85ebca6b;
             const uint final2 = 0xc2b2ae35;
@@ -63,14 +71,23 @@ namespace HashDepot
             return hash;
         }
 
-        public static unsafe byte[] Hash128(byte[] buffer, uint seed)
+        /// <summary>
+        /// Calculate 128-bit MurmurHash3 hash value
+        /// </summary>
+        public static byte[] Hash128(byte[] buffer, uint seed)
+        {
+            return Hash128(buffer.AsSpan(), seed).ToArray();
+        }
+
+        /// <summary>
+        /// Calculate 128-bit MurmurHash3 hash value
+        /// </summary>
+        public static unsafe Span<byte> Hash128(ReadOnlySpan<byte> buffer, uint seed)
         {
             const int blockSize = 16;
 
             const ulong c1 = 0x87c37b91114253d5UL;
             const ulong c2 = 0x4cf5ad432745937fUL;
-
-            Require.NotNull(buffer, "buffer");
 
             var result = new byte[16];
 
@@ -134,7 +151,8 @@ namespace HashDepot
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void murmur128Round(ref ulong k, ref ulong h, ulong c1, ulong c2, ulong hn, int krot, int hrot, uint x)
+        private static void murmur128Round(ref ulong k, ref ulong h, ulong c1, ulong c2, ulong hn, int krot,
+            int hrot, uint x)
         {
             k *= c1;
             k = Bits.RotateLeft(k, krot);
