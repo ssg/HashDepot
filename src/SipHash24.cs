@@ -2,14 +2,16 @@
 // MIT License - see LICENSE file for details
 
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace HashDepot
 {
     /// <summary>
-    /// SipHash 2-4 algorithm
+    /// SipHash 2-4 algorithm. This is the most common implementation of SipHash
     /// </summary>
-    public static class SipHash
+    public static class SipHash24
     {
         private const int keyLength = 16;
 
@@ -26,9 +28,122 @@ namespace HashDepot
         /// <returns>64-bit hash value</returns>
         public static ulong Hash64(byte[] buffer, byte[] key)
         {
-            Require.NotNull(buffer, nameof(buffer));
-            Require.NotNull(key, nameof(key));
             return Hash64(buffer.AsSpan(), key.AsSpan());
+        }
+
+        /// <summary>
+        /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+        /// </summary>
+        /// <param name="buffer">Input buffer</param>
+        /// <param name="key">16-byte key</param>
+        /// <returns>64-bit hash value</returns>
+        public static unsafe ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
+        {
+            const ulong finalVectorXor = 0xFF;
+            const int ulongSize = sizeof(ulong);
+
+            if (key.Length != keyLength)
+            {
+                throw new ArgumentException("Key must be 16-bytes long", nameof(key));
+            }
+
+            ulong k0;
+            ulong k1;
+            fixed (byte* keyPtr = key)
+            {
+                ulong* pKey = (ulong*)keyPtr;
+                k0 = *pKey++;
+                k1 = *pKey;
+            }
+
+            ulong v0 = initv0 ^ k0;
+            ulong v1 = initv1 ^ k1;
+            ulong v2 = initv2 ^ k0;
+            ulong v3 = initv3 ^ k1;
+
+            ulong length = 0;
+
+            int bytesRead;
+            var buffer = new byte[ulongSize];
+            while ((bytesRead = stream.Read(buffer, 0, ulongSize)) == ulongSize)
+            {
+                ulong m = BitConverter.ToUInt64(buffer, 0);
+                v3 ^= m;
+                sipRoundC(ref v0, ref v1, ref v2, ref v3);
+                v0 ^= m;
+                length += (ulong)bytesRead;
+            }
+            length += (ulong)bytesRead;
+            ulong lastWord = length << 56;
+
+            if (bytesRead > 0)
+            {
+                fixed (byte* bufPtr = buffer)
+                {
+                    lastWord |= Bits.PartialBytesToUInt64(bufPtr, bytesRead);
+                }
+            }
+
+            v3 ^= lastWord;
+            sipRoundC(ref v0, ref v1, ref v2, ref v3);
+            v0 ^= lastWord;
+
+            v2 ^= finalVectorXor;
+            sipRoundD(ref v0, ref v1, ref v2, ref v3);
+            return v0 ^ v1 ^ v2 ^ v3;
+        }
+
+        /// <summary>
+        /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+        /// </summary>
+        /// <param name="buffer">Input buffer</param>
+        /// <param name="key">16-byte key</param>
+        /// <returns>64-bit hash value</returns>
+        public static async Task<ulong> Hash64Async(Stream stream, byte[] key)
+        {
+            const ulong finalVectorXor = 0xFF;
+            const int ulongSize = sizeof(ulong);
+
+            if (key.Length != keyLength)
+            {
+                throw new ArgumentException("Key must be 16-bytes long", nameof(key));
+            }
+
+            ulong k0 = BitConverter.ToUInt64(key, sizeof(ulong));
+            ulong k1 = BitConverter.ToUInt64(key, 0);
+
+            ulong v0 = initv0 ^ k0;
+            ulong v1 = initv1 ^ k1;
+            ulong v2 = initv2 ^ k0;
+            ulong v3 = initv3 ^ k1;
+
+            ulong length = 0;
+
+            int bytesRead;
+            var buffer = new byte[ulongSize];
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, ulongSize).ConfigureAwait(false)) == ulongSize)
+            {
+                ulong m = BitConverter.ToUInt64(buffer, 0);
+                v3 ^= m;
+                sipRoundC(ref v0, ref v1, ref v2, ref v3);
+                v0 ^= m;
+                length += (ulong)bytesRead;
+            }
+            length += (ulong)bytesRead;
+            ulong lastWord = length << 56;
+
+            if (bytesRead > 0)
+            {
+                lastWord |= Bits.PartialBytesToUInt64(buffer, bytesRead);
+            }
+
+            v3 ^= lastWord;
+            sipRoundC(ref v0, ref v1, ref v2, ref v3);
+            v0 ^= lastWord;
+
+            v2 ^= finalVectorXor;
+            sipRoundD(ref v0, ref v1, ref v2, ref v3);
+            return v0 ^ v1 ^ v2 ^ v3;
         }
 
         /// <summary>
@@ -43,7 +158,7 @@ namespace HashDepot
 
             if (key.Length != keyLength)
             {
-                throw new ArgumentException("key must be 16-bytes long", nameof(key));
+                throw new ArgumentException("Key must be 16-bytes long", nameof(key));
             }
 
             ulong k0;

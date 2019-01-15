@@ -9,7 +9,7 @@ namespace HashDepot.Test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.Children)]
-    public class SipHashTest
+    public class SipHash24Test
     {
         #region test vectors
         // test vectors are from https://github.com/veorq/SipHash
@@ -95,18 +95,11 @@ namespace HashDepot.Test
                 {
                     buffer[j] = (byte)j;
                 }
-                var result = SipHash.Hash64(buffer, key);
+                var result = SipHash24.Hash64(buffer, key);
                 var expectedResult = BitConverter.ToUInt64(vectors[i], startIndex: 0);
                 Debug.WriteLine("testing iteration #" + i);
                 Assert.AreEqual(expectedResult, result);
             }
-        }
-
-        [Test]
-        public void Hash64_NullArgs_Throws()
-        {
-            Assert.Throws<ArgumentNullException>(() => SipHash.Hash64(null, key));
-            Assert.Throws<ArgumentNullException>(() => SipHash.Hash64(key, null));
         }
 
         [Test]
@@ -116,7 +109,7 @@ namespace HashDepot.Test
         {
             var invalidKey = new byte[keyLength];
             var buffer = new byte[0];
-            Assert.Throws<ArgumentException>(() => SipHash.Hash64(buffer, invalidKey));
+            Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
         }
     }
 }

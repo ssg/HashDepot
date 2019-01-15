@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace HashDepot
 {
@@ -38,6 +39,21 @@ namespace HashDepot
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe ulong PartialBytesToUInt64(byte[] buffer, int leftBytes)
+        {
+            // a switch/case approach is slightly faster than the loop but .net
+            // refuses to inline it due to larger code size.
+            ulong result = 0;
+            // trying to modify leftBytes would invalidate inlining
+            // need to use local variable instead
+            for (int i = 0; i < leftBytes; i++)
+            {
+                result |= ((ulong)buffer[i]) << (i << 3);
+            }
+            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe uint PartialBytesToUInt32(byte* ptr, int leftBytes)
         {
             if (leftBytes > 3)
@@ -54,6 +70,27 @@ namespace HashDepot
             if (leftBytes > 2)
             {
                 result |= (uint)(ptr[2] << 16);
+            }
+            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe uint PartialBytesToUInt32(byte[] buffer, int leftBytes)
+        {
+            if (leftBytes > 3)
+            {
+                return BitConverter.ToUInt32(buffer, 0);
+            }
+            // a switch/case approach is slightly faster than the loop but .net
+            // refuses to inline it due to larger code size.
+            uint result = buffer[0];
+            if (leftBytes > 1)
+            {
+                result |= (uint)(buffer[1] << 8);
+            }
+            if (leftBytes > 2)
+            {
+                result |= (uint)(buffer[2] << 16);
             }
             return result;
         }

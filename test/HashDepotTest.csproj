@@ -5,17 +5,21 @@
     <RootNamespace>HashDepot.Test</RootNamespace>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="15.9.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
-    <PackageReference Include="SimpleBase" Version="1.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
+    <PackageReference Include="SimpleBase" Version="1.7.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\HashDepot.csproj" />

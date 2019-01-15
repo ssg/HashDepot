@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -12,21 +13,31 @@ namespace HashDepot.Test
     [Parallelizable(ParallelScope.Children)]
     public class Fnv1Test
     {
-        [Test]
-        public void Hash32_NullBuffer_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => Fnv1.Hash32(null));
-        }
-
-        [Test]
-        public void Hash64_NullBuffer_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => Fnv1.Hash64(null));
-        }
-
         public static IEnumerable<object[]> TestData = FnvVectors.GetFnv1TestVectors()
             .Select(v => new object[] { v })
             .ToArray();
+
+        [Test]
+        [TestCaseSource("TestData")]
+        public void Hash32_Stream_ReturnsExpectedValues(FnvTestVector data)
+        {
+            using (var stream = new MemoryStream(data.Buffer))
+            {
+                uint result = Fnv1.Hash32(stream);
+                Assert.AreEqual(data.ExpectedResult32, result);
+            }
+        }
+
+        [Test]
+        [TestCaseSource("TestData")]
+        public void Hash64_Stream_ReturnsExpectedValues(FnvTestVector data)
+        {
+            using (var stream = new MemoryStream(data.Buffer))
+            {
+                ulong result = Fnv1.Hash64(stream);
+                Assert.AreEqual(data.ExpectedResult64, result);
+            }
+        }
 
         [Test]
         [TestCaseSource("TestData")]

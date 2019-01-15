@@ -10,6 +10,13 @@ namespace HashDepot.Test
         public uint ExpectedResult32 { get; set; }
         public ulong ExpectedResult64 { get; set; }
 
+        public FnvTestVector(byte[] buffer, uint expectedResult32, ulong expectedResult64)
+        {
+            Buffer = buffer;
+            ExpectedResult32 = expectedResult32;
+            ExpectedResult64 = expectedResult64;
+        }
+
         public override string ToString()
         {
             return BitConverter.ToString(Buffer) 
