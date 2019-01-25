@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>HashDepot</AssemblyName>
-    <Version>2.0.0</Version>
+    <Version>1.3.0</Version>
     <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
     <Authors>Sedat Kapanoglu</Authors>
     <OutputType>Library</OutputType>
@@ -35,6 +35,6 @@
     <None Remove="HashDepot.v2.ncrunchproject" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.1" />
+    <PackageReference Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
 </Project>
