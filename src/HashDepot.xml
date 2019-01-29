@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HashDepot</name>
+    </assembly>
+    <members>
+        <member name="T:HashDepot.Bits">
+            <summary>
+            Bit operations
+            </summary>
+        </member>
+        <member name="T:HashDepot.Fnv1">
+            <summary>
+            FNV-1 Hash functions.
+            </summary>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash32(System.IO.Stream)">
+            <summary>
+            Calculate 32-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash32Async(System.IO.Stream)">
+            <summary>
+            Calculate 32-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash32(System.Byte[])">
+            <summary>
+            Calculate 32-bit FNV-1 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash32(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 32-bit FNV-1 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash64(System.IO.Stream)">
+            <summary>
+            Calculate 64-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash64Async(System.IO.Stream)">
+            <summary>
+            Calculate 64-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash64(System.Byte[])">
+            <summary>
+            Calculate 64-bit FNV-1 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1.Hash64(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 64-bit FNV-1 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="T:HashDepot.Fnv1a">
+            <summary>
+            FNV-1a Hash functions
+            </summary>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash32(System.IO.Stream)">
+            <summary>
+            Calculate 32-bit FNV-1a hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash32Async(System.IO.Stream)">
+            <summary>
+            Calculate 32-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash32(System.Byte[])">
+            <summary>
+            Calculate 32-bit FNV-1a hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash32(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 32-bit FNV-1a hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash64(System.IO.Stream)">
+            <summary>
+            Calculate 64-bit FNV-1a hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash64Async(System.IO.Stream)">
+            <summary>
+            Calculate 64-bit FNV-1 hash value
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash64(System.Byte[])">
+            <summary>
+            Calculate 64-bit FNV-1a hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.Fnv1a.Hash64(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 64-bit FNV-1a hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="T:HashDepot.MurmurHash3x64">
+            <summary>
+            x64 platform implementation of MurmurHash3 algorithm
+            </summary>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x64.Hash128(System.IO.Stream,System.UInt32)">
+            <summary>
+            Calculate 128-bit MurmurHash3 hash value using 64-bit version of the algorithm.
+            </summary>
+            <param name="stream">Input stream</param>
+            <param name="seed">Seed value</param>
+            <returns>128-bit hash value in a Span</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x64.Hash128(System.ReadOnlySpan{System.Byte},System.UInt32)">
+            <summary>
+            Calculate 128-bit MurmurHash3 hash value using x64 version of the algorithm.
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <param name="seed">Seed value</param>
+            <returns>128-bit hash value as a Span of bytes</returns>
+        </member>
+        <member name="T:HashDepot.MurmurHash3x86">
+            <summary>
+            x86 flavors of MurmurHash3 algorithms
+            </summary>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.Byte[],System.UInt32)">
+            <summary>
+            Calculate 32-bit MurmurHash3 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <param name="seed">Seed value</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.IO.Stream,System.UInt32)">
+            <summary>
+            Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
+            </summary>
+            <param name="stream">Input stream</param>
+            <param name="seed">Seed value</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x86.Hash32Async(System.IO.Stream,System.UInt32)">
+            <summary>
+            Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
+            </summary>
+            <param name="stream">Input stream</param>
+            <param name="seed">Seed value</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.ReadOnlySpan{System.Byte},System.UInt32)">
+            <summary>
+            Calculate 32-bit MurmurHash3 hash value
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <param name="seed">Seed value</param>
+            <returns>Hash value</returns>
+        </member>
+        <member name="T:HashDepot.SipHash24">
+            <summary>
+            SipHash 2-4 algorithm. This is the most common implementation of SipHash
+            </summary>
+        </member>
+        <member name="M:HashDepot.SipHash24.Hash64(System.Byte[],System.Byte[])">
+            <summary>
+            Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <param name="key">16-byte key</param>
+            <returns>64-bit hash value</returns>
+        </member>
+        <member name="M:HashDepot.SipHash24.Hash64(System.IO.Stream,System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+            </summary>
+            <param name="stream">Input stream</param>
+            <param name="key">16-byte key</param>
+            <returns>64-bit hash value</returns>
+        </member>
+        <member name="M:HashDepot.SipHash24.Hash64Async(System.IO.Stream,System.Byte[])">
+            <summary>
+            Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+            </summary>
+            <param name="stream">Input stream</param>
+            <param name="key">16-byte key</param>
+            <returns>A Task representing the 64-bit hash computation</returns>
+        </member>
+        <member name="M:HashDepot.SipHash24.Hash64(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
+            </summary>
+            <param name="buffer">Input buffer</param>
+            <param name="key">16-byte key</param>
+            <returns>64-bit hash value</returns>
+        </member>
+    </members>
+</doc>

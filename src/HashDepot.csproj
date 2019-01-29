@@ -14,6 +14,7 @@
     <PackageId>HashDepot</PackageId>
     <PackageLicense>MIT</PackageLicense>
     <PackageTags>siphash murmurhash fnv fnv1 fnv1a</PackageTags>
+    <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
     <PackageReleaseNotes>
       <![CDATA[
 Breaking changes:
@@ -25,12 +26,27 @@ Breaking changes:
 - Added missing tests
       ]]>
     </PackageReleaseNotes>   
+  </PropertyGroup>  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>HashDepot.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="HashDepot.ncrunchproject" />
     <None Remove="HashDepot.v2.ncrunchproject" />
+    <None Remove="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
 </Project>

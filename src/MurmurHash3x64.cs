@@ -1,17 +1,25 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
-// MIT License - see LICENSE file for details
-
-using System;
-using System.IO;
-using System.Runtime.CompilerServices;
+﻿// <copyright file="MurmurHash3x64.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2019 Sedat Kapanoglu
+// MIT License (see LICENSE file for details)
+// </copyright>
 
 namespace HashDepot
 {
+    using System;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+
+    /// <summary>
+    /// x64 platform implementation of MurmurHash3 algorithm
+    /// </summary>
     public static class MurmurHash3x64
     {
         /// <summary>
         /// Calculate 128-bit MurmurHash3 hash value using 64-bit version of the algorithm.
         /// </summary>
+        /// <param name="stream">Input stream</param>
+        /// <param name="seed">Seed value</param>
+        /// <returns>128-bit hash value in a Span</returns>
         public static unsafe Span<byte> Hash128(Stream stream, uint seed)
         {
             const int ulongSize = sizeof(ulong);
@@ -77,12 +85,16 @@ namespace HashDepot
                 pOutput[0] = h1;
                 pOutput[1] = h2;
             }
+
             return result;
         }
 
         /// <summary>
         /// Calculate 128-bit MurmurHash3 hash value using x64 version of the algorithm.
         /// </summary>
+        /// <param name="buffer">Input buffer</param>
+        /// <param name="seed">Seed value</param>
+        /// <returns>128-bit hash value as a Span of bytes</returns>
         public static unsafe Span<byte> Hash128(ReadOnlySpan<byte> buffer, uint seed)
         {
             const int blockSize = 16;
@@ -146,13 +158,21 @@ namespace HashDepot
                     pOutput[0] = h1;
                     pOutput[1] = h2;
                 }
+
                 return result;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void round(ref ulong k, ref ulong h, ulong c1, ulong c2, ulong hn, int krot,
-            int hrot, uint x)
+        private static void round(
+            ref ulong k,
+            ref ulong h,
+            ulong c1,
+            ulong c2,
+            ulong hn,
+            int krot,
+            int hrot,
+            uint x)
         {
             k *= c1;
             k = Bits.RotateLeft(k, krot);
@@ -160,7 +180,7 @@ namespace HashDepot
             h ^= k;
             h = Bits.RotateLeft(h, hrot);
             h += hn;
-            h = h * 5 + x;
+            h = (h * 5) + x;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

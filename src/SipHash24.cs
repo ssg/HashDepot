@@ -1,13 +1,15 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
-// MIT License - see LICENSE file for details
-
-using System;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿// <copyright file="SipHash24.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2019 Sedat Kapanoglu
+// MIT License (see LICENSE file for details)
+// </copyright>
 
 namespace HashDepot
 {
+    using System;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// SipHash 2-4 algorithm. This is the most common implementation of SipHash
     /// </summary>
@@ -34,7 +36,7 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
+        /// <param name="stream">Input stream</param>
         /// <param name="key">16-byte key</param>
         /// <returns>64-bit hash value</returns>
         public static unsafe ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
@@ -73,6 +75,7 @@ namespace HashDepot
                 v0 ^= m;
                 length += (ulong)bytesRead;
             }
+
             length += (ulong)bytesRead;
             ulong lastWord = length << 56;
 
@@ -96,9 +99,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
+        /// <param name="stream">Input stream</param>
         /// <param name="key">16-byte key</param>
-        /// <returns>64-bit hash value</returns>
+        /// <returns>A Task representing the 64-bit hash computation</returns>
         public static async Task<ulong> Hash64Async(Stream stream, byte[] key)
         {
             const ulong finalVectorXor = 0xFF;
@@ -129,6 +132,7 @@ namespace HashDepot
                 v0 ^= m;
                 length += (ulong)bytesRead;
             }
+
             length += (ulong)bytesRead;
             ulong lastWord = length << 56;
 
@@ -191,6 +195,7 @@ namespace HashDepot
                     sipRoundC(ref v0, ref v1, ref v2, ref v3);
                     v0 ^= m;
                 }
+
                 if (left > 0)
                 {
                     lastWord |= Bits.PartialBytesToUInt64((byte*)pInput, left);
