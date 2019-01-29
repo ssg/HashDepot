@@ -15,6 +15,7 @@
     <PackageLicense>MIT</PackageLicense>
     <PackageTags>siphash murmurhash fnv fnv1 fnv1a</PackageTags>
     <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>HashDepot.xml</DocumentationFile>
     <PackageReleaseNotes>
       <![CDATA[
 Breaking changes:
@@ -27,9 +28,6 @@ Breaking changes:
       ]]>
     </PackageReleaseNotes>   
   </PropertyGroup>  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>HashDepot.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <None Remove="HashDepot.ncrunchproject" />
     <None Remove="HashDepot.v2.ncrunchproject" />
@@ -48,5 +46,10 @@ Breaking changes:
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Memory" Version="4.5.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="HashDepot.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
