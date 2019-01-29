@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>benchmark</AssemblyName>
     <OutputType>Exe</OutputType>
     <LangVersion>8.0</LangVersion>
@@ -14,6 +14,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="benchmark.v2.ncrunchproject" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\HashDepot.csproj" />
