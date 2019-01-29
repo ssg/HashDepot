@@ -18,13 +18,18 @@
     <DocumentationFile>HashDepot.xml</DocumentationFile>
     <PackageReleaseNotes>
       <![CDATA[
-Breaking changes:
+# Breaking changes
 - Removed null checks to prepare for nullable references in C# 8.0
 - Renamed SipHash to SipHash24 to denote its specific algorithm (SipHash 2-4)
 - Split MurmurHash3 into two separate classes in order to convey their implementations better: MurmurHash3x86
   and MurmurHash3x64.
-- Added Stream interfaces (both blocking and async)
+  
+# Fixes
 - Added missing tests
+  
+# New features
+- Added Stream interfaces (both blocking and async)
+- Included XML documentation in the package
       ]]>
     </PackageReleaseNotes>   
   </PropertyGroup>  
