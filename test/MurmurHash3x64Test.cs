@@ -17,7 +17,9 @@ namespace HashDepot.Test
             var buffer = Encoding.UTF8.GetBytes(input);
             uint seed = 0;
 
+#pragma warning disable IDE0059 // Value assigned to symbol is never used
             var result = MurmurHash3x64.Hash128(buffer, seed);
+#pragma warning restore IDE0059 // Value assigned to symbol is never used
             CollectionAssert.AreEquivalent(expectedBuffer, buffer);
         }
     }

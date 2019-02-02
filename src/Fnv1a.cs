@@ -117,7 +117,7 @@ namespace HashDepot
             {
                 for (int i = 0; i < bytesRead; i++)
                 {
-                    result = result * (prime64 ^ buffer[i]);
+                    result *= prime64 ^ buffer[i];
                 }
             }
 

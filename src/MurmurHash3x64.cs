@@ -48,8 +48,8 @@ namespace HashDepot
                     length += blockSize;
                 }
 
-                ulong k1 = 0;
-                ulong k2 = 0;
+                ulong k1;
+                ulong k2;
 
                 if (readBytes > ulongSize)
                 {
@@ -124,8 +124,8 @@ namespace HashDepot
                 }
 
                 byte* pTail = (byte*)pItem;
-                ulong k1 = 0;
-                ulong k2 = 0;
+                ulong k1;
+                ulong k2;
 
                 if (leftBytes > 8)
                 {
