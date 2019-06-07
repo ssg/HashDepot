@@ -28,6 +28,7 @@
 - Added missing tests
   
 # New features
+- Added xxHash (both 32-bit and 64-bit flavors)
 - Added Stream interfaces (both blocking and async)
 - Included XML documentation in the package
       ]]>
