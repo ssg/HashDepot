@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Text;
 using NUnit.Framework;
-using SimpleBase;
 
 namespace HashDepot.Test
 {
@@ -27,7 +26,7 @@ namespace HashDepot.Test
         };
 
         [Test]
-        [TestCaseSource("smHasherTestData")]
+        [TestCaseSource(nameof(smHasherTestData))]
         public void Hash32_BinaryTests(MurmurTestVector vector)
         {
             uint result = MurmurHash3x86.Hash32(vector.Buffer, vector.Seed);
@@ -35,7 +34,7 @@ namespace HashDepot.Test
         }
 
         [Test]
-        [TestCaseSource("smHasherTestData")]
+        [TestCaseSource(nameof(smHasherTestData))]
         public void Hash32_Stream_BinaryTests(MurmurTestVector vector)
         {
             using (var stream = new MemoryStream(vector.Buffer))
