@@ -27,6 +27,7 @@ namespace HashDepot
         /// <returns>Hash value.</returns>
         public static uint Hash32(Stream stream)
         {
+            Require.NotNull(stream, nameof(stream));
             uint result = offsetBasis32;
             int b;
             while ((b = stream.ReadByte()) >= 0)
@@ -44,6 +45,7 @@ namespace HashDepot
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<uint> Hash32Async(Stream stream)
         {
+            Require.NotNull(stream, nameof(stream));
             const int bufferSize = 4096;
             uint result = offsetBasis32;
             var buffer = new byte[bufferSize];
@@ -92,6 +94,7 @@ namespace HashDepot
         /// <returns>Hash value.</returns>
         public static ulong Hash64(Stream stream)
         {
+            Require.NotNull(stream, nameof(stream));
             ulong result = offsetBasis64;
             int b;
             while ((b = stream.ReadByte()) >= 0)
@@ -109,6 +112,7 @@ namespace HashDepot
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<ulong> Hash64Async(Stream stream)
         {
+            Require.NotNull(stream, nameof(stream));
             const int bufferSize = 4096;
             ulong result = offsetBasis64;
             var buffer = new byte[bufferSize];

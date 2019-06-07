@@ -20,15 +20,14 @@ namespace HashDepot
         /// <param name="stream">Input stream.</param>
         /// <param name="seed">Seed value.</param>
         /// <returns>128-bit hash value in a Span.</returns>
-        public static unsafe Span<byte> Hash128(Stream stream, uint seed)
+        public static unsafe byte[] Hash128(Stream stream, uint seed)
         {
+            Require.NotNull(stream, nameof(stream));
             const int ulongSize = sizeof(ulong);
             const int blockSize = ulongSize * 2;
 
             const ulong c1 = 0x87c37b91114253d5UL;
             const ulong c2 = 0x4cf5ad432745937fUL;
-
-            var result = new byte[16];
 
             ulong h1 = seed;
             ulong h2 = seed;
@@ -79,6 +78,7 @@ namespace HashDepot
             h1 += h2;
             h2 += h1;
 
+            var result = new byte[16];
             fixed (byte* outputPtr = result)
             {
                 ulong* pOutput = (ulong*)outputPtr;
