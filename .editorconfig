@@ -4,3 +4,5 @@ root = true
 indent_size = 4
 indent_style = space
 trim_trailing_whitespace = true
+csharp_indent_labels = one_less_than_current
+guidelines = 110
