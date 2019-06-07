@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using NUnit.Framework;
 
 namespace HashDepot.Test
@@ -30,11 +31,36 @@ namespace HashDepot.Test
 
         [Test]
         [TestCaseSource(nameof(testVectors))]
+        public void Hash32_StreamTests(string text, uint seed, uint hash32, ulong _)
+        {
+            var buffer = Encoding.UTF8.GetBytes(text);
+            using (var stream = new MemoryStream(buffer))
+            {
+                var result = XXHash.Hash32(stream, seed);
+                Assert.AreEqual(hash32, result);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(testVectors))]
         public void Hash64_BinaryTests(string text, uint seed, uint _, ulong hash64)
         {
             var buffer = Encoding.UTF8.GetBytes(text);
             var result = XXHash.Hash64(buffer, seed);
             Assert.AreEqual(hash64, result);
         }
+
+        [Test]
+        [TestCaseSource(nameof(testVectors))]
+        public void Hash64_StreamTests(string text, uint seed, uint _, ulong hash64)
+        {
+            var buffer = Encoding.UTF8.GetBytes(text);
+            using (var stream = new MemoryStream(buffer))
+            {
+                var result = XXHash.Hash64(stream, seed);
+                Assert.AreEqual(hash64, result);
+            }
+        }
+
     }
 }
