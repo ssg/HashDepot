@@ -1,12 +1,13 @@
 ﻿using System.IO;
 using System.Text;
 using NUnit.Framework;
+using SimpleBase;
 
 namespace HashDepot.Test
 {
     // test vectors are courtesy of Ian Boyd -- https://stackoverflow.com/users/12597/ian-boyd
     [TestFixture]
-    public class MurmurHash3x86Test
+    public class MurmurHash3Test
     {
         private static readonly MurmurTestVector[] smHasherTestData = new MurmurTestVector[]
         {
@@ -29,7 +30,7 @@ namespace HashDepot.Test
         [TestCaseSource(nameof(smHasherTestData))]
         public void Hash32_BinaryTests(MurmurTestVector vector)
         {
-            uint result = MurmurHash3x86.Hash32(vector.Buffer, vector.Seed);
+            uint result = MurmurHash3.Hash32(vector.Buffer, vector.Seed);
             Assert.AreEqual(vector.ExpectedResult, result);
         }
 
@@ -39,7 +40,7 @@ namespace HashDepot.Test
         {
             using (var stream = new MemoryStream(vector.Buffer))
             {
-                uint result = MurmurHash3x86.Hash32(stream, vector.Seed);
+                uint result = MurmurHash3.Hash32(stream, vector.Seed);
                 Assert.AreEqual(vector.ExpectedResult, result);
             }
         }
@@ -59,7 +60,7 @@ namespace HashDepot.Test
         [TestCase("My hovercraft is full of eels.", 25U, 2520298415U)] // source: https://github.com/pid/murmurHash3js
         public void Hash32_StringTests(string text, uint seed, uint expectedResult)
         {
-            uint result = MurmurHash3x86.Hash32(Encoding.UTF8.GetBytes(text), seed);
+            uint result = MurmurHash3.Hash32(Encoding.UTF8.GetBytes(text), seed);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -79,9 +80,23 @@ namespace HashDepot.Test
         {
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
             {
-                uint result = MurmurHash3x86.Hash32(stream, seed);
+                uint result = MurmurHash3.Hash32(stream, seed);
                 Assert.AreEqual(expectedResult, result);
             }
+        }
+
+        [Test]
+        [TestCase("Hello World", "1a6326abc1a0c2db83e61fcf9fc0b427")]
+        [TestCase("I will not buy this tobacconist's, it is scratched.", "d30654abbd8227e367d73523f0079673")] // source: https://github.com/pid/murmurHash3js
+        [TestCase("I will not buy this tobacconist's, it is scratched.", "9b5b7ba2ef3f7866889adeaf00f3f98e")] // this is the x86 version but just in case our implementation fucks up
+        public void Hash128_Preliminary(string input, string expectedOutput)
+        {
+            var expectedBuffer = Base16.Decode(expectedOutput).ToArray();
+            var buffer = Encoding.UTF8.GetBytes(input);
+            uint seed = 0;
+
+            var result = MurmurHash3.Hash128(buffer, seed);
+            CollectionAssert.AreEquivalent(expectedBuffer, result);
         }
     }
 }

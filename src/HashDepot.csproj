@@ -20,8 +20,6 @@
       <![CDATA[
 # Breaking changes
 - Renamed SipHash to SipHash24 to denote its specific algorithm (SipHash 2-4)
-- Split MurmurHash3 into two separate classes in order to convey their implementations better: MurmurHash3x86
-  and MurmurHash3x64.
   
 # Fixes
 - Added missing tests

@@ -131,33 +131,12 @@
             <param name="buffer">Input buffer.</param>
             <returns>Hash value.</returns>
         </member>
-        <member name="T:HashDepot.MurmurHash3x64">
-            <summary>
-            x64 platform implementation of MurmurHash3 algorithm.
-            </summary>
-        </member>
-        <member name="M:HashDepot.MurmurHash3x64.Hash128(System.IO.Stream,System.UInt32)">
-            <summary>
-            Calculate 128-bit MurmurHash3 hash value using 64-bit version of the algorithm.
-            </summary>
-            <param name="stream">Input stream.</param>
-            <param name="seed">Seed value.</param>
-            <returns>128-bit hash value in a Span.</returns>
-        </member>
-        <member name="M:HashDepot.MurmurHash3x64.Hash128(System.ReadOnlySpan{System.Byte},System.UInt32)">
-            <summary>
-            Calculate 128-bit MurmurHash3 hash value using x64 version of the algorithm.
-            </summary>
-            <param name="buffer">Input buffer.</param>
-            <param name="seed">Seed value.</param>
-            <returns>128-bit hash value as a Span of bytes.</returns>
-        </member>
-        <member name="T:HashDepot.MurmurHash3x86">
+        <member name="T:HashDepot.MurmurHash3">
             <summary>
             x86 flavors of MurmurHash3 algorithms.
             </summary>
         </member>
-        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.Byte[],System.UInt32)">
+        <member name="M:HashDepot.MurmurHash3.Hash32(System.Byte[],System.UInt32)">
             <summary>
             Calculate 32-bit MurmurHash3 hash value.
             </summary>
@@ -165,7 +144,7 @@
             <param name="seed">Seed value.</param>
             <returns>Hash value.</returns>
         </member>
-        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.IO.Stream,System.UInt32)">
+        <member name="M:HashDepot.MurmurHash3.Hash32(System.IO.Stream,System.UInt32)">
             <summary>
             Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
             </summary>
@@ -173,7 +152,7 @@
             <param name="seed">Seed value.</param>
             <returns>Hash value.</returns>
         </member>
-        <member name="M:HashDepot.MurmurHash3x86.Hash32Async(System.IO.Stream,System.UInt32)">
+        <member name="M:HashDepot.MurmurHash3.Hash32Async(System.IO.Stream,System.UInt32)">
             <summary>
             Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
             </summary>
@@ -181,13 +160,34 @@
             <param name="seed">Seed value.</param>
             <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous hash operation.</returns>
         </member>
-        <member name="M:HashDepot.MurmurHash3x86.Hash32(System.ReadOnlySpan{System.Byte},System.UInt32)">
+        <member name="M:HashDepot.MurmurHash3.Hash32(System.ReadOnlySpan{System.Byte},System.UInt32)">
             <summary>
             Calculate 32-bit MurmurHash3 hash value.
             </summary>
             <param name="buffer">Input buffer.</param>
             <param name="seed">Seed value.</param>
             <returns>Hash value.</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3.Hash128(System.IO.Stream,System.UInt32)">
+            <summary>
+            Calculate 128-bit MurmurHash3 hash value using 64-bit version of the algorithm.
+            </summary>
+            <param name="stream">Input stream.</param>
+            <param name="seed">Seed value.</param>
+            <returns>128-bit hash value in a Span.</returns>
+        </member>
+        <member name="M:HashDepot.MurmurHash3.Hash128(System.ReadOnlySpan{System.Byte},System.UInt32)">
+            <summary>
+            Calculate 128-bit MurmurHash3 hash value using x64 version of the algorithm.
+            </summary>
+            <param name="buffer">Input buffer.</param>
+            <param name="seed">Seed value.</param>
+            <returns>128-bit hash value as a Span of bytes.</returns>
+        </member>
+        <member name="T:HashDepot.Require">
+            <summary>
+            Helpers for argument validation.
+            </summary>
         </member>
         <member name="T:HashDepot.SipHash24">
             <summary>
