@@ -11,7 +11,7 @@ namespace HashDepot
     using System.Threading.Tasks;
 
     /// <summary>
-    /// SipHash 2-4 algorithm. This is the most common implementation of SipHash
+    /// SipHash 2-4 algorithm. This is the most common implementation of SipHash.
     /// </summary>
     public static class SipHash24
     {
@@ -25,9 +25,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <param name="key">16-byte key</param>
-        /// <returns>64-bit hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="key">16-byte key.</param>
+        /// <returns>64-bit hash value.</returns>
         public static ulong Hash64(byte[] buffer, byte[] key)
         {
             return Hash64(buffer.AsSpan(), key.AsSpan());
@@ -36,9 +36,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <param name="key">16-byte key</param>
-        /// <returns>64-bit hash value</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="key">16-byte key.</param>
+        /// <returns>64-bit hash value.</returns>
         public static unsafe ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
         {
             const ulong finalVectorXor = 0xFF;
@@ -99,9 +99,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <param name="key">16-byte key</param>
-        /// <returns>A Task representing the 64-bit hash computation</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="key">16-byte key.</param>
+        /// <returns>A Task representing the 64-bit hash computation.</returns>
         public static async Task<ulong> Hash64Async(Stream stream, byte[] key)
         {
             const ulong finalVectorXor = 0xFF;
@@ -153,9 +153,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <param name="key">16-byte key</param>
-        /// <returns>64-bit hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="key">16-byte key.</param>
+        /// <returns>64-bit hash value.</returns>
         public static unsafe ulong Hash64(ReadOnlySpan<byte> buffer, ReadOnlySpan<byte> key)
         {
             const ulong finalVectorXor = 0xFF;

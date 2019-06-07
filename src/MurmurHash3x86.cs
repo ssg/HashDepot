@@ -11,16 +11,16 @@ namespace HashDepot
     using System.Threading.Tasks;
 
     /// <summary>
-    /// x86 flavors of MurmurHash3 algorithms
+    /// x86 flavors of MurmurHash3 algorithms.
     /// </summary>
     public static class MurmurHash3x86
     {
         /// <summary>
-        /// Calculate 32-bit MurmurHash3 hash value
+        /// Calculate 32-bit MurmurHash3 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <param name="seed">Seed value</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="seed">Seed value.</param>
+        /// <returns>Hash value.</returns>
         public static uint Hash32(byte[] buffer, uint seed)
         {
             return Hash32(buffer.AsSpan(), seed);
@@ -29,9 +29,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <param name="seed">Seed value</param>
-        /// <returns>Hash value</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="seed">Seed value.</param>
+        /// <returns>Hash value.</returns>
         public static unsafe uint Hash32(Stream stream, uint seed)
         {
             const int uintSize = sizeof(uint);
@@ -80,8 +80,8 @@ namespace HashDepot
         /// <summary>
         /// Calculate 32-bit MurmurHash3 hash value using x86 version of the algorithm.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <param name="seed">Seed value</param>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="seed">Seed value.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<uint> Hash32Async(Stream stream, uint seed)
         {
@@ -125,11 +125,11 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 32-bit MurmurHash3 hash value
+        /// Calculate 32-bit MurmurHash3 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <param name="seed">Seed value</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="seed">Seed value.</param>
+        /// <returns>Hash value.</returns>
         public static unsafe uint Hash32(ReadOnlySpan<byte> buffer, uint seed)
         {
             const int uintSize = sizeof(uint);

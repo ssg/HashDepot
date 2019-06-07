@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
 // MIT License - see LICENSE file for details
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

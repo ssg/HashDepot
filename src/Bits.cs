@@ -9,7 +9,7 @@ namespace HashDepot
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// Bit operations
+    /// Bit operations.
     /// </summary>
     internal static class Bits
     {

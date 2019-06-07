@@ -20,10 +20,10 @@ namespace HashDepot
         private const ulong prime64 = 1099511628211;
 
         /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <returns>Hash value</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <returns>Hash value.</returns>
         public static uint Hash32(Stream stream)
         {
             uint result = offsetBasis32;
@@ -38,9 +38,9 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="stream">Input stream</param>
+        /// <param name="stream">Input stream.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<uint> Hash32Async(Stream stream)
         {
@@ -60,20 +60,20 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
         public static uint Hash32(byte[] buffer)
         {
             return Hash32(buffer.AsSpan());
         }
 
         /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
         public static uint Hash32(ReadOnlySpan<byte> buffer)
         {
             uint result = offsetBasis32;
@@ -87,10 +87,10 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 64-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <returns>Hash value</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <returns>Hash value.</returns>
         public static ulong Hash64(Stream stream)
         {
             ulong result = offsetBasis64;
@@ -105,9 +105,9 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 64-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="stream">Input stream</param>
+        /// <param name="stream">Input stream.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<ulong> Hash64Async(Stream stream)
         {
@@ -127,20 +127,20 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 64-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
         public static ulong Hash64(byte[] buffer)
         {
             return Hash64(buffer.AsSpan());
         }
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 64-bit FNV-1 hash value.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <returns>Hash value</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
         public static ulong Hash64(ReadOnlySpan<byte> buffer)
         {
             ulong result = offsetBasis64;

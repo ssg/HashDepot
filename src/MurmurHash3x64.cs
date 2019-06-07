@@ -10,16 +10,16 @@ namespace HashDepot
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// x64 platform implementation of MurmurHash3 algorithm
+    /// x64 platform implementation of MurmurHash3 algorithm.
     /// </summary>
     public static class MurmurHash3x64
     {
         /// <summary>
         /// Calculate 128-bit MurmurHash3 hash value using 64-bit version of the algorithm.
         /// </summary>
-        /// <param name="stream">Input stream</param>
-        /// <param name="seed">Seed value</param>
-        /// <returns>128-bit hash value in a Span</returns>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="seed">Seed value.</param>
+        /// <returns>128-bit hash value in a Span.</returns>
         public static unsafe Span<byte> Hash128(Stream stream, uint seed)
         {
             const int ulongSize = sizeof(ulong);
@@ -92,9 +92,9 @@ namespace HashDepot
         /// <summary>
         /// Calculate 128-bit MurmurHash3 hash value using x64 version of the algorithm.
         /// </summary>
-        /// <param name="buffer">Input buffer</param>
-        /// <param name="seed">Seed value</param>
-        /// <returns>128-bit hash value as a Span of bytes</returns>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="seed">Seed value.</param>
+        /// <returns>128-bit hash value as a Span of bytes.</returns>
         public static unsafe Span<byte> Hash128(ReadOnlySpan<byte> buffer, uint seed)
         {
             const int blockSize = 16;
