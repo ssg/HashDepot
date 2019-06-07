@@ -66,17 +66,17 @@ simple data, like ASCII strings. So I kept them as static functions.
 # Benchmarks
 
 CPU: Intel Core i7-8700 @ 3.20Ghz
-1000 iterations over 1048576 bytes of buffer
+10000 iterations over 1004003 bytes of buffer
 
 Name                     | Ops/sec
 -------------------------|---------------------------
-Checksum (32-bit)        |    2983.43
-Fnv1a (32-bit)           |     987.43
-Fnv1a (64-bit)           |     997.95
-MurmurHash3x86 (32-bit)  |    3605.03
-SipHash24 (64-bit)       |    2349.56
-xxHash (32-bit)          |    6044.15
-xxHash (64-bit)          |    6377.54
+Checksum (32-bit)        |    3231.81
+Fnv1a (32-bit)           |    1063.29
+Fnv1a (64-bit)           |    1063.73
+MurmurHash3x86 (32-bit)  |    3854.69
+SipHash24 (64-bit)       |    2490.53
+xxHash (32-bit)          |    6576.17
+xxHash (64-bit)          |    5615.60
 
 # License
 MIT License. See LICENSE file for details
