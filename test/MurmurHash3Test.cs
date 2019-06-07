@@ -88,7 +88,6 @@ namespace HashDepot.Test
         [Test]
         [TestCase("Hello World", "1a6326abc1a0c2db83e61fcf9fc0b427")]
         [TestCase("I will not buy this tobacconist's, it is scratched.", "d30654abbd8227e367d73523f0079673")] // source: https://github.com/pid/murmurHash3js
-        [TestCase("I will not buy this tobacconist's, it is scratched.", "9b5b7ba2ef3f7866889adeaf00f3f98e")] // this is the x86 version but just in case our implementation fucks up
         public void Hash128_Preliminary(string input, string expectedOutput)
         {
             var expectedBuffer = Base16.Decode(expectedOutput).ToArray();

@@ -269,7 +269,7 @@ namespace HashDepot
             fixed (byte* bufPtr = buffer)
             {
                 ulong* pItem = (ulong*)bufPtr;
-                ulong* pEnd = (ulong*)bufPtr + blockLen;
+                ulong* pEnd = (ulong*)bufPtr + (blockLen * 2);
                 while (pItem != pEnd)
                 {
                     ulong ik1 = *pItem++;
