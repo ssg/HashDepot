@@ -25,8 +25,7 @@ var key = new byte[16] { .. your random key here .. };
 ulong result = SipHash.Hash64(buffer, key);
 ```
 
-Note: The largest buffer size supported for hashing is 2GB. Streaming
-hashing is not supported.
+If you have a larger buffer than 2GB it's better to use streaming functions instead.
 
 ## MurmurHash3
 MurmurHash3 provides a good balance between performance and homogenity but is 
@@ -56,16 +55,18 @@ simple data, like ASCII strings. So I kept them as static functions.
 
 # Benchmarks
 
-CPU: Intel Core i7-7700K Kaby Lake @ 3.60Ghz
+CPU: Intel Core i7-8700 @ 3.20Ghz
 1000 iterations over 1048576 bytes of buffer
 
-Name                  | Ops/sec
-----------------------|---------------------------
-Checksum (32-bit)     |    2754.57
-Fnv1a (32-bit)        |     906.26
-Fnv1a (64-bit)        |     945.38
-MurmurHash3 (32-bit)  |    3421.65
-SipHash (64-bit)      |    2226.59
+Name                     | Ops/sec
+-------------------------|---------------------------
+Checksum (32-bit)        |    2983.43
+Fnv1a (32-bit)           |     987.43
+Fnv1a (64-bit)           |     997.95
+MurmurHash3x86 (32-bit)  |    3605.03
+SipHash24 (64-bit)       |    2349.56
+xxHash (32-bit)          |    6044.15
+xxHash (64-bit)          |    6377.54
 
 # License
 MIT License. See LICENSE file for details
