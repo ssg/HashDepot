@@ -49,42 +49,42 @@ namespace HashDepot
             {
                 byte* pInput = inputPtr;
 
-                if (len < stripeLength)
+                if (len >= stripeLength)
+                {
+                    uint acc1 = seed + prime32v1 + prime32v2;
+                    uint acc2 = seed + prime32v2;
+                    uint acc3 = seed;
+                    uint acc4 = seed - prime32v1;
+
+                    do
+                    {
+                        void processLane(ref uint accn)
+                        {
+                            uint lane = *(uint*)pInput;
+                            accn += lane * prime32v2;
+                            accn = Bits.RotateLeft(accn, 13);
+                            accn *= prime32v1;
+                            pInput += laneLength;
+                        }
+
+                        processLane(ref acc1);
+                        processLane(ref acc2);
+                        processLane(ref acc3);
+                        processLane(ref acc4);
+
+                        acc = Bits.RotateLeft(acc1, 1)
+                            + Bits.RotateLeft(acc2, 7)
+                            + Bits.RotateLeft(acc3, 12)
+                            + Bits.RotateLeft(acc4, 18);
+                        remainingLen -= stripeLength;
+                    }
+                    while (remainingLen >= stripeLength);
+                }
+                else
                 {
                     acc = seed + prime32v5;
-                    goto Skip;
                 }
 
-                uint acc1 = seed + prime32v1 + prime32v2;
-                uint acc2 = seed + prime32v2;
-                uint acc3 = seed;
-                uint acc4 = seed - prime32v1;
-
-                do
-                {
-                    void processLane(ref uint accn)
-                    {
-                        uint lane = *(uint*)pInput;
-                        accn += lane * prime32v2;
-                        accn = Bits.RotateLeft(accn, 13);
-                        accn *= prime32v1;
-                        pInput += laneLength;
-                    }
-
-                    processLane(ref acc1);
-                    processLane(ref acc2);
-                    processLane(ref acc3);
-                    processLane(ref acc4);
-
-                    acc = Bits.RotateLeft(acc1, 1)
-                        + Bits.RotateLeft(acc2, 7)
-                        + Bits.RotateLeft(acc3, 12)
-                        + Bits.RotateLeft(acc4, 18);
-                    remainingLen -= stripeLength;
-                }
-                while (remainingLen >= stripeLength);
-
-            Skip:
                 acc += (uint)len;
 
                 for (uint lane; remainingLen >= laneLength; remainingLen -= laneLength, pInput += laneLength)
@@ -100,9 +100,9 @@ namespace HashDepot
                     acc += lane * prime32v5;
                     acc = Bits.RotateLeft(acc, 11) * prime32v1;
                 }
-
-                return avalanche32(acc);
             }
+
+            return avalanche32(acc);
         }
 
         /// <summary>
@@ -129,46 +129,46 @@ namespace HashDepot
             {
                 byte* pInput = inputPtr;
 
-                if (len < stripeLength)
+                if (len >= stripeLength)
+                {
+                    ulong acc1 = seed + prime64v1 + prime64v2;
+                    ulong acc2 = seed + prime64v2;
+                    ulong acc3 = seed;
+                    ulong acc4 = seed - prime64v1;
+
+                    do
+                    {
+                        void processLane(ref ulong accn)
+                        {
+                            ulong lane = *(ulong*)pInput;
+                            accn = round64(accn, lane);
+                            pInput += laneLength;
+                        }
+
+                        processLane(ref acc1);
+                        processLane(ref acc2);
+                        processLane(ref acc3);
+                        processLane(ref acc4);
+
+                        acc = Bits.RotateLeft(acc1, 1)
+                            + Bits.RotateLeft(acc2, 7)
+                            + Bits.RotateLeft(acc3, 12)
+                            + Bits.RotateLeft(acc4, 18);
+
+                        mergeAccumulator64(ref acc, acc1);
+                        mergeAccumulator64(ref acc, acc2);
+                        mergeAccumulator64(ref acc, acc3);
+                        mergeAccumulator64(ref acc, acc4);
+
+                        remainingLen -= stripeLength;
+                    }
+                    while (remainingLen >= stripeLength);
+                }
+                else
                 {
                     acc = seed + prime64v5;
-                    goto Skip;
                 }
 
-                ulong acc1 = seed + prime64v1 + prime64v2;
-                ulong acc2 = seed + prime64v2;
-                ulong acc3 = seed;
-                ulong acc4 = seed - prime64v1;
-
-                do
-                {
-                    void processLane(ref ulong accn)
-                    {
-                        ulong lane = *(ulong*)pInput;
-                        accn = round64(accn, lane);
-                        pInput += laneLength;
-                    }
-
-                    processLane(ref acc1);
-                    processLane(ref acc2);
-                    processLane(ref acc3);
-                    processLane(ref acc4);
-
-                    acc = Bits.RotateLeft(acc1, 1)
-                        + Bits.RotateLeft(acc2, 7)
-                        + Bits.RotateLeft(acc3, 12)
-                        + Bits.RotateLeft(acc4, 18);
-
-                    mergeAccumulator64(ref acc, acc1);
-                    mergeAccumulator64(ref acc, acc2);
-                    mergeAccumulator64(ref acc, acc3);
-                    mergeAccumulator64(ref acc, acc4);
-
-                    remainingLen -= stripeLength;
-                }
-                while (remainingLen >= stripeLength);
-
-            Skip:
                 acc += (ulong)len;
 
                 for (ulong lane; remainingLen >= laneLength; remainingLen -= laneLength, pInput += laneLength)
@@ -193,11 +193,12 @@ namespace HashDepot
                     acc ^= lane * prime64v5;
                     acc = Bits.RotateLeft(acc, 11) * prime64v1;
                 }
-
-                return avalanche64(acc);
             }
+
+            return avalanche64(acc);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong avalanche64(ulong acc)
         {
             acc ^= acc >> 33;
@@ -205,16 +206,6 @@ namespace HashDepot
             acc ^= acc >> 29;
             acc *= prime64v3;
             acc ^= acc >> 32;
-            return acc;
-        }
-
-        private static uint avalanche32(uint acc)
-        {
-            acc ^= acc >> 15;
-            acc *= prime32v2;
-            acc ^= acc >> 13;
-            acc *= prime32v3;
-            acc ^= acc >> 16;
             return acc;
         }
 
@@ -231,6 +222,17 @@ namespace HashDepot
             acc ^= round64(0, accn);
             acc *= prime64v1;
             acc += prime64v4;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static uint avalanche32(uint acc)
+        {
+            acc ^= acc >> 15;
+            acc *= prime32v2;
+            acc ^= acc >> 13;
+            acc *= prime32v3;
+            acc ^= acc >> 16;
+            return acc;
         }
     }
 }
