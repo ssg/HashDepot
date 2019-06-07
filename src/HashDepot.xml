@@ -233,7 +233,7 @@
         </member>
         <member name="M:HashDepot.XXHash.Hash32(System.ReadOnlySpan{System.Byte},System.UInt32)">
             <summary>
-            Generate 32-bit XXHash value.
+            Generate a 32-bit xxHash value.
             </summary>
             <param name="buffer">Input buffer.</param>
             <param name="seed">Optional seed.</param>
@@ -241,7 +241,7 @@
         </member>
         <member name="M:HashDepot.XXHash.Hash64(System.ReadOnlySpan{System.Byte},System.UInt64)">
             <summary>
-            Generate 64-bit xxHash value.
+            Generate a 64-bit xxHash value.
             </summary>
             <param name="buffer">Input buffer.</param>
             <param name="seed">Optional seed.</param>

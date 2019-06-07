@@ -20,7 +20,7 @@ namespace HashDepot
         private const ulong prime645 = 2870177450012600261ul;
 
         /// <summary>
-        /// Generate 32-bit XXHash value.
+        /// Generate a 32-bit xxHash value.
         /// </summary>
         /// <param name="buffer">Input buffer.</param>
         /// <param name="seed">Optional seed.</param>
@@ -107,7 +107,7 @@ namespace HashDepot
         }
 
         /// <summary>
-        /// Generate 64-bit xxHash value.
+        /// Generate a 64-bit xxHash value.
         /// </summary>
         /// <param name="buffer">Input buffer.</param>
         /// <param name="seed">Optional seed.</param>

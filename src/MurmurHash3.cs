@@ -257,11 +257,8 @@ namespace HashDepot
         public static unsafe byte[] Hash128(ReadOnlySpan<byte> buffer, uint seed)
         {
             const int blockSize = 16;
-
             const ulong c1 = 0x87c37b91114253d5UL;
             const ulong c2 = 0x4cf5ad432745937fUL;
-
-            var result = new byte[16];
 
             ulong h1 = seed;
             ulong h2 = seed;
@@ -311,6 +308,7 @@ namespace HashDepot
                 h1 += h2;
                 h2 += h1;
 
+                var result = new byte[16];
                 fixed (byte* outputPtr = result)
                 {
                     ulong* pOutput = (ulong*)outputPtr;
