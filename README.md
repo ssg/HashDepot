@@ -19,22 +19,21 @@ a key parameter to ensure HMAC-like authenticity yet faster. Unfortuantely a nat
 managed environment. It's standard SipHash-2-4 implementation with 64-bit. To use it:
 
 ```csharp
-using HashDepot;
-var buffer = Encoding.ASCII.GetBytes("some string");
+var buffer = Encoding.UTF8.GetBytes("some string");
 var key = new byte[16] { .. your random key here .. };
-ulong result = SipHash.Hash64(buffer, key);
+ulong result = SipHash24.Hash64(buffer, key);
 ```
 
 If you have a larger buffer than 2GB it's better to use streaming functions instead.
 
 ## MurmurHash3
 MurmurHash3 provides a good balance between performance and homogenity but is 
-essentially prone to hash-flood attacks (trivial to force collisions). An example use is:
+essentially prone to hash-flood attacks (trivial to force collisions). HashDepot
+implements its x86 flavor (not x64). An example use is:
 
 ```csharp
-using HashDepot;
-var buffer = Encoding.ASCII.GetBytes("some string");
-uint seed = .. preferred seed value ...
+var buffer = Encoding.UTF8.GetBytes("some string");
+uint seed = // .. preferred seed value ...
 uint result = MurmurHash3.Hash32(buffer, seed);
 ```
 
@@ -43,10 +42,21 @@ A straightforward implementation of FNV-1 and FNV-1a hash algorithm for .NET. Us
 very simple. For instance to calculate 32-bit FNV-1a hash of ASCII string "some string":
 
 ```csharp
-using HashDepot;
-var buffer = Encoding.ASCII.GetBytes("some string");
+var buffer = Encoding.UTF8.GetBytes("some string");
 uint result = Fnv1a.Hash32(buffer); // 32-bit hash
 ulong result = Fnv1a.Hash64(buffer); // 64-bit hash
+```
+
+## xxHash
+This one claims to be one of the fastest and it's actually amazing. Even without any SIMD
+optimization it outperforms everything, even a plain checksum by a factor of two. The implementation
+assumes little endian machines. Example usage:
+
+```csharp
+using HashDepot;
+var buffer = Encoding.UTF8.GetBytes("some string");
+uint result = XXHash.Hash32(buffer, seed: 123);
+ulong result = XXHash.Hash64(buffer); // default seed is zero
 ```
   
 I started out creating a full blown `HashAlgorithm` implementation first but it seemed more 
