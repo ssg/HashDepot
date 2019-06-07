@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace HashDepot.Test
@@ -35,6 +36,28 @@ namespace HashDepot.Test
             using (var stream = new MemoryStream(data.Buffer))
             {
                 ulong result = Fnv1.Hash64(stream);
+                Assert.AreEqual(data.ExpectedResult64, result);
+            }
+        }
+
+        [Test]
+        [TestCaseSource("TestData")]
+        public async Task Hash32_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
+        {
+            using (var stream = new MemoryStream(data.Buffer))
+            {
+                uint result = await Fnv1.Hash32Async(stream);
+                Assert.AreEqual(data.ExpectedResult32, result);
+            }
+        }
+
+        [Test]
+        [TestCaseSource("TestData")]
+        public async Task Hash64_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
+        {
+            using (var stream = new MemoryStream(data.Buffer))
+            {
+                ulong result = await Fnv1.Hash64Async(stream);
                 Assert.AreEqual(data.ExpectedResult64, result);
             }
         }

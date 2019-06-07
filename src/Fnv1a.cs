@@ -114,6 +114,7 @@ namespace HashDepot
         {
             Require.NotNull(stream, nameof(stream));
             const int bufferSize = 4096;
+
             ulong result = offsetBasis64;
             var buffer = new byte[bufferSize];
             int bytesRead;
@@ -121,7 +122,7 @@ namespace HashDepot
             {
                 for (int i = 0; i < bytesRead; i++)
                 {
-                    result *= prime64 ^ buffer[i];
+                    result = prime64 * (result ^ (uint)buffer[i]);
                 }
             }
 
