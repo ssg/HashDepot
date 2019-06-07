@@ -5,10 +5,26 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <!-- PLEASE KEEP THESE ORDERED -->
+    <Rule Id="CA1303" Action="None" Reason="Only makes sense when localized">
+      <Explanation>
+        <![CDATA[
+        A non-localized code doesn't require such an elaborate scheme to make everything resource.
+        ]]>
+      </Explanation>
+    </Rule>
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <!-- PLEASE KEEP THESE ORDERED -->
-    <Rule Id="SA1303" Action="None" Reason="Don't agree">
+    <Rule Id="SA1200" Action="None" Reason="Worthless">
+      <Explanation>
+        <![CDATA[
+        This rule is for a specific case of multiple classes in different namespaces in a single file
+        which has no real-life applicability and it hurts legibility of using statements. They are
+        much more evident when they are just at the top of the file.
+        ]]>
+      </Explanation>
+    </Rule>
+    <Rule Id="SA1300" Action="None" Reason="Don't agree">
       <Explanation>
         <![CDATA[
         .NET doesn't distinguish between static/const/instance members based on casing. Casing is only
@@ -22,7 +38,7 @@
         ]]>
       </Explanation>
     </Rule>
-    <Rule Id="SA1300" Action="None" Reason="Don't agree">
+    <Rule Id="SA1303" Action="None" Reason="Don't agree">
       <Explanation>
         <![CDATA[
         .NET doesn't distinguish between static/const/instance members based on casing. Casing is only
