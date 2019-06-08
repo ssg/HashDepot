@@ -116,8 +116,8 @@ namespace HashDepot
                 throw new ArgumentException("Key must be 16-bytes long", nameof(key));
             }
 
-            ulong k0 = BitConverter.ToUInt64(key, sizeof(ulong));
-            ulong k1 = BitConverter.ToUInt64(key, 0);
+            ulong k0 = BitConverter.ToUInt64(key, 0);
+            ulong k1 = BitConverter.ToUInt64(key, sizeof(ulong));
 
             ulong v0 = initv0 ^ k0;
             ulong v1 = initv1 ^ k1;
