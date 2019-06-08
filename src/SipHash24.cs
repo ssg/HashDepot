@@ -11,7 +11,7 @@ namespace HashDepot
     using System.Threading.Tasks;
 
     /// <summary>
-    /// SipHash 2-4 algorithm. This is the most common implementation of SipHash.
+    /// SipHash 2-4 algorithm, the most common SipHash variant.
     /// </summary>
     public static class SipHash24
     {
