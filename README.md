@@ -5,12 +5,19 @@
 I have been implementing various hash functions that are absent in .NET framework. 
 I decided to converge them into a library. My primary goals are to provide well-tested and 
 performant implementations. The library currently supports [SipHash](https://131002.net/siphash/),
-[MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash),
-[FNV-1](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash) and [FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1a_hash). 
+[MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash), [xxHash](http://cyan4973.github.io/xxHash/)
+[FNV-1](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash)and
+[FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1a_hash). 
 
 To install it on NuGet:
 
     Install-Package HashDepot
+
+# Supported Hash Algorithms
+I try to add anything that's not in C# runtime and quite popular. For instance,
+there are multiple xxHash implementations for C# but they differentiate in terms of API
+complexity and performance. Although I didn't try out SIMD optimizations, the existing code
+is quite fast.
 
 ## SipHash
 SipHash is resistant to hash-flood attacks against hashtables and uses
@@ -48,12 +55,11 @@ ulong result = Fnv1a.Hash64(buffer); // 64-bit hash
 ```
 
 ## xxHash
-This one claims to be one of the fastest and it's actually amazing. Even without any SIMD
-optimization it outperforms everything, even a plain checksum by a factor of two. The implementation
+This one claims to be one of the fastest hash functions and it's actually amazing. Even without any SIMD
+optimizations, it outperforms everything, even a plain checksum by a factor of two. The implementation
 assumes little endian machines. Example usage:
 
 ```csharp
-using HashDepot;
 var buffer = Encoding.UTF8.GetBytes("some string");
 uint result = XXHash.Hash32(buffer, seed: 123);
 ulong result = XXHash.Hash64(buffer); // default seed is zero
@@ -62,6 +68,20 @@ ulong result = XXHash.Hash64(buffer); // default seed is zero
 I started out creating a full blown `HashAlgorithm` implementation first but it seemed more 
 suitable for cryptographic hash algorithms. FNV-series are more oriented towards hashing 
 simple data, like ASCII strings. So I kept them as static functions.
+
+## Streaming and Async functions
+All hashes also provide stream-based (albeit slow) functions with their async variants too. In order to
+get the hash of a stream just call the function with a stream instead of a memory buffer:
+
+```csharp
+ulong result = XXHash.Hash64(stream);
+```
+
+If you'd like to run it asynchronously, use the async variant:
+
+```csharp
+uint result = await MurmurHash3.Hash32(stream);
+```
 
 # Benchmarks
 
@@ -77,6 +97,15 @@ MurmurHash3x86 (32-bit)  |    3781.93
 SipHash24 (64-bit)       |    2494.15
 xxHash (32-bit)          |    6787.34
 xxHash (64-bit)          |    5682.61
+
+# Contributing
+You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
+
+- Make sure the code builds without warnings.
+- Include unit tests for the fixed bug, or the new feature.
+- If you're proposing a new hash algorithm, please make sure that it's not in C# runtime, there isn't an
+  existing library that is already tremendously popular, and HashDepot's simplistic approach would provide
+  a benefit over the alternatives.
 
 # License
 MIT License. See LICENSE file for details
