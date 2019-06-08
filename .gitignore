@@ -9,3 +9,4 @@ _NCrunch*
 *.nupkg
 TestResult.xml
 .vs/
+HashDepot.xml
