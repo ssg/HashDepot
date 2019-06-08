@@ -112,7 +112,7 @@ namespace HashDepot.Test
         }
 
         [Test]
-        public async Task Hash64_StreamAsync_TestVectors()
+        public async Task Hash64Async_TestVectors()
         {
             for (int i = 0; i < vectors.Length; ++i)
             {
@@ -122,6 +122,21 @@ namespace HashDepot.Test
                 ulong expectedResult = vectors[i];
                 Assert.AreEqual(expectedResult, result);
             }
+        }
+
+        [Test]
+        public void Hash64Async_InvalidKeyLength_Throws()
+        {
+            using var stream = new MemoryStream(new byte[0]);
+            Assert.ThrowsAsync<ArgumentException>(async () =>
+                await SipHash24.Hash64Async(stream, new byte[15]));
+        }
+
+        [Test]
+        public void Hash64_Stream_InvalidKeyLength_Throws()
+        {
+            using var stream = new MemoryStream(new byte[0]);
+            Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
         }
 
         private static byte[] getBuffer(int i)
