@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <!-- netstandard2.0 is required for Math.DivRem -->
         <AssemblyName>HashDepot</AssemblyName>
-        <Version>2.0</Version>
+        <Version>2.0.0</Version>
         <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
@@ -14,7 +14,7 @@
         <Nullable>enable</Nullable>
         <PackageId>HashDepot</PackageId>
         <PackageLicense>MIT</PackageLicense>
-        <PackageTags>siphash murmurhash fnv fnv1 fnv1a</PackageTags>
+        <PackageTags>siphash murmurhash xxhash fnv fnv1 fnv1a</PackageTags>
         <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
         <DocumentationFile>HashDepot.xml</DocumentationFile>
         <PackageReleaseNotes>
