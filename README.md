@@ -70,13 +70,13 @@ CPU: Intel Core i7-8700 @ 3.20Ghz
 
 Name                     | Ops/sec
 -------------------------|---------------------------
-Checksum (32-bit)        |    3231.81
-Fnv1a (32-bit)           |    1063.29
-Fnv1a (64-bit)           |    1063.73
-MurmurHash3x86 (32-bit)  |    3854.69
-SipHash24 (64-bit)       |    2490.53
-xxHash (32-bit)          |    6576.17
-xxHash (64-bit)          |    5615.60
+Checksum (32-bit)        |    3140.85
+Fnv1a (32-bit)           |    1056.96
+Fnv1a (64-bit)           |    1064.23
+MurmurHash3x86 (32-bit)  |    3781.93
+SipHash24 (64-bit)       |    2494.15
+xxHash (32-bit)          |    6787.34
+xxHash (64-bit)          |    5682.61
 
 # License
 MIT License. See LICENSE file for details
