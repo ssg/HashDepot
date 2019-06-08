@@ -213,8 +213,8 @@ namespace HashDepot
                 {
                     k2 = Bits.PartialBytesToUInt64(bufPtr + ulongSize, readBytes - ulongSize);
                     tailRound128(ref k2, ref h2, c2, c1, 33);
+                    length += readBytes - ulongSize;
                     readBytes = ulongSize;
-                    length += ulongSize;
                 }
 
                 if (readBytes > 0)
@@ -285,7 +285,7 @@ namespace HashDepot
 
                 if (leftBytes > 8)
                 {
-                    k2 = Bits.PartialBytesToUInt64(pTail + 8, leftBytes - 8);
+                    k2 = Bits.PartialBytesToUInt64(pTail + sizeof(ulong), leftBytes - sizeof(ulong));
                     tailRound128(ref k2, ref h2, c2, c1, 33);
                     leftBytes = 8;
                 }
