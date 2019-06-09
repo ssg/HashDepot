@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

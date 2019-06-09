@@ -103,11 +103,13 @@ namespace HashDepot.Test
             for (int i = 0; i < vectors.Length; ++i)
             {
                 var buffer = getBuffer(i);
-                using var stream = new MemoryStream(buffer);
-                var result = SipHash24.Hash64(stream, key);
-                var expectedResult = vectors[i];
-                Debug.WriteLine("testing iteration #" + i);
-                Assert.AreEqual(expectedResult, result);
+                using (var stream = new MemoryStream(buffer))
+                {
+                    var result = SipHash24.Hash64(stream, key);
+                    var expectedResult = vectors[i];
+                    Debug.WriteLine("testing iteration #" + i);
+                    Assert.AreEqual(expectedResult, result);
+                }
             }
         }
 
@@ -117,26 +119,32 @@ namespace HashDepot.Test
             for (int i = 0; i < vectors.Length; ++i)
             {
                 var buffer = getBuffer(i);
-                using var stream = new MemoryStream(buffer);
-                ulong result = await SipHash24.Hash64Async(stream, key);
-                ulong expectedResult = vectors[i];
-                Assert.AreEqual(expectedResult, result);
+                using (var stream = new MemoryStream(buffer))
+                {
+                    ulong result = await SipHash24.Hash64Async(stream, key);
+                    ulong expectedResult = vectors[i];
+                    Assert.AreEqual(expectedResult, result);
+                }
             }
         }
 
         [Test]
         public void Hash64Async_InvalidKeyLength_Throws()
         {
-            using var stream = new MemoryStream(new byte[0]);
-            Assert.ThrowsAsync<ArgumentException>(async () =>
-                await SipHash24.Hash64Async(stream, new byte[15]));
+            using (var stream = new MemoryStream(new byte[0]))
+            {
+                Assert.ThrowsAsync<ArgumentException>(async () =>
+                    await SipHash24.Hash64Async(stream, new byte[15]));
+            }
         }
 
         [Test]
         public void Hash64_Stream_InvalidKeyLength_Throws()
         {
-            using var stream = new MemoryStream(new byte[0]);
-            Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
+            using (var stream = new MemoryStream(new byte[0]))
+            {
+                Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
+            }
         }
 
         private static byte[] getBuffer(int i)

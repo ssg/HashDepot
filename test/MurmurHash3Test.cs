@@ -39,18 +39,22 @@ namespace HashDepot.Test
         [TestCaseSource(nameof(smHasherTestData))]
         public void Hash32_Stream_BinaryTests(MurmurTestVector vector)
         {
-            using var stream = new MemoryStream(vector.Buffer);
-            uint result = MurmurHash3.Hash32(stream, vector.Seed);
-            Assert.AreEqual(vector.ExpectedResult, result);
+            using (var stream = new MemoryStream(vector.Buffer))
+            {
+                uint result = MurmurHash3.Hash32(stream, vector.Seed);
+                Assert.AreEqual(vector.ExpectedResult, result);
+            }
         }
 
         [Test]
         [TestCaseSource(nameof(smHasherTestData))]
         public async Task Hash32_StreamAsync_BinaryTestsAsync(MurmurTestVector vector)
         {
-            using var stream = new MemoryStream(vector.Buffer);
-            uint result = await MurmurHash3.Hash32Async(stream, vector.Seed);
-            Assert.AreEqual(vector.ExpectedResult, result);
+            using (var stream = new MemoryStream(vector.Buffer))
+            {
+                uint result = await MurmurHash3.Hash32Async(stream, vector.Seed);
+                Assert.AreEqual(vector.ExpectedResult, result);
+            }
         }
 
         [Test]
@@ -115,9 +119,11 @@ namespace HashDepot.Test
             var buffer = Encoding.UTF8.GetBytes(input);
             uint seed = 0;
 
-            using var stream = new MemoryStream(buffer);
-            var result = MurmurHash3.Hash128(stream, seed);
-            CollectionAssert.AreEquivalent(expectedBuffer, result);
+            using (var stream = new MemoryStream(buffer))
+            {
+                var result = MurmurHash3.Hash128(stream, seed);
+                CollectionAssert.AreEquivalent(expectedBuffer, result);
+            }
         }
     }
 }
