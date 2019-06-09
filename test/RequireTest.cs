@@ -4,31 +4,24 @@ using NUnit.Framework;
 namespace HashDepot.Test
 {
     [TestFixture]
-    class RequireTest
+    public class RequireTest
     {
         [Test]
-        public void NotNull_NullValues_Throw()
+        public void NotNull_NullArg_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => Require.NotNull((string)null, "test"));
+            Assert.Throws<ArgumentNullException>(() => Require.NotNull((object)null, "test"));
         }
 
         [Test]
-        public void NotNull_NonNullValues_Ignored()
+        public void NotNull_NotNullArg_DoesNothing()
         {
-            Assert.DoesNotThrow(() => Require.NotNull("allah", "test"));
+            Assert.DoesNotThrow(() => Require.NotNull("test", "mest"));
         }
 
         [Test]
-        public void NotNull_NullValues_ShowParameterName()
+        public void NotNull_NullName_ThrowsArgumentNullException()
         {
-            try
-            {
-                Require.NotNull((string)null, "test");
-            }
-            catch (ArgumentNullException e)
-            {
-                Assert.AreEqual("test", e.ParamName);
-            }
+            Assert.Throws<ArgumentNullException>(() => Require.NotNull("test", null));
         }
     }
 }

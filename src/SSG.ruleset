@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SSG" Description="SSG Rules" ToolsVersion="14.0">
+  <Rules AnalyzerId="AsyncUsageAnalyzers" RuleNamespace="AsyncUsageAnalyzers">
+    <Rule Id="UseConfigureAwait" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <!-- PLEASE KEEP THESE ORDERED -->
+    <Rule Id="CA1303" Action="None" Reason="Only makes sense when localized">
+      <Explanation>
+        <![CDATA[
+        A non-localized code doesn't require such an elaborate scheme to make everything resource.
+        ]]>
+      </Explanation>
+    </Rule>
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- PLEASE KEEP THESE ORDERED -->
+    <Rule Id="SA1200" Action="None" Reason="Worthless">
+      <Explanation>
+        <![CDATA[
+        This rule is for a specific case of multiple classes in different namespaces in a single file
+        which has no real-life applicability and it hurts legibility of using statements. They are
+        much more evident when they are just at the top of the file.
+        ]]>
+      </Explanation>
+    </Rule>
+    <Rule Id="SA1300" Action="None" Reason="Don't agree">
+      <Explanation>
+        <![CDATA[
+        .NET doesn't distinguish between static/const/instance members based on casing. Casing is only
+        used to signify private vs non-private per official guidelines. This actually loads different 
+        purposes to member casing on .NET and confuses the programmer.
+        
+        An example would be that if we access a member with CapitalCasing it can mean either we're 
+        accessing a public member or a private static/const which would confuse the programmer about
+        accessibility. Instead use casing only to signify accessibility: camelCase for private, CapitalCase
+        for internal/protected/public member types.
+        ]]>
+      </Explanation>
+    </Rule>
+    <Rule Id="SA1303" Action="None" Reason="Don't agree">
+      <Explanation>
+        <![CDATA[
+        .NET doesn't distinguish between static/const/instance members based on casing. Casing is only
+        used to signify private vs non-private per official guidelines. This actually loads different 
+        purposes to member casing on .NET and confuses the programmer.
+        
+        An example would be that if we access a member with CapitalCasing it can mean either we're 
+        accessing a public member or a private static/const which would confuse the programmer about
+        accessibility. Instead use casing only to signify accessibility: camelCase for private, CapitalCase
+        for internal/protected/public member types.
+        ]]>
+      </Explanation>
+    </Rule>
+  </Rules>
+</RuleSet>

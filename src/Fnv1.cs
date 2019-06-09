@@ -1,64 +1,159 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
-// MIT License - see LICENSE file for details
-
-using System;
+﻿// <copyright file="Fnv1.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2019 Sedat Kapanoglu
+// MIT License (see LICENSE file for details)
+// </copyright>
 
 namespace HashDepot
 {
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// FNV-1 Hash functions.
     /// </summary>
     public static class Fnv1
     {
-        /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
-        /// </summary>
-        public static uint Hash32(byte[] buffer)
-        {
-            Require.NotNull(buffer, nameof(buffer));
-            return Hash32(buffer.AsSpan());
-        }
+        private const uint offsetBasis32 = 2166136261;
+        private const uint prime32 = 16777619;
+        private const ulong offsetBasis64 = 14695981039346656037;
+        private const ulong prime64 = 1099511628211;
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        public static ulong Hash64(byte[] buffer)
+        /// <param name="stream">Input stream.</param>
+        /// <returns>Hash value.</returns>
+        public static uint Hash32(Stream stream)
         {
-            Require.NotNull(buffer, nameof(buffer));
-            return Hash64(buffer.AsSpan());
-        }
-
-        /// <summary>
-        /// Calculate 32-bit FNV-1 hash value
-        /// </summary>
-        public static uint Hash32(ReadOnlySpan<byte> buffer)
-        {
-            const uint offsetBasis = 2166136261;
-            const uint prime = 16777619;
-
-            uint result = offsetBasis;
-            foreach (byte b in buffer)
+            Require.NotNull(stream, nameof(stream));
+            uint result = offsetBasis32;
+            int b;
+            while ((b = stream.ReadByte()) >= 0)
             {
-                result *= prime;
-                result ^= b;
+                result *= prime32;
+                result ^= (uint)b;
             }
+
             return result;
         }
 
         /// <summary>
-        /// Calculate 64-bit FNV-1 hash value
+        /// Calculate 32-bit FNV-1 hash value.
         /// </summary>
-        public static ulong Hash64(ReadOnlySpan<byte> buffer)
+        /// <param name="stream">Input stream.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
+        public static async Task<uint> Hash32Async(Stream stream)
         {
-            const ulong offsetBasis = 14695981039346656037;
-            const ulong prime = 1099511628211;
+            Require.NotNull(stream, nameof(stream));
+            const int bufferSize = 4096;
+            uint result = offsetBasis32;
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false)) > 0)
+            {
+                for (int i = 0; i < bytesRead; i++)
+                {
+                    result = (result * prime32) ^ buffer[i];
+                }
+            }
 
-            ulong result = offsetBasis;
+            return result;
+        }
+
+        /// <summary>
+        /// Calculate 32-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
+        public static uint Hash32(byte[] buffer)
+        {
+            return Hash32(buffer.AsSpan());
+        }
+
+        /// <summary>
+        /// Calculate 32-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
+        public static uint Hash32(ReadOnlySpan<byte> buffer)
+        {
+            uint result = offsetBasis32;
             foreach (byte b in buffer)
             {
-                result *= prime;
+                result *= prime32;
                 result ^= b;
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculate 64-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="stream">Input stream.</param>
+        /// <returns>Hash value.</returns>
+        public static ulong Hash64(Stream stream)
+        {
+            Require.NotNull(stream, nameof(stream));
+            ulong result = offsetBasis64;
+            int b;
+            while ((b = stream.ReadByte()) >= 0)
+            {
+                result *= prime64;
+                result ^= (uint)b;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculate 64-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="stream">Input stream.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
+        public static async Task<ulong> Hash64Async(Stream stream)
+        {
+            Require.NotNull(stream, nameof(stream));
+            const int bufferSize = 4096;
+            ulong result = offsetBasis64;
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false)) > 0)
+            {
+                for (int i = 0; i < bytesRead; i++)
+                {
+                    result = (result * prime64) ^ buffer[i];
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculate 64-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
+        public static ulong Hash64(byte[] buffer)
+        {
+            return Hash64(buffer.AsSpan());
+        }
+
+        /// <summary>
+        /// Calculate 64-bit FNV-1 hash value.
+        /// </summary>
+        /// <param name="buffer">Input buffer.</param>
+        /// <returns>Hash value.</returns>
+        public static ulong Hash64(ReadOnlySpan<byte> buffer)
+        {
+            ulong result = offsetBasis64;
+            foreach (byte b in buffer)
+            {
+                result *= prime64;
+                result ^= b;
+            }
+
             return result;
         }
     }

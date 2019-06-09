@@ -1,40 +1,63 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">  
-  <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <AssemblyName>HashDepot</AssemblyName>
-    <Version>1.3.0</Version>
-    <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
-    <Authors>Sedat Kapanoglu</Authors>
-    <OutputType>Library</OutputType>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <LangVersion>latest</LangVersion>
-
-    <PackageId>HashDepot</PackageId>
-    <PackageLicense>Apache-2.0</PackageLicense>
-    <PackageTags>siphash murmurhash fnv fnv1 fnv1a</PackageTags>
-    <PackageReleaseNotes>
-      <![CDATA[
-- .NET Standard 1.3 support
-- Add Span<T> APIss
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- netstandard2.0 is required for Math.DivRem -->
+        <AssemblyName>HashDepot</AssemblyName>
+        <Version>2.0.0</Version>
+        <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
+        <Authors>Sedat Kapanoglu</Authors>
+        <OutputType>Library</OutputType>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <Optimize>false</Optimize>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageId>HashDepot</PackageId>
+        <PackageLicense>MIT</PackageLicense>
+        <PackageTags>siphash murmurhash xxhash fnv fnv1 fnv1a</PackageTags>
+        <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
+        <DocumentationFile>HashDepot.xml</DocumentationFile>
+        <PackageReleaseNotes>
+            <![CDATA[
+# Breaking changes
+- Renamed SipHash to SipHash24 to denote its specific algorithm (SipHash 2-4)
+  
+# Fixes
+- Added missing tests
+  
+# New features
+- Added xxHash (both 32-bit and 64-bit flavors)
+- Added Stream interfaces (both blocking and async)
+- Included XML documentation in the package
       ]]>
-    </PackageReleaseNotes>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Optimize>True</Optimize>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="HashDepot.ncrunchproject" />
-    <None Remove="HashDepot.v2.ncrunchproject" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.2" />
-  </ItemGroup>
+        </PackageReleaseNotes>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="HashDepot.ncrunchproject" />
+        <None Remove="HashDepot.v2.ncrunchproject" />
+        <None Remove="stylecop.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="System.Memory" Version="4.5.3" />
+        <PackageReference Include="System.Runtime" Version="4.3.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="HashDepot.xml">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

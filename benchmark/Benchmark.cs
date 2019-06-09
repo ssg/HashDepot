@@ -5,8 +5,8 @@ namespace benchmark
 {
     class Benchmark
     {
-        public const int Iterations = 1000;
-        public const int BufSize = 1024 * 1024;
+        public const int Iterations = 10_000;
+        public const int BufSize = 1001 * 1003;
 
         public string Name;
         public int Bits;

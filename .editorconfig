@@ -1,0 +1,10 @@
+root = true
+
+[*]
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+guidelines = 110
+
+[*.cs]
+csharp_indent_labels = one_less_than_current

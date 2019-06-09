@@ -74,12 +74,8 @@ namespace HashDepot.Test
         private static IEnumerable<FnvTestVector> getTestVectors(uint[] results32, ulong[] results64)
         {
             var bytes = getTestBytes();
-            return Enumerable.Range(0, bytes.Length).Select(n => new FnvTestVector()
-            {
-                Buffer = bytes[n],
-                ExpectedResult32 = results32[n],
-                ExpectedResult64 = results64[n],
-            });
+            return Enumerable.Range(0, bytes.Length)
+                .Select(n => new FnvTestVector(bytes[n], results32[n], results64[n]));
         }
 
         private static readonly ulong[] fnv1Results64 = new ulong[]
