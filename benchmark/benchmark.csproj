@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="benchmark.v2.ncrunchproject" />
+    <None Remove="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" />
