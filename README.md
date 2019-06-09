@@ -80,7 +80,7 @@ ulong result = XXHash.Hash64(stream);
 If you'd like to run it asynchronously, use the async variant:
 
 ```csharp
-uint result = await MurmurHash3.Hash32(stream);
+uint result = await MurmurHash3.Hash32Async(stream);
 ```
 
 # Benchmarks
