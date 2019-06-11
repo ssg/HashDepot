@@ -13,6 +13,10 @@ namespace HashDepot
     /// </summary>
     internal static class Bits
     {
+#pragma warning disable SA1401 // Fields should be private - this isn't publicly exposed
+        internal static bool IsBigEndian = !BitConverter.IsLittleEndian;
+#pragma warning restore SA1401 // Fields should be private
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ulong RotateLeft(ulong value, int bits)
         {
@@ -111,6 +115,24 @@ namespace HashDepot
             }
 
             return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static uint SwapBytes32(uint num)
+        {
+            num = (num >> 16) | (num << 16); // rol 16
+            return ((num & 0xFF00FF00u) >> 8)
+                 | ((num & 0x00FF00FFu) << 8);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ulong SwapBytes64(ulong num)
+        {
+            num = (num >> 32) | (num << 32); // rol 32
+            num = ((num & 0xFFFF0000FFFF0000ul) >> 16)
+                | ((num & 0x0000FFFF0000FFFFul) << 16);
+            return ((num & 0xFF00FF00FF00FF00ul) >> 8)
+                 | ((num & 0x00FF00FF00FF00FFul) << 8);
         }
     }
 }

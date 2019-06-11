@@ -27,92 +27,6 @@ namespace HashDepot
         private const uint prime32v5 = 374761393u;
 
         /// <summary>
-        /// Generate a 32-bit xxHash value from a stream.
-        /// </summary>
-        /// <param name="stream">Input stream.</param>
-        /// <param name="seed">Optional seed.</param>
-        /// <returns>32-bit hash value.</returns>
-        public static unsafe uint Hash32(Stream stream, uint seed = 0)
-        {
-            Require.NotNull(stream, nameof(stream));
-            const int stripeLength = 16;
-            const int laneLength = 4;
-
-            if (!BitConverter.IsLittleEndian)
-            {
-                throw new NotSupportedException("Big endian not supported yet");
-            }
-
-            var buffer = new byte[stripeLength];
-            uint acc;
-
-            int readBytes = stream.Read(buffer, 0, stripeLength);
-            int len = readBytes;
-
-            if (readBytes == stripeLength)
-            {
-                uint acc1 = seed + prime32v1 + prime32v2;
-                uint acc2 = seed + prime32v2;
-                uint acc3 = seed;
-                uint acc4 = seed - prime32v1;
-
-                do
-                {
-                    fixed (byte* inputPtr = buffer)
-                    {
-                        var pInput = inputPtr;
-                        void processLane(ref uint accn)
-                        {
-                            uint lane = *(uint*)pInput;
-                            accn = round32(accn, lane);
-                            pInput += laneLength;
-                        }
-
-                        processLane(ref acc1);
-                        processLane(ref acc2);
-                        processLane(ref acc3);
-                        processLane(ref acc4);
-
-                        acc = Bits.RotateLeft(acc1, 1)
-                            + Bits.RotateLeft(acc2, 7)
-                            + Bits.RotateLeft(acc3, 12)
-                            + Bits.RotateLeft(acc4, 18);
-                    }
-
-                    readBytes = stream.Read(buffer, 0, stripeLength);
-                    len += readBytes;
-                }
-                while (readBytes == stripeLength);
-            }
-            else
-            {
-                acc = seed + prime32v5;
-            }
-
-            acc += (uint)len;
-
-            fixed (byte* inputPtr = buffer)
-            {
-                var pInput = inputPtr;
-                for (uint lane; readBytes >= laneLength; readBytes -= laneLength, pInput += laneLength)
-                {
-                    lane = *(uint*)pInput;
-                    acc += lane * prime32v3;
-                    acc = Bits.RotateLeft(acc, 17) * prime32v4;
-                }
-
-                for (byte lane; readBytes >= 1; readBytes--, pInput++)
-                {
-                    lane = *pInput;
-                    acc += lane * prime32v5;
-                    acc = Bits.RotateLeft(acc, 11) * prime32v1;
-                }
-            }
-
-            return avalanche32(acc);
-        }
-
-        /// <summary>
         /// Generate a 32-bit xxHash value.
         /// </summary>
         /// <param name="buffer">Input buffer.</param>
@@ -121,12 +35,8 @@ namespace HashDepot
         public static unsafe uint Hash32(ReadOnlySpan<byte> buffer, uint seed = 0)
         {
             const int stripeLength = 16;
-            const int laneLength = 4;
 
-            if (!BitConverter.IsLittleEndian)
-            {
-                throw new NotSupportedException("Big endian not supported yet");
-            }
+            bool bigEndian = Bits.IsBigEndian;
 
             int len = buffer.Length;
             int remainingLen = len;
@@ -135,32 +45,12 @@ namespace HashDepot
             fixed (byte* inputPtr = buffer)
             {
                 byte* pInput = inputPtr;
-
                 if (len >= stripeLength)
                 {
-                    uint acc1 = seed + prime32v1 + prime32v2;
-                    uint acc2 = seed + prime32v2;
-                    uint acc3 = seed;
-                    uint acc4 = seed - prime32v1;
-
+                    var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
                     do
                     {
-                        void processLane(ref uint accn)
-                        {
-                            uint lane = *(uint*)pInput;
-                            accn = round32(accn, lane);
-                            pInput += laneLength;
-                        }
-
-                        processLane(ref acc1);
-                        processLane(ref acc2);
-                        processLane(ref acc3);
-                        processLane(ref acc4);
-
-                        acc = Bits.RotateLeft(acc1, 1)
-                            + Bits.RotateLeft(acc2, 7)
-                            + Bits.RotateLeft(acc3, 12)
-                            + Bits.RotateLeft(acc4, 18);
+                        acc = processStripe32(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
                         remainingLen -= stripeLength;
                     }
                     while (remainingLen >= stripeLength);
@@ -171,23 +61,95 @@ namespace HashDepot
                 }
 
                 acc += (uint)len;
-
-                for (uint lane; remainingLen >= laneLength; remainingLen -= laneLength, pInput += laneLength)
-                {
-                    lane = *(uint*)pInput;
-                    acc += lane * prime32v3;
-                    acc = Bits.RotateLeft(acc, 17) * prime32v4;
-                }
-
-                for (byte lane; remainingLen >= 1; remainingLen--, pInput++)
-                {
-                    lane = *pInput;
-                    acc += lane * prime32v5;
-                    acc = Bits.RotateLeft(acc, 11) * prime32v1;
-                }
+                acc = processRemaining32(pInput, acc, remainingLen, bigEndian);
             }
 
             return avalanche32(acc);
+        }
+
+        /// <summary>
+        /// Generate a 32-bit xxHash value from a stream.
+        /// </summary>
+        /// <param name="stream">Input stream.</param>
+        /// <param name="seed">Optional seed.</param>
+        /// <returns>32-bit hash value.</returns>
+        public static unsafe uint Hash32(Stream stream, uint seed = 0)
+        {
+            Require.NotNull(stream, nameof(stream));
+            const int stripeLength = 16;
+
+            bool bigEndian = Bits.IsBigEndian;
+            var buffer = new byte[stripeLength];
+            uint acc;
+
+            int readBytes = stream.Read(buffer, 0, stripeLength);
+            int len = readBytes;
+
+            fixed (byte* inputPtr = buffer)
+            {
+                if (readBytes == stripeLength)
+                {
+                    var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
+                    do
+                    {
+                        byte* pInput = inputPtr;
+                        acc = processStripe32(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
+                        readBytes = stream.Read(buffer, 0, stripeLength);
+                        len += readBytes;
+                    }
+                    while (readBytes == stripeLength);
+                }
+                else
+                {
+                    acc = seed + prime32v5;
+                }
+
+                acc += (uint)len;
+                acc = processRemaining32(inputPtr, acc, readBytes, bigEndian);
+            }
+
+            return avalanche32(acc);
+        }
+
+        /// <summary>
+        /// Generate a 64-bit xxHash value.
+        /// </summary>
+        /// <param name="buffer">Input buffer.</param>
+        /// <param name="seed">Optional seed.</param>
+        /// <returns>Computed 64-bit hash value.</returns>
+        public static unsafe ulong Hash64(ReadOnlySpan<byte> buffer, ulong seed = 0)
+        {
+            const int stripeLength = 32;
+
+            bool bigEndian = Bits.IsBigEndian;
+
+            int len = buffer.Length;
+            int remainingLen = len;
+            ulong acc;
+
+            fixed (byte* inputPtr = buffer)
+            {
+                byte* pInput = inputPtr;
+                if (len >= stripeLength)
+                {
+                    var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
+                    do
+                    {
+                        acc = processStripe64(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
+                        remainingLen -= stripeLength;
+                    }
+                    while (remainingLen >= stripeLength);
+                }
+                else
+                {
+                    acc = seed + prime64v5;
+                }
+
+                acc += (ulong)len;
+                acc = processRemaining64(pInput, acc, remainingLen, bigEndian);
+            }
+
+            return avalanche64(acc);
         }
 
         /// <summary>
@@ -200,12 +162,8 @@ namespace HashDepot
         {
             Require.NotNull(stream, nameof(stream));
             const int stripeLength = 32;
-            const int laneLength = 8;
 
-            if (!BitConverter.IsLittleEndian)
-            {
-                throw new NotSupportedException("Big endian not supported yet");
-            }
+            bool bigEndian = Bits.IsBigEndian;
 
             ulong acc;
 
@@ -213,174 +171,133 @@ namespace HashDepot
             int readBytes = stream.Read(buffer, 0, stripeLength);
             ulong len = (ulong)readBytes;
 
-            if (readBytes == stripeLength)
-            {
-                ulong acc1 = seed + prime64v1 + prime64v2;
-                ulong acc2 = seed + prime64v2;
-                ulong acc3 = seed;
-                ulong acc4 = seed - prime64v1;
-
-                do
-                {
-                    fixed (byte* inputPtr = buffer)
-                    {
-                        var pInput = inputPtr;
-                        void processLane(ref ulong accn)
-                        {
-                            ulong lane = *(ulong*)pInput;
-                            accn = round64(accn, lane);
-                            pInput += laneLength;
-                        }
-
-                        processLane(ref acc1);
-                        processLane(ref acc2);
-                        processLane(ref acc3);
-                        processLane(ref acc4);
-
-                        acc = Bits.RotateLeft(acc1, 1)
-                            + Bits.RotateLeft(acc2, 7)
-                            + Bits.RotateLeft(acc3, 12)
-                            + Bits.RotateLeft(acc4, 18);
-
-                        mergeAccumulator64(ref acc, acc1);
-                        mergeAccumulator64(ref acc, acc2);
-                        mergeAccumulator64(ref acc, acc3);
-                        mergeAccumulator64(ref acc, acc4);
-                    }
-
-                    readBytes = stream.Read(buffer, 0, stripeLength);
-                    len += (ulong)readBytes;
-                }
-                while (readBytes == stripeLength);
-            }
-            else
-            {
-                acc = seed + prime64v5;
-            }
-
-            acc += (ulong)len;
-
             fixed (byte* inputPtr = buffer)
             {
-                var pInput = inputPtr;
-                for (ulong lane; readBytes >= laneLength; readBytes -= laneLength, pInput += laneLength)
+                byte* pInput;
+                if (readBytes == stripeLength)
                 {
-                    lane = *(ulong*)pInput;
-                    acc ^= round64(0, lane);
-                    acc = Bits.RotateLeft(acc, 27) * prime64v1;
-                    acc += prime64v4;
-                }
-
-                for (uint lane; readBytes >= 4; readBytes -= 4, pInput += 4)
-                {
-                    lane = *(uint*)pInput;
-                    acc ^= lane * prime64v1;
-                    acc = Bits.RotateLeft(acc, 23) * prime64v2;
-                    acc += prime64v3;
-                }
-
-                for (byte lane; readBytes >= 1; readBytes--, pInput++)
-                {
-                    lane = *pInput;
-                    acc ^= lane * prime64v5;
-                    acc = Bits.RotateLeft(acc, 11) * prime64v1;
-                }
-            }
-
-            return avalanche64(acc);
-        }
-
-        /// <summary>
-        /// Generate a 64-bit xxHash value.
-        /// </summary>
-        /// <param name="buffer">Input buffer.</param>
-        /// <param name="seed">Optional seed.</param>
-        /// <returns>Computed 64-bit hash value.</returns>
-        public static unsafe ulong Hash64(ReadOnlySpan<byte> buffer, ulong seed = 0)
-        {
-            const int stripeLength = 32;
-            const int laneLength = 8;
-
-            if (!BitConverter.IsLittleEndian)
-            {
-                throw new NotSupportedException("Big endian not supported yet");
-            }
-
-            int len = buffer.Length;
-            int remainingLen = len;
-            ulong acc;
-
-            fixed (byte* inputPtr = buffer)
-            {
-                byte* pInput = inputPtr;
-
-                if (len >= stripeLength)
-                {
-                    ulong acc1 = seed + prime64v1 + prime64v2;
-                    ulong acc2 = seed + prime64v2;
-                    ulong acc3 = seed;
-                    ulong acc4 = seed - prime64v1;
-
+                    var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
                     do
                     {
-                        void processLane(ref ulong accn)
-                        {
-                            ulong lane = *(ulong*)pInput;
-                            accn = round64(accn, lane);
-                            pInput += laneLength;
-                        }
-
-                        processLane(ref acc1);
-                        processLane(ref acc2);
-                        processLane(ref acc3);
-                        processLane(ref acc4);
-
-                        acc = Bits.RotateLeft(acc1, 1)
-                            + Bits.RotateLeft(acc2, 7)
-                            + Bits.RotateLeft(acc3, 12)
-                            + Bits.RotateLeft(acc4, 18);
-
-                        mergeAccumulator64(ref acc, acc1);
-                        mergeAccumulator64(ref acc, acc2);
-                        mergeAccumulator64(ref acc, acc3);
-                        mergeAccumulator64(ref acc, acc4);
-
-                        remainingLen -= stripeLength;
+                        pInput = inputPtr;
+                        acc = processStripe64(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
+                        readBytes = stream.Read(buffer, 0, stripeLength);
+                        len += (ulong)readBytes;
                     }
-                    while (remainingLen >= stripeLength);
+                    while (readBytes == stripeLength);
                 }
                 else
                 {
                     acc = seed + prime64v5;
                 }
 
-                acc += (ulong)len;
-
-                for (ulong lane; remainingLen >= laneLength; remainingLen -= laneLength, pInput += laneLength)
-                {
-                    lane = *(ulong*)pInput;
-                    acc ^= round64(0, lane);
-                    acc = Bits.RotateLeft(acc, 27) * prime64v1;
-                    acc += prime64v4;
-                }
-
-                for (uint lane; remainingLen >= 4; remainingLen -= 4, pInput += 4)
-                {
-                    lane = *(uint*)pInput;
-                    acc ^= lane * prime64v1;
-                    acc = Bits.RotateLeft(acc, 23) * prime64v2;
-                    acc += prime64v3;
-                }
-
-                for (byte lane; remainingLen >= 1; remainingLen--, pInput++)
-                {
-                    lane = *pInput;
-                    acc ^= lane * prime64v5;
-                    acc = Bits.RotateLeft(acc, 11) * prime64v1;
-                }
+                acc += len;
+                acc = processRemaining64(inputPtr, acc, readBytes, bigEndian);
             }
 
             return avalanche64(acc);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe (ulong, ulong, ulong, ulong) initAccumulators64(ulong seed)
+        {
+            return (seed + prime64v1 + prime64v2, seed + prime64v2, seed, seed - prime64v1);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe ulong processStripe64(
+            ref byte* pInput,
+            ref ulong acc1,
+            ref ulong acc2,
+            ref ulong acc3,
+            ref ulong acc4,
+            bool bigEndian)
+        {
+            if (bigEndian)
+            {
+                processLaneBigEndian64(ref acc1, ref pInput);
+                processLaneBigEndian64(ref acc2, ref pInput);
+                processLaneBigEndian64(ref acc3, ref pInput);
+                processLaneBigEndian64(ref acc4, ref pInput);
+            }
+            else
+            {
+                processLane64(ref acc1, ref pInput);
+                processLane64(ref acc2, ref pInput);
+                processLane64(ref acc3, ref pInput);
+                processLane64(ref acc4, ref pInput);
+            }
+
+            ulong acc = Bits.RotateLeft(acc1, 1)
+                      + Bits.RotateLeft(acc2, 7)
+                      + Bits.RotateLeft(acc3, 12)
+                      + Bits.RotateLeft(acc4, 18);
+
+            mergeAccumulator64(ref acc, acc1);
+            mergeAccumulator64(ref acc, acc2);
+            mergeAccumulator64(ref acc, acc3);
+            mergeAccumulator64(ref acc, acc4);
+            return acc;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void processLane64(ref ulong accn, ref byte* pInput)
+        {
+            ulong lane = *(ulong*)pInput;
+            accn = round64(accn, lane);
+            pInput += 8;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void processLaneBigEndian64(ref ulong accn, ref byte* pInput)
+        {
+            ulong lane = *(ulong*)pInput;
+            lane = Bits.SwapBytes64(lane);
+            accn = round64(accn, lane);
+            pInput += 8;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe ulong processRemaining64(
+            byte* pInput,
+            ulong acc,
+            int remainingLen,
+            bool bigEndian)
+        {
+            for (ulong lane; remainingLen >= 8; remainingLen -= 8, pInput += 8)
+            {
+                lane = *(ulong*)pInput;
+                if (bigEndian)
+                {
+                    lane = Bits.SwapBytes64(lane);
+                }
+
+                acc ^= round64(0, lane);
+                acc = Bits.RotateLeft(acc, 27) * prime64v1;
+                acc += prime64v4;
+            }
+
+            for (uint lane32; remainingLen >= 4; remainingLen -= 4, pInput += 4)
+            {
+                lane32 = *(uint*)pInput;
+                if (bigEndian)
+                {
+                    lane32 = Bits.SwapBytes32(lane32);
+                }
+
+                acc ^= lane32 * prime64v1;
+                acc = Bits.RotateLeft(acc, 23) * prime64v2;
+                acc += prime64v3;
+            }
+
+            for (byte lane8; remainingLen >= 1; remainingLen--, pInput++)
+            {
+                lane8 = *pInput;
+                acc ^= lane8 * prime64v5;
+                acc = Bits.RotateLeft(acc, 11) * prime64v1;
+            }
+
+            return acc;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -407,6 +324,88 @@ namespace HashDepot
             acc ^= round64(0, accn);
             acc *= prime64v1;
             acc += prime64v4;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe (uint, uint, uint, uint) initAccumulators32(
+            uint seed)
+        {
+            return (seed + prime32v1 + prime32v2, seed + prime32v2, seed, seed - prime32v1);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe uint processStripe32(
+            ref byte* pInput,
+            ref uint acc1,
+            ref uint acc2,
+            ref uint acc3,
+            ref uint acc4,
+            bool bigEndian)
+        {
+            if (bigEndian)
+            {
+                processLaneBigEndian32(ref pInput, ref acc1);
+                processLaneBigEndian32(ref pInput, ref acc2);
+                processLaneBigEndian32(ref pInput, ref acc3);
+                processLaneBigEndian32(ref pInput, ref acc4);
+            }
+            else
+            {
+                processLane32(ref pInput, ref acc1);
+                processLane32(ref pInput, ref acc2);
+                processLane32(ref pInput, ref acc3);
+                processLane32(ref pInput, ref acc4);
+            }
+
+            return Bits.RotateLeft(acc1, 1)
+                 + Bits.RotateLeft(acc2, 7)
+                 + Bits.RotateLeft(acc3, 12)
+                 + Bits.RotateLeft(acc4, 18);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void processLane32(ref byte* pInput, ref uint accn)
+        {
+            uint lane = *(uint*)pInput;
+            accn = round32(accn, lane);
+            pInput += 4;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void processLaneBigEndian32(ref byte* pInput, ref uint accn)
+        {
+            uint lane = Bits.SwapBytes32(*(uint*)pInput);
+            accn = round32(accn, lane);
+            pInput += 4;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe uint processRemaining32(
+            byte* pInput,
+            uint acc,
+            int remainingLen,
+            bool bigEndian)
+        {
+            for (uint lane; remainingLen >= 4; remainingLen -= 4, pInput += 4)
+            {
+                lane = *(uint*)pInput;
+                if (bigEndian)
+                {
+                    lane = Bits.SwapBytes32(lane);
+                }
+
+                acc += lane * prime32v3;
+                acc = Bits.RotateLeft(acc, 17) * prime32v4;
+            }
+
+            for (byte lane; remainingLen >= 1; remainingLen--, pInput++)
+            {
+                lane = *pInput;
+                acc += lane * prime32v5;
+                acc = Bits.RotateLeft(acc, 11) * prime32v1;
+            }
+
+            return acc;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

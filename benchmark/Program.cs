@@ -10,12 +10,12 @@ namespace benchmark
         private static readonly Benchmark[] benchmarks = new[]
         {
             new Benchmark("Checksum", 32, (buf) => Checksum.Hash32(buf)),
-            new Benchmark("Fnv1a", 32, (buf) => Fnv1a.Hash32(buf)),
-            new Benchmark("Fnv1a", 64, (buf) => Fnv1a.Hash64(buf)),
-            new Benchmark("MurmurHash3x86", 32, (buf) => MurmurHash3.Hash32(buf, 0)),
-            new Benchmark("SipHash24", 64, (buf) => SipHash24.Hash64(buf, sipHashKey)),
             new Benchmark("xxHash", 32, (buf) => XXHash.Hash32(buf, 0)),
             new Benchmark("xxHash", 64, (buf) => XXHash.Hash64(buf, 0)),
+            new Benchmark("MurmurHash3x86", 32, (buf) => MurmurHash3.Hash32(buf, 0)),
+            new Benchmark("SipHash24", 64, (buf) => SipHash24.Hash64(buf, sipHashKey)),
+            new Benchmark("Fnv1a", 32, (buf) => Fnv1a.Hash32(buf)),
+            new Benchmark("Fnv1a", 64, (buf) => Fnv1a.Hash64(buf)),
         };
 
         public static void Main(string[] args)

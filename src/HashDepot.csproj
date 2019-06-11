@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <!-- netstandard2.0 is required for Math.DivRem -->
         <AssemblyName>HashDepot</AssemblyName>
-        <Version>2.0.2</Version>
+        <Version>2.0.3</Version>
         <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
@@ -21,18 +21,7 @@
         <PackageReleaseNotes>
             <![CDATA[
 # New features
-- Added xxHash (both 32-bit and 64-bit flavors)
-- Added Stream interfaces (both blocking and async)
-
-# Breaking changes
-- Renamed SipHash to SipHash24 to denote its specific algorithm (SipHash 2-4)
-- Changed SipHash24.Hash128 return value from Span<byte> to byte[]
-  
-# Fixes
-- Added missing tests (and fix related issues)
-- Add package license in new format
-- Included XML documentation in the package
-- Adapted the included license file to the new format (that's the only difference between 2.0.0 and 2.0.2)
+- Added big endian support for xxHash (untested)
       ]]>
         </PackageReleaseNotes>
     </PropertyGroup>

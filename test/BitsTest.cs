@@ -80,5 +80,23 @@ namespace HashDepot.Test
             Array.Copy(buffer, testBuffer, len);
             Assert.AreEqual(input, Bits.PartialBytesToUInt32(buffer, len));
         }
+
+        [Test]
+        [TestCase(0x11223344u, 0x44332211u)]
+        [TestCase(0xAABBCCDDu, 0xDDCCBBAAu)]
+        public void SwapBytes32(uint input, uint output)
+        {
+            uint result = Bits.SwapBytes32(input);
+            Assert.AreEqual(output, result, $"result ({result:x8}) != expected ({output:x8})");
+        }
+
+        [Test]
+        [TestCase(0x1122334455667788u, 0x8877665544332211u)]
+        [TestCase(0xAABBCCDDEEFF1122u, 0x2211FFEEDDCCBBAAu)]
+        public void SwapBytes64(ulong input, ulong output)
+        {
+            ulong result = Bits.SwapBytes64(input);
+            Assert.AreEqual(output, result, $"result ({result:x16}) != expected ({output:x16})");
+        }
     }
 }
