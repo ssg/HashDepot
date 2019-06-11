@@ -90,13 +90,13 @@ CPU: Intel Core i7-8700 @ 3.20Ghz
 
 Name                     | Ops/sec
 -------------------------|---------------------------
-Checksum (32-bit)        |    3140.85
-Fnv1a (32-bit)           |    1056.96
-Fnv1a (64-bit)           |    1064.23
-MurmurHash3x86 (32-bit)  |    3781.93
-SipHash24 (64-bit)       |    2494.15
-xxHash (32-bit)          |    6787.34
-xxHash (64-bit)          |    5682.61
+Checksum (32-bit)        |    3143.53
+xxHash (32-bit)          |    6623.69
+xxHash (64-bit)          |    5431.45
+MurmurHash3x86 (32-bit)  |    3833.41
+SipHash24 (64-bit)       |    2473.28
+Fnv1a (32-bit)           |    1060.89
+Fnv1a (64-bit)           |    1063.11
 
 # Contributing
 You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
