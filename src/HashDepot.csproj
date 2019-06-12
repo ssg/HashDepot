@@ -22,6 +22,9 @@
             <![CDATA[
 # New features
 - Added big endian support for xxHash
+
+# Improvements
+- Improve the performance of stream-based xxHash functions significantly
       ]]>
         </PackageReleaseNotes>
     </PropertyGroup>
