@@ -45,6 +45,11 @@ namespace HashDepot
             const ulong finalVectorXor = 0xFF;
             const int ulongSize = sizeof(ulong);
 
+            if (Bits.IsBigEndian)
+            {
+                throw new NotSupportedException("Big endian platform isn't supported");
+            }
+
             if (key.Length != keyLength)
             {
                 throw new ArgumentException("Key must be 16-bytes long", nameof(key));
@@ -108,6 +113,11 @@ namespace HashDepot
             Require.NotNull(stream, nameof(stream));
             Require.NotNull(key, nameof(key));
 
+            if (Bits.IsBigEndian)
+            {
+                throw new NotSupportedException("Big endian platform isn't supported");
+            }
+
             const ulong finalVectorXor = 0xFF;
             const int ulongSize = sizeof(ulong);
 
@@ -163,6 +173,11 @@ namespace HashDepot
         public static unsafe ulong Hash64(ReadOnlySpan<byte> buffer, ReadOnlySpan<byte> key)
         {
             const ulong finalVectorXor = 0xFF;
+
+            if (Bits.IsBigEndian)
+            {
+                throw new NotSupportedException("Big endian platform isn't supported");
+            }
 
             if (key.Length != keyLength)
             {
