@@ -77,27 +77,39 @@ namespace HashDepot
         {
             Require.NotNull(stream, nameof(stream));
             const int stripeLength = 16;
+            const int readBufferSize = stripeLength * 1024; // 16kb read buffer - has to be stripe aligned
 
             bool bigEndian = Bits.IsBigEndian;
-            var buffer = new byte[stripeLength];
+            var buffer = new byte[readBufferSize];
             uint acc;
 
-            int readBytes = stream.Read(buffer, 0, stripeLength);
+            int readBytes = stream.Read(buffer, 0, readBufferSize);
             int len = readBytes;
 
             fixed (byte* inputPtr = buffer)
             {
-                if (readBytes == stripeLength)
+                byte* pInput = inputPtr;
+                if (readBytes >= stripeLength)
                 {
                     var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
                     do
                     {
-                        byte* pInput = inputPtr;
-                        acc = processStripe32(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
-                        readBytes = stream.Read(buffer, 0, stripeLength);
-                        len += readBytes;
+                        do
+                        {
+                            acc = processStripe32(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
+                            readBytes -= stripeLength;
+                        }
+                        while (readBytes >= stripeLength);
+
+                        // read more if the alignment is still intact
+                        if (readBytes == 0)
+                        {
+                            readBytes = stream.Read(buffer, 0, readBufferSize);
+                            pInput = inputPtr;
+                            len += readBytes;
+                        }
                     }
-                    while (readBytes == stripeLength);
+                    while (readBytes >= stripeLength);
                 }
                 else
                 {
@@ -105,7 +117,7 @@ namespace HashDepot
                 }
 
                 acc += (uint)len;
-                acc = processRemaining32(inputPtr, acc, readBytes, bigEndian);
+                acc = processRemaining32(pInput, acc, readBytes, bigEndian);
             }
 
             return avalanche32(acc);
@@ -162,29 +174,46 @@ namespace HashDepot
         {
             Require.NotNull(stream, nameof(stream));
             const int stripeLength = 32;
+            const int readBufferSize = stripeLength * 1024; // 32kb buffer length
 
             bool bigEndian = Bits.IsBigEndian;
 
             ulong acc;
 
-            var buffer = new byte[stripeLength];
-            int readBytes = stream.Read(buffer, 0, stripeLength);
+            var buffer = new byte[readBufferSize];
+            int readBytes = stream.Read(buffer, 0, readBufferSize);
             ulong len = (ulong)readBytes;
 
             fixed (byte* inputPtr = buffer)
             {
-                byte* pInput;
-                if (readBytes == stripeLength)
+                byte* pInput = inputPtr;
+                if (readBytes >= stripeLength)
                 {
                     var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
                     do
                     {
-                        pInput = inputPtr;
-                        acc = processStripe64(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
-                        readBytes = stream.Read(buffer, 0, stripeLength);
-                        len += (ulong)readBytes;
+                        do
+                        {
+                            acc = processStripe64(
+                                ref pInput,
+                                ref acc1,
+                                ref acc2,
+                                ref acc3,
+                                ref acc4,
+                                bigEndian);
+                            readBytes -= stripeLength;
+                        }
+                        while (readBytes >= stripeLength);
+
+                        // read more if the alignment is intact
+                        if (readBytes == 0)
+                        {
+                            readBytes = stream.Read(buffer, 0, readBufferSize);
+                            pInput = inputPtr;
+                            len += (ulong)readBytes;
+                        }
                     }
-                    while (readBytes == stripeLength);
+                    while (readBytes >= stripeLength);
                 }
                 else
                 {
@@ -192,7 +221,7 @@ namespace HashDepot
                 }
 
                 acc += len;
-                acc = processRemaining64(inputPtr, acc, readBytes, bigEndian);
+                acc = processRemaining64(pInput, acc, readBytes, bigEndian);
             }
 
             return avalanche64(acc);

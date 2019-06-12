@@ -166,5 +166,29 @@ namespace HashDepot.Test
             }
         }
 
+        [Test]
+        public void Hash32_LongStream_ReturnsExpected()
+        {
+            var buffer = getLargeBuffer();
+            using (var stream = new MemoryStream(buffer))
+            {
+                Assert.AreEqual(3662909991, XXHash.Hash32(stream));
+            }
+        }
+
+        [Test]
+        public void Hash64_LongStream_ReturnsExpected()
+        {
+            var buffer = getLargeBuffer();
+            using (var stream = new MemoryStream(buffer))
+            {
+                Assert.AreEqual(17345881079506341799, XXHash.Hash64(stream));
+            }
+        }
+
+        private byte[] getLargeBuffer()
+        {
+            return new byte[64 * 1024 * 1024];
+        }
     }
 }
