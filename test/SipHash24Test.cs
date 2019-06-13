@@ -147,6 +147,31 @@ namespace HashDepot.Test
             }
         }
 
+        [Test]
+        public void Hash64_BinaryBigEndian_Throws()
+        {
+            Bits.IsBigEndian = true;
+            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new byte[0], new byte[16]));
+            Bits.IsBigEndian = false;
+        }
+
+        [Test]
+        public void Hash64_StreamBigEndian_Throws()
+        {
+            Bits.IsBigEndian = true;
+            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(new byte[0]), new byte[16]));
+            Bits.IsBigEndian = false;
+        }
+
+        [Test]
+        public void Hash64Async_BigEndian_Throws()
+        {
+            Bits.IsBigEndian = true;
+            Assert.ThrowsAsync<NotSupportedException>(async () =>
+                await SipHash24.Hash64Async(new MemoryStream(new byte[0]), new byte[16]));
+            Bits.IsBigEndian = false;
+        }
+
         private static byte[] getBuffer(int i)
         {
             var buffer = new byte[i];
