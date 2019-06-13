@@ -4,7 +4,7 @@
         <!-- netstandard2.0 is required for Math.DivRem -->
         <AssemblyName>HashDepot</AssemblyName>
         <Version>2.0.3</Version>
-        <Description>Tested and performant implementations of SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
+        <Description>Tested and performant implementations of xxHash, SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -19,13 +19,13 @@
         <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
         <DocumentationFile>HashDepot.xml</DocumentationFile>
         <PackageReleaseNotes>
-            <![CDATA[
+        <![CDATA[
 # New features
 - Added big endian support for xxHash
 
 # Improvements
 - Improve the performance of stream-based xxHash functions significantly
-      ]]>
+        ]]>
         </PackageReleaseNotes>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
