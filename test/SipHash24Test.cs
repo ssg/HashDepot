@@ -10,7 +10,6 @@ using NUnit.Framework;
 namespace HashDepot.Test
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Children)]
     public class SipHash24Test
     {
         // test vectors are from https://github.com/veorq/SipHash
