@@ -6,3 +6,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("HashDepotTest")]
+[assembly: InternalsVisibleTo("benchmark")]
