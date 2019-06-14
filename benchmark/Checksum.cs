@@ -10,10 +10,16 @@
             uint result = 0;
             fixed (byte* bufPtr = buffer)
             {
-                for (byte* pInput = bufPtr, pEnd = bufPtr + buffer.Length; 
-                    pInput != pEnd; pInput++)
+                int len = buffer.Length;
+                uint* pInput = (uint*)bufPtr;
+                for (; len >= sizeof(uint); pInput++, len -= sizeof(uint))
                 {
                     result += *pInput;
+                }
+
+                if (len > 0)
+                {
+                    result += Bits.PartialBytesToUInt32((byte*)pInput, len);
                 }
             }
             return result;
