@@ -7,12 +7,23 @@ namespace HashDepot.Test
     public class BitsTest
     {
         [Test]
-        [TestCase(0xAABBCCDDEEFF1122U, 8, 0xBBCCDDEEFF1122AAU)]
-        [TestCase(0xAABBCCDDEEFF1122U, 64, 0xAABBCCDDEEFF1122U)]
-        [TestCase(0xAABBCCDDEEFF1122U, 0, 0xAABBCCDDEEFF1122U)]
+        [TestCase(0xAABBCCDDEEFF1122u, 8, 0xBBCCDDEEFF1122AAu)]
+        [TestCase(0x1122334455667788u, 16, 0x3344556677881122u)]
+        [TestCase(0xAABBCCDDEEFF1122u, 64, 0xAABBCCDDEEFF1122u)]
+        [TestCase(0xAABBCCDDEEFF1122u, 0, 0xAABBCCDDEEFF1122u)]
         public void RotateLeft_Ulong(ulong value, int bits, ulong expectedResult)
         {
             Assert.AreEqual(expectedResult, Bits.RotateLeft(value, bits));
+        }
+
+        [Test]
+        [TestCase(0x1122334455667788u, 8, 0x8811223344556677u)]
+        [TestCase(0x1122334455667788u, 16, 0x7788112233445566u)]
+        [TestCase(0x1122334455667788u, 64, 0x1122334455667788u)]
+        [TestCase(0x1122334455667788u, 0, 0x1122334455667788u)]
+        public void RotateRight_Ulong(ulong value, int bits, ulong expectedResult)
+        {
+            Assert.AreEqual(expectedResult, Bits.RotateRight(value, bits));
         }
 
         [Test]

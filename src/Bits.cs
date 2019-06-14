@@ -36,6 +36,12 @@ namespace HashDepot
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ulong RotateRight(ulong value, int bits)
+        {
+            return (value >> bits) | (value << (64 - bits));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static unsafe ulong PartialBytesToUInt64(byte* ptr, int leftBytes)
         {
             // a switch/case approach is slightly faster than the loop but .net
@@ -120,19 +126,17 @@ namespace HashDepot
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uint SwapBytes32(uint num)
         {
-            num = (num >> 16) | (num << 16); // rol 16
-            return ((num & 0xFF00FF00u) >> 8)
-                 | ((num & 0x00FF00FFu) << 8);
+            return (Bits.RotateLeft(num, 8) & 0x00FF00FFu)
+                 | (Bits.RotateRight(num, 8) & 0xFF00FF00u);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ulong SwapBytes64(ulong num)
         {
-            num = (num >> 32) | (num << 32); // rol 32
-            num = ((num & 0xFFFF0000FFFF0000ul) >> 16)
-                | ((num & 0x0000FFFF0000FFFFul) << 16);
-            return ((num & 0xFF00FF00FF00FF00ul) >> 8)
-                 | ((num & 0x00FF00FF00FF00FFul) << 8);
+            num = (Bits.RotateLeft(num, 48) & 0xFFFF0000FFFF0000ul)
+                | (Bits.RotateLeft(num, 16) & 0x0000FFFF0000FFFFul);
+            return (Bits.RotateLeft(num, 8) & 0xFF00FF00FF00FF00ul)
+                 | (Bits.RotateRight(num, 8) & 0x00FF00FF00FF00FFul);
         }
     }
 }
