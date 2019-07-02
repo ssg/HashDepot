@@ -19,6 +19,17 @@ there are multiple xxHash implementations for C# but they differentiate in terms
 complexity and performance. Although I didn't try out SIMD optimizations, the existing code
 is quite fast.
 
+## xxHash
+This one claims to be one of the fastest hash functions and it's actually amazing. Even without any SIMD
+optimizations, it outperforms everything, even a plain checksum by a factor of two. The implementation
+assumes little endian machines. Example usage:
+
+```csharp
+var buffer = Encoding.UTF8.GetBytes("some string");
+uint result = XXHash.Hash32(buffer, seed: 123);
+ulong result = XXHash.Hash64(buffer); // default seed is zero
+```
+
 ## SipHash
 SipHash is resistant to hash-flood attacks against hashtables and uses
 a key parameter to ensure HMAC-like authenticity yet faster. Unfortuantely a native 
@@ -53,22 +64,7 @@ var buffer = Encoding.UTF8.GetBytes("some string");
 uint result = Fnv1a.Hash32(buffer); // 32-bit hash
 ulong result = Fnv1a.Hash64(buffer); // 64-bit hash
 ```
-
-## xxHash
-This one claims to be one of the fastest hash functions and it's actually amazing. Even without any SIMD
-optimizations, it outperforms everything, even a plain checksum by a factor of two. The implementation
-assumes little endian machines. Example usage:
-
-```csharp
-var buffer = Encoding.UTF8.GetBytes("some string");
-uint result = XXHash.Hash32(buffer, seed: 123);
-ulong result = XXHash.Hash64(buffer); // default seed is zero
-```
   
-I started out creating a full blown `HashAlgorithm` implementation first but it seemed more 
-suitable for cryptographic hash algorithms. FNV-series are more oriented towards hashing 
-simple data, like ASCII strings. So I kept them as static functions.
-
 ## Streaming and Async functions
 All hashes also provide stream-based (albeit slow) functions with their async variants too. In order to
 get the hash of a stream just call the function with a stream instead of a memory buffer:
