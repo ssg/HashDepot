@@ -75,7 +75,6 @@ namespace HashDepot
         /// <returns>32-bit hash value.</returns>
         public static unsafe uint Hash32(Stream stream, uint seed = 0)
         {
-            Require.NotNull(stream, nameof(stream));
             const int stripeLength = 16;
             const int readBufferSize = stripeLength * 1024; // 16kb read buffer - has to be stripe aligned
 
@@ -172,7 +171,6 @@ namespace HashDepot
         /// <returns>Computed 64-bit hash value.</returns>
         public static unsafe ulong Hash64(Stream stream, ulong seed = 0)
         {
-            Require.NotNull(stream, nameof(stream));
             const int stripeLength = 32;
             const int readBufferSize = stripeLength * 1024; // 32kb buffer length
 

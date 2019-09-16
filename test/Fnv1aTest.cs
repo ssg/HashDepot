@@ -21,44 +21,36 @@ namespace HashDepot.Test
         [TestCaseSource(nameof(TestData))]
         public void Hash32_Stream_ReturnsExpectedValues(FnvTestVector data)
         {
-            using (var stream = new MemoryStream(data.Buffer))
-            {
-                uint result = Fnv1a.Hash32(stream);
-                Assert.AreEqual(data.ExpectedResult32, result);
-            }
+            using var stream = new MemoryStream(data.Buffer);
+            uint result = Fnv1a.Hash32(stream);
+            Assert.AreEqual(data.ExpectedResult32, result);
         }
 
         [Test]
         [TestCaseSource(nameof(TestData))]
         public void Hash64_Stream_ReturnsExpectedValues(FnvTestVector data)
         {
-            using (var stream = new MemoryStream(data.Buffer))
-            {
-                ulong result = Fnv1a.Hash64(stream);
-                Assert.AreEqual(data.ExpectedResult64, result);
-            }
+            using var stream = new MemoryStream(data.Buffer);
+            ulong result = Fnv1a.Hash64(stream);
+            Assert.AreEqual(data.ExpectedResult64, result);
         }
 
         [Test]
         [TestCaseSource(nameof(TestData))]
         public async Task Hash32_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
         {
-            using (var stream = new MemoryStream(data.Buffer))
-            {
-                uint result = await Fnv1a.Hash32Async(stream);
-                Assert.AreEqual(data.ExpectedResult32, result);
-            }
+            using var stream = new MemoryStream(data.Buffer);
+            uint result = await Fnv1a.Hash32Async(stream);
+            Assert.AreEqual(data.ExpectedResult32, result);
         }
 
         [Test]
         [TestCaseSource(nameof(TestData))]
         public async Task Hash64_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
         {
-            using (var stream = new MemoryStream(data.Buffer))
-            {
-                ulong result = await Fnv1a.Hash64Async(stream);
-                Assert.AreEqual(data.ExpectedResult64, result);
-            }
+            using var stream = new MemoryStream(data.Buffer);
+            ulong result = await Fnv1a.Hash64Async(stream);
+            Assert.AreEqual(data.ExpectedResult64, result);
         }
 
         [Test]

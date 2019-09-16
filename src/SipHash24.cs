@@ -41,7 +41,6 @@ namespace HashDepot
         /// <returns>64-bit hash value.</returns>
         public static unsafe ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
         {
-            Require.NotNull(stream, nameof(stream));
             const ulong finalVectorXor = 0xFF;
             const int ulongSize = sizeof(ulong);
 
@@ -110,9 +109,6 @@ namespace HashDepot
         /// <returns>A Task representing the 64-bit hash computation.</returns>
         public static async Task<ulong> Hash64Async(Stream stream, byte[] key)
         {
-            Require.NotNull(stream, nameof(stream));
-            Require.NotNull(key, nameof(key));
-
             if (Bits.IsBigEndian)
             {
                 throw new NotSupportedException("Big endian platform isn't supported");

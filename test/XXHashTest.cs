@@ -115,11 +115,9 @@ namespace HashDepot.Test
         public void Hash32_StreamTests(string text, uint seed, uint hash32, ulong _)
         {
             var buffer = Encoding.UTF8.GetBytes(text);
-            using (var stream = new MemoryStream(buffer))
-            {
-                var result = XXHash.Hash32(stream, seed);
-                Assert.AreEqual(hash32, result);
-            }
+            using var stream = new MemoryStream(buffer);
+            var result = XXHash.Hash32(stream, seed);
+            Assert.AreEqual(hash32, result);
         }
 
         [Test]
@@ -128,11 +126,9 @@ namespace HashDepot.Test
         {
             Bits.IsBigEndian = true;
             var buffer = Encoding.UTF8.GetBytes(text);
-            using (var stream = new MemoryStream(buffer))
-            {
-                var result = XXHash.Hash32(stream, seed);
-                Assert.AreEqual(hash32, result);
-            }
+            using var stream = new MemoryStream(buffer);
+            var result = XXHash.Hash32(stream, seed);
+            Assert.AreEqual(hash32, result);
         }
 
         [Test]
@@ -159,31 +155,25 @@ namespace HashDepot.Test
         public void Hash64_StreamTests(string text, uint seed, uint _, ulong hash64)
         {
             var buffer = Encoding.UTF8.GetBytes(text);
-            using (var stream = new MemoryStream(buffer))
-            {
-                var result = XXHash.Hash64(stream, seed);
-                Assert.AreEqual(hash64, result);
-            }
+            using var stream = new MemoryStream(buffer);
+            var result = XXHash.Hash64(stream, seed);
+            Assert.AreEqual(hash64, result);
         }
 
         [Test]
         public void Hash32_LongStream_ReturnsExpected()
         {
             var buffer = getLargeBuffer();
-            using (var stream = new MemoryStream(buffer))
-            {
-                Assert.AreEqual(3662909991, XXHash.Hash32(stream));
-            }
+            using var stream = new MemoryStream(buffer);
+            Assert.AreEqual(3662909991, XXHash.Hash32(stream));
         }
 
         [Test]
         public void Hash64_LongStream_ReturnsExpected()
         {
             var buffer = getLargeBuffer();
-            using (var stream = new MemoryStream(buffer))
-            {
-                Assert.AreEqual(17345881079506341799, XXHash.Hash64(stream));
-            }
+            using var stream = new MemoryStream(buffer);
+            Assert.AreEqual(17345881079506341799, XXHash.Hash64(stream));
         }
 
         private byte[] getLargeBuffer()

@@ -34,7 +34,6 @@ namespace HashDepot
         /// <returns>Hash value.</returns>
         public static unsafe uint Hash32(Stream stream, uint seed)
         {
-            Require.NotNull(stream, nameof(stream));
             const int uintSize = sizeof(uint);
             const uint final1 = 0x85ebca6b;
             const uint final2 = 0xc2b2ae35;
@@ -86,7 +85,6 @@ namespace HashDepot
         /// <returns>A <see cref="Task"/> representing the asynchronous hash operation.</returns>
         public static async Task<uint> Hash32Async(Stream stream, uint seed)
         {
-            Require.NotNull(stream, nameof(stream));
             const int uintSize = sizeof(uint);
             const uint final1 = 0x85ebca6b;
             const uint final2 = 0xc2b2ae35;
@@ -181,7 +179,6 @@ namespace HashDepot
         /// <returns>128-bit hash value in a Span.</returns>
         public static unsafe byte[] Hash128(Stream stream, uint seed)
         {
-            Require.NotNull(stream, nameof(stream));
             const int ulongSize = sizeof(ulong);
             const int blockSize = ulongSize * 2;
 
