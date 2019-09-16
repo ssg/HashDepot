@@ -18,6 +18,15 @@
             }
         },
         {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+            ],
+            "problemMatcher": "$msCompile",
+        },
+        {
             "label": "publish",
             "command": "dotnet",
             "type": "process",
