@@ -17,12 +17,12 @@ namespace HashDepot
         public static void NotNull<T>(T parameter, string name)
             where T : class
         {
-            if (name == null)
+            if (name is null)
             {
                 throw new ArgumentNullException(nameof(name), "Incorrectly passed a null value as name");
             }
 
-            if (parameter == null)
+            if (parameter is null)
             {
                 throw new ArgumentNullException(name);
             }
