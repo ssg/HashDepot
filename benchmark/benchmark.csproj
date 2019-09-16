@@ -3,7 +3,7 @@
         <TargetFramework>netcoreapp2.0</TargetFramework>
         <AssemblyName>benchmark</AssemblyName>
         <OutputType>Exe</OutputType>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     </PropertyGroup>
