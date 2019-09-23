@@ -2,7 +2,7 @@ language: csharp
 solution: HashDepot.sln
 mono: none
 dist: trusty
-dotnet: 2.1.300
+dotnet: 3.0.100
 install:
   - dotnet restore
 script:
