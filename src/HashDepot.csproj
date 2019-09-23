@@ -25,6 +25,9 @@
 
 # Improvements
 - Improve the performance of stream-based xxHash functions significantly
+
+# Breaking changes
+- FNV1 is now deprecated. Use FNV1a instead.
         ]]>
         </PackageReleaseNotes>
     </PropertyGroup>
