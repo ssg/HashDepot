@@ -12,7 +12,7 @@ namespace HashDepot
     /// <summary>
     /// FNV-1 Hash functions.
     /// </summary>
-    [Obsolete("FNV1 is obsolete, use FNV1A instead")]
+    [Obsolete("Fnv1 is obsolete, use Fnv1a instead")]
     public static class Fnv1
     {
         private const uint offsetBasis32 = 2166136261;

@@ -1,4 +1,4 @@
-// Copyright (c) 2015, 2016 Sedat Kapanoglu
+﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
 // MIT License - see LICENSE file for details
 
 using System;
@@ -13,6 +13,8 @@ namespace HashDepot.Test
     [TestFixture]
     public class Fnv1Test
     {
+        #pragma warning disable CS0618 // Fnv1 is now obsolete but we should still be testing it.
+
         public static IEnumerable<object[]> TestData = FnvVectors.GetFnv1TestVectors()
             .Select(v => new object[] { v })
             .ToArray();
