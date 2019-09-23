@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
+// Copyright (c) 2015, 2016 Sedat Kapanoglu
 // MIT License - see LICENSE file for details
 
 using System;
@@ -137,31 +137,6 @@ namespace HashDepot.Test
             Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
         }
 
-        [Test]
-        public void Hash64_BinaryBigEndian_Throws()
-        {
-            Bits.IsBigEndian = true;
-            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new byte[0], new byte[16]));
-            Bits.IsBigEndian = false;
-        }
-
-        [Test]
-        public void Hash64_StreamBigEndian_Throws()
-        {
-            Bits.IsBigEndian = true;
-            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(new byte[0]), new byte[16]));
-            Bits.IsBigEndian = false;
-        }
-
-        [Test]
-        public void Hash64Async_BigEndian_Throws()
-        {
-            Bits.IsBigEndian = true;
-            Assert.ThrowsAsync<NotSupportedException>(async () =>
-                await SipHash24.Hash64Async(new MemoryStream(new byte[0]), new byte[16]));
-            Bits.IsBigEndian = false;
-        }
-
         private static byte[] getBuffer(int i)
         {
             var buffer = new byte[i];
@@ -181,6 +156,41 @@ namespace HashDepot.Test
             var invalidKey = new byte[keyLength];
             var buffer = new byte[0];
             Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
+        }
+
+        [TestFixture]
+        public class BigEndian
+        {
+            [SetUp]
+            public void Setup()
+            {
+                Bits.IsBigEndian = true;
+            }
+
+            [TearDown]
+            public void Teardown()
+            {
+                Bits.IsBigEndian = false;
+            }
+
+            [Test]
+            public void Hash64_BinaryBigEndian_Throws()
+            {
+                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new byte[0], new byte[16]));
+            }
+
+            [Test]
+            public void Hash64_StreamBigEndian_Throws()
+            {
+                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(new byte[0]), new byte[16]));
+            }
+
+            [Test]
+            public void Hash64Async_BigEndian_Throws()
+            {
+                Assert.ThrowsAsync<NotSupportedException>(() =>
+                    SipHash24.Hash64Async(new MemoryStream(new byte[0]), new byte[16]));
+            }
         }
     }
 }

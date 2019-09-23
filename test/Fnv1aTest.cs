@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
+// Copyright (c) 2015, 2016 Sedat Kapanoglu
 // MIT License - see LICENSE file for details
 
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using NUnit.Framework;
 namespace HashDepot.Test
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.Children)]
     public class Fnv1aTest
     {
         public static IEnumerable<object[]> TestData = FnvVectors.GetFnv1aTestVectors()

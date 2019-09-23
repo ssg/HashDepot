@@ -1,4 +1,4 @@
-﻿// <copyright file="XXHash.cs" company="Sedat Kapanoglu">
+// <copyright file="XXHash.cs" company="Sedat Kapanoglu">
 // Copyright (c) 2015-2019 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
