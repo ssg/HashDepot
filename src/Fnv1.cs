@@ -1,14 +1,14 @@
-﻿// <copyright file="Fnv1.cs" company="Sedat Kapanoglu">
+// <copyright file="Fnv1.cs" company="Sedat Kapanoglu">
 // Copyright (c) 2015-2019 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
 namespace HashDepot
 {
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// FNV-1 Hash functions.
     /// </summary>

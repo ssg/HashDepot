@@ -3,12 +3,12 @@
 // MIT License (see LICENSE file for details)
 // </copyright>
 
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
 namespace HashDepot
 {
-    using System;
-    using System.IO;
-    using System.Runtime.CompilerServices;
-
     /// <summary>
     /// XXHash implementation.
     /// </summary>

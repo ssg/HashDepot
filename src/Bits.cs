@@ -3,11 +3,11 @@
 // MIT License (see LICENSE file for details)
 // </copyright>
 
+using System;
+using System.Runtime.CompilerServices;
+
 namespace HashDepot
 {
-    using System;
-    using System.Runtime.CompilerServices;
-
     /// <summary>
     /// Bit operations.
     /// </summary>

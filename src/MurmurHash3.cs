@@ -3,13 +3,13 @@
 // MIT License (see LICENSE file for details)
 // </copyright>
 
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
 namespace HashDepot
 {
-    using System;
-    using System.IO;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// x86 flavors of MurmurHash3 algorithms.
     /// </summary>
