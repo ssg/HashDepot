@@ -81,6 +81,7 @@ namespace HashDepot.Test
         {
             return new byte[64 * 1024 * 1024];
         }
+
         [TestFixture]
         public class BigEndian
         {
@@ -90,7 +91,9 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
+#pragma warning disable CS8604 // Possible null reference argument.
                         yield return new object[] { makeBigEndian32(item[0].ToString()), item[1], item[2], item[3] };
+#pragma warning restore CS8604 // Possible null reference argument.
                     }
                 }
             }
@@ -101,7 +104,9 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
+#pragma warning disable CS8604 // Possible null reference argument.
                         yield return new object[] { makeBigEndian64(item[0].ToString()), item[1], item[2], item[3] };
+#pragma warning restore CS8604 // Possible null reference argument.
                     }
                 }
             }
@@ -130,7 +135,7 @@ namespace HashDepot.Test
                 }
                 if (fullLen < len)
                 {
-                    string remaining = str.Substring(fullLen, len - fullLen);
+                    string remaining = str[fullLen..len];
                     if (blockSize > sizeof(uint))
                     {
                         remaining = makeBigEndian32(remaining);
