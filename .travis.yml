@@ -1,5 +1,6 @@
 language: csharp
 solution: HashDepot.sln
+mono: none # don't remove this line -- it will cause build time to increase significantly
 dotnet: 3.0
 install:
   - dotnet restore
