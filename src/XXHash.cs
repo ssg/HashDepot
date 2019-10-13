@@ -95,7 +95,13 @@ namespace HashDepot
                     {
                         do
                         {
-                            acc = processStripe32(ref pInput, ref acc1, ref acc2, ref acc3, ref acc4, bigEndian);
+                            acc = processStripe32(
+                                ref pInput,
+                                ref acc1,
+                                ref acc2,
+                                ref acc3,
+                                ref acc4,
+                                bigEndian);
                             readBytes -= stripeLength;
                         }
                         while (readBytes >= stripeLength);
