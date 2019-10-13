@@ -24,7 +24,7 @@
         <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="16.3.0" />
         <PackageReference Include="NUnit" Version="3.12.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-        <PackageReference Include="SimpleBase" Version="1.8.0" />
+        <PackageReference Include="SimpleBase" Version="2.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\src\HashDepot.csproj" />
