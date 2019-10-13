@@ -15,7 +15,6 @@
         <PackageId>HashDepot</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>siphash murmurhash xxhash fnv fnv1 fnv1a</PackageTags>
-        <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
         <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
         <DocumentationFile>HashDepot.xml</DocumentationFile>
         <PackageReleaseNotes>
