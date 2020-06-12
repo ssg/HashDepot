@@ -22,7 +22,7 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "clean",
+                "clean"
             ],
             "problemMatcher": "$msCompile",
         },
