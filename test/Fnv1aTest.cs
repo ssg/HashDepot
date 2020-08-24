@@ -22,7 +22,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(data.Buffer);
             uint result = Fnv1a.Hash32(stream);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(data.Buffer);
             ulong result = Fnv1a.Hash64(stream);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(data.Buffer);
             uint result = await Fnv1a.Hash32Async(stream);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(data.Buffer);
             ulong result = await Fnv1a.Hash64Async(stream);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace HashDepot.Test
         public void Hash32_ReturnsExpectedValues(FnvTestVector data)
         {
             uint result = Fnv1a.Hash32(data.Buffer);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace HashDepot.Test
         public void Hash64_ReturnsExpectedValues(FnvTestVector data)
         {
             ulong result = Fnv1a.Hash64(data.Buffer);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
     }
 }

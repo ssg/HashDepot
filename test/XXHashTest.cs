@@ -29,7 +29,7 @@ namespace HashDepot.Test
         {
             var buffer = Encoding.UTF8.GetBytes(text);
             var result = XXHash.Hash32(buffer, seed);
-            Assert.AreEqual(hash32, result);
+            Assert.That(result, Is.EqualTo(hash32));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace HashDepot.Test
             var buffer = Encoding.UTF8.GetBytes(text);
             using var stream = new MemoryStream(buffer);
             var result = XXHash.Hash32(stream, seed);
-            Assert.AreEqual(hash32, result);
+            Assert.That(result, Is.EqualTo(hash32));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace HashDepot.Test
         {
             var buffer = Encoding.UTF8.GetBytes(text);
             var result = XXHash.Hash64(buffer, seed);
-            Assert.AreEqual(hash64, result);
+            Assert.That(result, Is.EqualTo(hash64));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace HashDepot.Test
             var buffer = Encoding.UTF8.GetBytes(text);
             using var stream = new MemoryStream(buffer);
             var result = XXHash.Hash64(stream, seed);
-            Assert.AreEqual(hash64, result);
+            Assert.That(result, Is.EqualTo(hash64));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace HashDepot.Test
         {
             var buffer = getLargeBuffer();
             using var stream = new MemoryStream(buffer);
-            Assert.AreEqual(3662909991, XXHash.Hash32(stream));
+            Assert.That(XXHash.Hash32(stream), Is.EqualTo(3662909991));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace HashDepot.Test
         {
             var buffer = getLargeBuffer();
             using var stream = new MemoryStream(buffer);
-            Assert.AreEqual(17345881079506341799, XXHash.Hash64(stream));
+            Assert.That(XXHash.Hash64(stream), Is.EqualTo(17345881079506341799));
         }
 
         private byte[] getLargeBuffer()
@@ -163,7 +163,7 @@ namespace HashDepot.Test
             {
                 var buffer = Encoding.UTF8.GetBytes(text);
                 var result = XXHash.Hash32(buffer, seed);
-                Assert.AreEqual(hash32, result);
+                Assert.That(result, Is.EqualTo(hash32));
             }
 
             [Test]
@@ -173,7 +173,7 @@ namespace HashDepot.Test
                 var buffer = Encoding.UTF8.GetBytes(text);
                 using var stream = new MemoryStream(buffer);
                 var result = XXHash.Hash32(stream, seed);
-                Assert.AreEqual(hash32, result);
+                Assert.That(result, Is.EqualTo(hash32));
             }
 
             [Test]
@@ -182,7 +182,7 @@ namespace HashDepot.Test
             {
                 var buffer = Encoding.UTF8.GetBytes(text);
                 var result = XXHash.Hash64(buffer, seed);
-                Assert.AreEqual(hash64, result);
+                Assert.That(result, Is.EqualTo(hash64));
             }
         }
     }

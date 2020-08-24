@@ -32,7 +32,7 @@ namespace HashDepot.Test
         public void Hash32_BinaryTests(MurmurTestVector vector)
         {
             uint result = MurmurHash3.Hash32(vector.Buffer, vector.Seed);
-            Assert.AreEqual(vector.ExpectedResult, result);
+            Assert.That(result, Is.EqualTo(vector.ExpectedResult));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(vector.Buffer);
             uint result = MurmurHash3.Hash32(stream, vector.Seed);
-            Assert.AreEqual(vector.ExpectedResult, result);
+            Assert.That(result, Is.EqualTo(vector.ExpectedResult));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(vector.Buffer);
             uint result = await MurmurHash3.Hash32Async(stream, vector.Seed);
-            Assert.AreEqual(vector.ExpectedResult, result);
+            Assert.That(result, Is.EqualTo(vector.ExpectedResult));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace HashDepot.Test
         public void Hash32_StringTests(string text, uint seed, uint expectedResult)
         {
             uint result = MurmurHash3.Hash32(Encoding.UTF8.GetBytes(text), seed);
-            Assert.AreEqual(expectedResult, result);
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace HashDepot.Test
         {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
             uint result = MurmurHash3.Hash32(stream, seed);
-            Assert.AreEqual(expectedResult, result);
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         [Test]

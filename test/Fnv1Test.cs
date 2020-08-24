@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015, 2016 Sedat Kapanoglu
+// Copyright (c) 2015, 2016 Sedat Kapanoglu
 // MIT License - see LICENSE file for details
 
 using System;
@@ -20,55 +20,55 @@ namespace HashDepot.Test
             .ToArray();
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public void Hash32_Stream_ReturnsExpectedValues(FnvTestVector data)
         {
             using var stream = new MemoryStream(data.Buffer);
             uint result = Fnv1.Hash32(stream);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public void Hash64_Stream_ReturnsExpectedValues(FnvTestVector data)
         {
             using var stream = new MemoryStream(data.Buffer);
             ulong result = Fnv1.Hash64(stream);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public async Task Hash32_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
         {
             using var stream = new MemoryStream(data.Buffer);
             uint result = await Fnv1.Hash32Async(stream);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public async Task Hash64_StreamAsync_ReturnsExpectedValuesAsync(FnvTestVector data)
         {
             using var stream = new MemoryStream(data.Buffer);
             ulong result = await Fnv1.Hash64Async(stream);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public void Hash32_ReturnsExpectedValues(FnvTestVector data)
         {
             uint result = Fnv1.Hash32(data.Buffer);
-            Assert.AreEqual(data.ExpectedResult32, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult32));
         }
 
         [Test]
-        [TestCaseSource("TestData")]
+        [TestCaseSource(nameof(TestData))]
         public void Hash64_ReturnsExpectedValues(FnvTestVector data)
         {
             ulong result = Fnv1.Hash64(data.Buffer);
-            Assert.AreEqual(data.ExpectedResult64, result);
+            Assert.That(result, Is.EqualTo(data.ExpectedResult64));
         }
     }
 }

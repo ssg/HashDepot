@@ -92,7 +92,7 @@ namespace HashDepot.Test
                 var result = SipHash24.Hash64(buffer, key);
                 var expectedResult = vectors[i];
                 Debug.WriteLine("testing iteration #" + i);
-                Assert.AreEqual(expectedResult, result);
+                Assert.That(result, Is.EqualTo(expectedResult));
             }
         }
 
@@ -106,7 +106,7 @@ namespace HashDepot.Test
                 var result = SipHash24.Hash64(stream, key);
                 var expectedResult = vectors[i];
                 Debug.WriteLine("testing iteration #" + i);
-                Assert.AreEqual(expectedResult, result);
+                Assert.That(result, Is.EqualTo(expectedResult));
             }
         }
 
@@ -119,7 +119,7 @@ namespace HashDepot.Test
                 using var stream = new MemoryStream(buffer);
                 ulong result = await SipHash24.Hash64Async(stream, key);
                 ulong expectedResult = vectors[i];
-                Assert.AreEqual(expectedResult, result);
+                Assert.That(result, Is.EqualTo(expectedResult));
             }
         }
 
