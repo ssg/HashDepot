@@ -1,5 +1,5 @@
-﻿// <copyright file="Bits.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2019 Sedat Kapanoglu
+// <copyright file="Bits.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2021 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
@@ -80,7 +80,7 @@ namespace HashDepot
         {
             if (leftBytes > 3)
             {
-                return *((uint*)ptr);
+                return *(uint*)ptr;
             }
 
             // a switch/case approach is slightly faster than the loop but .net

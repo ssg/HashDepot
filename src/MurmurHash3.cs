@@ -1,5 +1,5 @@
-﻿// <copyright file="MurmurHash3.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2019 Sedat Kapanoglu
+// <copyright file="MurmurHash3.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2021 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
@@ -95,7 +95,7 @@ namespace HashDepot
             var buffer = new byte[uintSize];
             uint length = 0;
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, uintSize).ConfigureAwait(false)) == uintSize)
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) == uintSize)
             {
                 uint k = BitConverter.ToUInt32(buffer, 0);
                 round32(ref k, ref hash);

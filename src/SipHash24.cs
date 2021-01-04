@@ -1,5 +1,5 @@
-﻿// <copyright file="SipHash24.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2019 Sedat Kapanoglu
+// <copyright file="SipHash24.cs" company="Sedat Kapanoglu">
+// Copyright (c) 2015-2021 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
@@ -134,7 +134,7 @@ namespace HashDepot
 
             int bytesRead;
             var buffer = new byte[ulongSize];
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, ulongSize).ConfigureAwait(false)) == ulongSize)
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) == ulongSize)
             {
                 ulong m = BitConverter.ToUInt64(buffer, 0);
                 v3 ^= m;
