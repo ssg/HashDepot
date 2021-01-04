@@ -1,32 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <!-- netstandard2.0 is required for Math.DivRem -->
+        <TargetFramework>net5.0</TargetFramework>
         <AssemblyName>HashDepot</AssemblyName>
-        <Version>2.0.3</Version>
+        <Version>3.0.0-alpha</Version>
         <Description>Tested and performant implementations of xxHash, SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-        <Optimize>false</Optimize>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <PackageId>HashDepot</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>siphash murmurhash xxhash fnv fnv1 fnv1a</PackageTags>
+        <PackageTags>siphash murmurhash xxhash fnv fnv1a</PackageTags>
         <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
         <DocumentationFile>HashDepot.xml</DocumentationFile>
+        <RepositoryUrl>https://github.com/ssg/HashDepot</RepositoryUrl>
         <PackageReleaseNotes>
         <![CDATA[
 # Breaking changes
-- FNV1 is now deprecated. Use FNV1a instead.
-
-# New features
-- Added big endian support for xxHash
+- HashDepot is now based on .NET 5.0
+- Obsolete FNV1 removed. Use FNV1a instead.
 
 # Improvements
-- Stream-based xxHash functions are now significantly faster
+- Improve memory usage on async stream methods.
         ]]>
         </PackageReleaseNotes>
     </PropertyGroup>
