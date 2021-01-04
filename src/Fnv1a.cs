@@ -1,5 +1,5 @@
 // <copyright file="Fnv1a.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2019 Sedat Kapanoglu
+// Copyright (c) 2015-2021 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
@@ -48,7 +48,7 @@ namespace HashDepot
             uint result = offsetBasis32;
             var buffer = new byte[bufferSize];
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) > 0)
             {
                 for (int i = 0; i < bytesRead; i++)
                 {
@@ -114,7 +114,7 @@ namespace HashDepot
             ulong result = offsetBasis64;
             var buffer = new byte[bufferSize];
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) > 0)
             {
                 for (int i = 0; i < bytesRead; i++)
                 {
