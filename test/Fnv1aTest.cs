@@ -12,7 +12,7 @@ namespace HashDepot.Test
     [TestFixture]
     public class Fnv1aTest
     {
-        public static IEnumerable<object[]> TestData = FnvVectors.GetFnv1aTestVectors()
+        internal static IEnumerable<object[]> TestData = FnvVectors.GetFnv1aTestVectors()
             .Select(v => new object[] { v })
             .ToArray();
 
