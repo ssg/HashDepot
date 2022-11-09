@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>HashDepot</AssemblyName>
         <Version>3.0.0-alpha</Version>
         <Description>Tested and performant implementations of xxHash, SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
@@ -18,7 +18,7 @@
         <PackageReleaseNotes>
         <![CDATA[
 # Breaking changes
-- HashDepot is now based on .NET 5.0
+- HashDepot is now based on .NET 6.0
 - Obsolete FNV1 removed. Use FNV1a instead.
 
 # Improvements
