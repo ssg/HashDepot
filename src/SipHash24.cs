@@ -134,7 +134,7 @@ public static class SipHash24
 
         int bytesRead;
         var buffer = new byte[ulongSize];
-        while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) == ulongSize)
+        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == ulongSize)
         {
             ulong m = BitConverter.ToUInt64(buffer, 0);
             v3 ^= m;

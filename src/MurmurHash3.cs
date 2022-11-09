@@ -95,7 +95,7 @@ public static class MurmurHash3
         var buffer = new byte[uintSize];
         uint length = 0;
         int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) == uintSize)
+        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == uintSize)
         {
             uint k = BitConverter.ToUInt32(buffer, 0);
             round32(ref k, ref hash);

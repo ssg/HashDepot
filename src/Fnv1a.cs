@@ -48,7 +48,7 @@ public static class Fnv1a
         uint result = offsetBasis32;
         var buffer = new byte[bufferSize];
         int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) > 0)
+        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
             for (int i = 0; i < bytesRead; i++)
             {
@@ -114,7 +114,7 @@ public static class Fnv1a
         ulong result = offsetBasis64;
         var buffer = new byte[bufferSize];
         int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) > 0)
+        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
             for (int i = 0; i < bytesRead; i++)
             {
