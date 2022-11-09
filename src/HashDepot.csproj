@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>HashDepot</AssemblyName>
-        <Version>3.0.0-alpha</Version>
+        <Version>3.0.0</Version>
         <Description>Tested and performant implementations of xxHash, SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
