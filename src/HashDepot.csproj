@@ -12,7 +12,7 @@
         <PackageId>HashDepot</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>siphash murmurhash xxhash fnv fnv1a</PackageTags>
-        <CodeAnalysisRuleSet>SSG.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
         <DocumentationFile>HashDepot.xml</DocumentationFile>
         <RepositoryUrl>https://github.com/ssg/HashDepot</RepositoryUrl>
         <PackageReleaseNotes>
