@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -12,9 +13,9 @@ namespace HashDepot.Test
     {
         private static readonly MurmurTestVector[] smHasherTestData = new MurmurTestVector[]
         {
-            new MurmurTestVector(new byte[0], 0U,                                   0),
-            new MurmurTestVector(new byte[0], 1U,                                   0x514E28B7),
-            new MurmurTestVector(new byte[0], 0xFFFFFFFF,                           0x81F16F39),
+            new MurmurTestVector(Array.Empty<byte>(), 0U,                                   0),
+            new MurmurTestVector(Array.Empty<byte>(), 1U,                                   0x514E28B7),
+            new MurmurTestVector(Array.Empty<byte>(), 0xFFFFFFFF,                           0x81F16F39),
             new MurmurTestVector(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF }, 0,          0x76293B50),
             new MurmurTestVector(new byte[] { 0x21, 0x43, 0x65, 0x87 }, 0,          0xF55B516B),
             new MurmurTestVector(new byte[] { 0x21, 0x43, 0x65, 0x87 }, 0x5082EDEE, 0x2362F9DE),

@@ -10,7 +10,7 @@ namespace HashDepot.Test
     public class XXHashTest
     {
         // test values are from https://asecuritysite.com/encryption/xxHash
-        private static readonly object[] testVectors = new[]
+        private static readonly object[][] testVectors = new[]
         {
             new object[] { "",                                              0U,     0x02cc5d05U, 0xef46db3751d8e999UL },
             new object[] { "a",                                             0U,     0x550d7456U, 0xd24ec4f1a98c6e5bUL },
@@ -77,7 +77,7 @@ namespace HashDepot.Test
             Assert.That(XXHash.Hash64(stream), Is.EqualTo(17345881079506341799));
         }
 
-        private byte[] getLargeBuffer()
+        private static byte[] getLargeBuffer()
         {
             return new byte[64 * 1024 * 1024];
         }
@@ -91,9 +91,7 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
-#pragma warning disable CS8604 // Possible null reference argument.
                         yield return new object[] { makeBigEndian32(item[0].ToString()), item[1], item[2], item[3] };
-#pragma warning restore CS8604 // Possible null reference argument.
                     }
                 }
             }
@@ -104,9 +102,7 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
-#pragma warning disable CS8604 // Possible null reference argument.
                         yield return new object[] { makeBigEndian64(item[0].ToString()), item[1], item[2], item[3] };
-#pragma warning restore CS8604 // Possible null reference argument.
                     }
                 }
             }

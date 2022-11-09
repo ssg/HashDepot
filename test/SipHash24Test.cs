@@ -126,14 +126,14 @@ namespace HashDepot.Test
         [Test]
         public void Hash64Async_InvalidKeyLength_Throws()
         {
-            using var stream = new MemoryStream(new byte[0]);
+            using var stream = new MemoryStream(Array.Empty<byte>());
             Assert.ThrowsAsync<ArgumentException>(async () => await SipHash24.Hash64Async(stream, new byte[15]));
         }
 
         [Test]
         public void Hash64_Stream_InvalidKeyLength_Throws()
         {
-            using var stream = new MemoryStream(new byte[0]);
+            using var stream = new MemoryStream(Array.Empty<byte>());
             Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
         }
 
@@ -154,7 +154,7 @@ namespace HashDepot.Test
         public void Hash64_InvalidKeyLength_Throws(int keyLength)
         {
             var invalidKey = new byte[keyLength];
-            var buffer = new byte[0];
+            var buffer = Array.Empty<byte>();
             Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
         }
 
@@ -176,20 +176,20 @@ namespace HashDepot.Test
             [Test]
             public void Hash64_BinaryBigEndian_Throws()
             {
-                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new byte[0], new byte[16]));
+                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(Array.Empty<byte>(), new byte[16]));
             }
 
             [Test]
             public void Hash64_StreamBigEndian_Throws()
             {
-                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(new byte[0]), new byte[16]));
+                Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(Array.Empty<byte>()), new byte[16]));
             }
 
             [Test]
             public void Hash64Async_BigEndian_Throws()
             {
                 Assert.ThrowsAsync<NotSupportedException>(() =>
-                    SipHash24.Hash64Async(new MemoryStream(new byte[0]), new byte[16]));
+                    SipHash24.Hash64Async(new MemoryStream(Array.Empty<byte>()), new byte[16]));
             }
         }
     }
