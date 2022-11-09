@@ -80,18 +80,22 @@ uint result = await MurmurHash3.Hash32Async(stream);
 
 # Benchmarks
 
-CPU: Intel Core i7-8700 @ 3.20Ghz
-10000 iterations over 1004003 bytes of buffer
+BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.819)
+Snapdragon Compute Platform, 1 CPU, 8 logical and 8 physical cores
+.NET SDK=7.0.100
+  [Host]     : .NET 6.0.11 (6.0.1122.52304), Arm64 RyuJIT AdvSIMD  [AttachedDebugger]
+  DefaultJob : .NET 6.0.11 (6.0.1122.52304), Arm64 RyuJIT AdvSIMD
 
-Name                     | Ops/sec
--------------------------|---------------------------
-Checksum (32-bit)        |    3143.53
-xxHash (32-bit)          |    6623.69
-xxHash (64-bit)          |    5431.45
-MurmurHash3x86 (32-bit)  |    3833.41
-SipHash24 (64-bit)       |    2473.28
-Fnv1a (32-bit)           |    1060.89
-Fnv1a (64-bit)           |    1063.11
+
+|          Method |       Mean |    Error |   StdDev |
+|---------------- |-----------:|---------:|---------:|
+|     Checksum_32 |   123.4 us |  0.95 us |  0.79 us |
+|       XXHash_32 |   208.1 us |  1.47 us |  1.30 us |
+|       XXHash_64 |   174.1 us |  0.72 us |  0.64 us |
+| MurmurHash3_x86 |   443.5 us |  8.83 us |  8.67 us |
+|    SipHash24_32 |   482.0 us |  1.97 us |  1.65 us |
+|        Fnv1a_32 | 1,067.8 us | 17.06 us | 15.96 us |
+|        Fnv1a_64 | 1,061.2 us | 12.88 us | 12.05 us |
 
 # Contributing
 You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
