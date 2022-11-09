@@ -1,5 +1,5 @@
 // <copyright file="XXHash.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2021 Sedat Kapanoglu
+// Copyright (c) 2015-2022 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
