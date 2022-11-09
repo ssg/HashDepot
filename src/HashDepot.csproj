@@ -18,7 +18,7 @@
         <PackageReleaseNotes>
         <![CDATA[
 # Breaking changes
-- HashDepot is now based on .NET 6.0
+- HashDepot is now based on .NET 6.0 LTS
 - Obsolete FNV1 removed. Use FNV1a instead.
 
 # Improvements
