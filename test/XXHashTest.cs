@@ -91,7 +91,7 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
-                        yield return new object[] { makeBigEndian32(item[0].ToString()), item[1], item[2], item[3] };
+                        yield return new object[] { makeBigEndian32(item[0].ToString()!), item[1], item[2], item[3] };
                     }
                 }
             }
@@ -102,7 +102,7 @@ namespace HashDepot.Test
                 {
                     foreach (object[] item in testVectors)
                     {
-                        yield return new object[] { makeBigEndian64(item[0].ToString()), item[1], item[2], item[3] };
+                        yield return new object[] { makeBigEndian64(item[0].ToString()!), item[1], item[2], item[3] };
                     }
                 }
             }
