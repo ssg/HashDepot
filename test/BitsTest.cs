@@ -52,15 +52,10 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public unsafe void PartialBytesToUInt64(ulong input, int len)
+    public void PartialBytesToUInt64(ulong input, int len)
     {
         var buffer = BitConverter.GetBytes(input);
-        var testBuffer = new byte[len];
-        Array.Copy(buffer, testBuffer, len);
-        fixed (byte* bufPtr = testBuffer)
-        {
-            Assert.That(Bits.PartialBytesToUInt64(bufPtr, len), Is.EqualTo(input));
-        }
+        Assert.That(Bits.PartialBytesToUInt64(buffer.AsSpan()[..len]), Is.EqualTo(input));
     }
 
     [Test]
@@ -68,15 +63,10 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public unsafe void PartialBytesToUInt32(uint input, int len)
+    public void PartialBytesToUInt32(uint input, int len)
     {
-        var buffer = BitConverter.GetBytes(input);
-        var testBuffer = new byte[len];
-        Array.Copy(buffer, testBuffer, len);
-        fixed (byte* bufPtr = buffer)
-        {
-            Assert.That(Bits.PartialBytesToUInt32(bufPtr, len), Is.EqualTo(input));
-        }
+        var buffer = BitConverter.GetBytes(input).AsSpan();
+        Assert.That(Bits.PartialBytesToUInt32(buffer[..len]), Is.EqualTo(input));
     }
 
     [Test]
@@ -84,12 +74,10 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public unsafe void PartialBytesToUInt32_Array(uint input, int len)
+    public void PartialBytesToUInt32_Array(uint input, int len)
     {
-        var buffer = BitConverter.GetBytes(input);
-        var testBuffer = new byte[len];
-        Array.Copy(buffer, testBuffer, len);
-        Assert.That(Bits.PartialBytesToUInt32(buffer, len), Is.EqualTo(input));
+        var buffer = BitConverter.GetBytes(input).AsSpan();
+        Assert.That(Bits.PartialBytesToUInt32(buffer[..len]), Is.EqualTo(input));
     }
 
     [Test]

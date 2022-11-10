@@ -4,7 +4,6 @@
         <AssemblyName>HashDepotTest</AssemblyName>
         <RootNamespace>HashDepot.Test</RootNamespace>
         <OutputType>Library</OutputType>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>

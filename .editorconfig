@@ -90,6 +90,12 @@ csharp_style_var_for_built_in_types = false:silent
 csharp_style_var_when_type_is_apparent = false:silent
 csharp_style_var_elsewhere = false:silent
 
+# SA1008: Opening parenthesis should be spaced correctly
+dotnet_diagnostic.SA1008.severity = none
+
+# SA1009: Closing parenthesis should be spaced correctly
+dotnet_diagnostic.SA1009.severity = none
+
 [*.vb]
 #### Naming styles ####
 

@@ -88,7 +88,7 @@ public class SipHash24Test
     {
         for (int i = 0; i < vectors.Length; ++i)
         {
-            var buffer = getBuffer(i);
+            var buffer = getIncrementalBuffer(i);
             var result = SipHash24.Hash64(buffer, key);
             var expectedResult = vectors[i];
             Debug.WriteLine("testing iteration #" + i);
@@ -101,11 +101,10 @@ public class SipHash24Test
     {
         for (int i = 0; i < vectors.Length; ++i)
         {
-            var buffer = getBuffer(i);
+            var buffer = getIncrementalBuffer(i);
             using var stream = new MemoryStream(buffer);
-            var result = SipHash24.Hash64(stream, key);
-            var expectedResult = vectors[i];
-            Debug.WriteLine("testing iteration #" + i);
+            ulong result = SipHash24.Hash64(stream, key);
+            ulong expectedResult = vectors[i];
             Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
@@ -115,7 +114,7 @@ public class SipHash24Test
     {
         for (int i = 0; i < vectors.Length; ++i)
         {
-            var buffer = getBuffer(i);
+            var buffer = getIncrementalBuffer(i);
             using var stream = new MemoryStream(buffer);
             ulong result = await SipHash24.Hash64Async(stream, key);
             ulong expectedResult = vectors[i];
@@ -137,7 +136,7 @@ public class SipHash24Test
         Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
     }
 
-    private static byte[] getBuffer(int i)
+    private static byte[] getIncrementalBuffer(int i)
     {
         var buffer = new byte[i];
         for (int j = 0; j < i; j++)
@@ -156,40 +155,5 @@ public class SipHash24Test
         var invalidKey = new byte[keyLength];
         var buffer = Array.Empty<byte>();
         Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
-    }
-
-    [TestFixture]
-    public class BigEndian
-    {
-        [SetUp]
-        public void Setup()
-        {
-            Bits.IsBigEndian = true;
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            Bits.IsBigEndian = false;
-        }
-
-        [Test]
-        public void Hash64_BinaryBigEndian_Throws()
-        {
-            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(Array.Empty<byte>(), new byte[16]));
-        }
-
-        [Test]
-        public void Hash64_StreamBigEndian_Throws()
-        {
-            Assert.Throws<NotSupportedException>(() => SipHash24.Hash64(new MemoryStream(Array.Empty<byte>()), new byte[16]));
-        }
-
-        [Test]
-        public void Hash64Async_BigEndian_Throws()
-        {
-            Assert.ThrowsAsync<NotSupportedException>(() =>
-                SipHash24.Hash64Async(new MemoryStream(Array.Empty<byte>()), new byte[16]));
-        }
     }
 }

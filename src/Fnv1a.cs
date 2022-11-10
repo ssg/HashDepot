@@ -64,16 +64,6 @@ public static class Fnv1a
     /// </summary>
     /// <param name="buffer">Input buffer.</param>
     /// <returns>Hash value.</returns>
-    public static uint Hash32(byte[] buffer)
-    {
-        return Hash32(buffer.AsSpan());
-    }
-
-    /// <summary>
-    /// Calculate 32-bit FNV-1a hash value.
-    /// </summary>
-    /// <param name="buffer">Input buffer.</param>
-    /// <returns>Hash value.</returns>
     public static uint Hash32(ReadOnlySpan<byte> buffer)
     {
         uint result = offsetBasis32;
@@ -123,16 +113,6 @@ public static class Fnv1a
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// Calculate 64-bit FNV-1a hash value.
-    /// </summary>
-    /// <param name="buffer">Input buffer.</param>
-    /// <returns>Hash value.</returns>
-    public static ulong Hash64(byte[] buffer)
-    {
-        return Hash64(buffer.AsSpan());
     }
 
     /// <summary>

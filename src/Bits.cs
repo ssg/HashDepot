@@ -13,10 +13,6 @@ namespace HashDepot;
 /// </summary>
 internal static class Bits
 {
-#pragma warning disable SA1401 // Fields should be private - this isn't publicly exposed
-    internal static bool IsBigEndian = !BitConverter.IsLittleEndian;
-#pragma warning restore SA1401 // Fields should be private
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static ulong RotateLeft(ulong value, int bits)
     {
@@ -42,7 +38,7 @@ internal static class Bits
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static unsafe ulong PartialBytesToUInt64(byte* ptr, int leftBytes)
+    internal static ulong PartialBytesToUInt64(ReadOnlySpan<byte> remainingBytes)
     {
         // a switch/case approach is slightly faster than the loop but .net
         // refuses to inline it due to larger code size.
@@ -50,74 +46,34 @@ internal static class Bits
 
         // trying to modify leftBytes would invalidate inlining
         // need to use local variable instead
-        for (int i = 0; i < leftBytes; i++)
+        for (int i = 0; i < remainingBytes.Length; i++)
         {
-            result |= ((ulong)ptr[i]) << (i << 3);
+            result |= ((ulong)remainingBytes[i]) << (i << 3);
         }
 
         return result;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static unsafe ulong PartialBytesToUInt64(byte[] buffer, int leftBytes)
+    internal static uint PartialBytesToUInt32(ReadOnlySpan<byte> remainingBytes)
     {
-        // a switch/case approach is slightly faster than the loop but .net
-        // refuses to inline it due to larger code size.
-        ulong result = 0;
-
-        // trying to modify leftBytes would invalidate inlining
-        // need to use local variable instead
-        for (int i = 0; i < leftBytes; i++)
-        {
-            result |= ((ulong)buffer[i]) << (i << 3);
-        }
-
-        return result;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static unsafe uint PartialBytesToUInt32(byte* ptr, int leftBytes)
-    {
+        int leftBytes = remainingBytes.Length;
         if (leftBytes > 3)
         {
-            return *(uint*)ptr;
+            return BitConverter.ToUInt32(remainingBytes);
         }
 
         // a switch/case approach is slightly faster than the loop but .net
         // refuses to inline it due to larger code size.
-        uint result = *ptr;
+        uint result = remainingBytes[0];
         if (leftBytes > 1)
         {
-            result |= (uint)(ptr[1] << 8);
+            result |= (uint)(remainingBytes[1] << 8);
         }
 
         if (leftBytes > 2)
         {
-            result |= (uint)(ptr[2] << 16);
-        }
-
-        return result;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static unsafe uint PartialBytesToUInt32(byte[] buffer, int leftBytes)
-    {
-        if (leftBytes > 3)
-        {
-            return BitConverter.ToUInt32(buffer, 0);
-        }
-
-        // a switch/case approach is slightly faster than the loop but .net
-        // refuses to inline it due to larger code size.
-        uint result = buffer[0];
-        if (leftBytes > 1)
-        {
-            result |= (uint)(buffer[1] << 8);
-        }
-
-        if (leftBytes > 2)
-        {
-            result |= (uint)(buffer[2] << 16);
+            result |= (uint)(remainingBytes[2] << 16);
         }
 
         return result;
