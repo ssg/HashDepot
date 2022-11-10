@@ -5,7 +5,6 @@
 
 using System;
 using System.IO;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace HashDepot;
@@ -38,27 +37,26 @@ public static class XXHash
         const int stripeLength = 16;
 
         int len = buffer.Length;
-        int remainingLen = len;
+        int evenLength = len - (len % stripeLength);
         int offset = 0;
         uint acc;
 
-        if (len >= stripeLength)
-        {
-            var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
-            do
-            {
-                int end = offset + stripeLength;
-                acc = processStripe32(buffer[offset..end], ref acc1, ref acc2, ref acc3, ref acc4);
-                offset = end;
-                remainingLen -= stripeLength;
-            }
-            while (remainingLen >= stripeLength);
-        }
-        else
+        if (len < stripeLength)
         {
             acc = seed + prime32v5;
+            goto Exit;
         }
 
+        var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
+        do
+        {
+            int end = offset + stripeLength;
+            acc = processStripe32(buffer[offset..end], ref acc1, ref acc2, ref acc3, ref acc4);
+            offset = end;
+        }
+        while (offset < evenLength);
+
+    Exit:
         acc += (uint)len;
         acc = processRemaining32(buffer[offset..], acc);
 
@@ -83,39 +81,40 @@ public static class XXHash
         int len = readBytes;
 
         int offset = 0;
-        if (readBytes >= stripeLength)
-        {
-            var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
-            do
-            {
-                do
-                {
-                    acc = processStripe32(
-                        buffer[offset..(offset + stripeLength)],
-                        ref acc1,
-                        ref acc2,
-                        ref acc3,
-                        ref acc4);
-                    offset += stripeLength;
-                    readBytes -= stripeLength;
-                }
-                while (readBytes >= stripeLength);
-
-                // read more if the alignment is still intact
-                if (readBytes == 0)
-                {
-                    readBytes = stream.Read(buffer);
-                    offset = 0;
-                    len += readBytes;
-                }
-            }
-            while (readBytes >= stripeLength);
-        }
-        else
+        if (readBytes < stripeLength)
         {
             acc = seed + prime32v5;
+            goto Exit;
         }
 
+        var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
+        do
+        {
+            do
+            {
+                int end = offset + stripeLength;
+                acc = processStripe32(
+                    buffer[offset..end],
+                    ref acc1,
+                    ref acc2,
+                    ref acc3,
+                    ref acc4);
+                offset = end;
+                readBytes -= stripeLength;
+            }
+            while (readBytes >= stripeLength);
+
+            // read more if the alignment is still intact
+            if (readBytes == 0)
+            {
+                readBytes = stream.Read(buffer);
+                offset = 0;
+                len += readBytes;
+            }
+        }
+        while (readBytes >= stripeLength);
+
+    Exit:
         acc += (uint)len;
         acc = processRemaining32(buffer[offset..(offset + readBytes)], acc);
 
@@ -132,28 +131,28 @@ public static class XXHash
     {
         const int stripeLength = 32;
 
-        int remainingLen = buffer.Length;
+        int evenLength = buffer.Length - (buffer.Length % stripeLength);
         ulong acc;
 
-        int i = 0;
-        if (buffer.Length >= stripeLength)
-        {
-            var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
-            do
-            {
-                acc = processStripe64(buffer[i..(i + 32)], ref acc1, ref acc2, ref acc3, ref acc4);
-                i += 32;
-                remainingLen -= stripeLength;
-            }
-            while (remainingLen >= stripeLength);
-        }
-        else
+        int offset = 0;
+        if (buffer.Length < stripeLength)
         {
             acc = seed + prime64v5;
+            goto Exit;
         }
 
+        var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
+        do
+        {
+            int end = offset + stripeLength;
+            acc = processStripe64(buffer[offset..end], ref acc1, ref acc2, ref acc3, ref acc4);
+            offset = end;
+        }
+        while (offset < evenLength);
+
+    Exit:
         acc += (ulong)buffer.Length;
-        acc = processRemaining64(buffer[i..], acc);
+        acc = processRemaining64(buffer[offset..], acc);
         return avalanche64(acc);
     }
 
@@ -174,43 +173,43 @@ public static class XXHash
         int readBytes = stream.Read(buffer);
         ulong len = (ulong)readBytes;
 
-        int i = 0;
-        if (readBytes >= stripeLength)
-        {
-            var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
-            do
-            {
-                do
-                {
-                    int end = i + 32;
-                    acc = processStripe64(
-                        buffer[i..end],
-                        ref acc1,
-                        ref acc2,
-                        ref acc3,
-                        ref acc4);
-                    i = end;
-                    readBytes -= stripeLength;
-                }
-                while (readBytes >= stripeLength);
-
-                // read more if the alignment is intact
-                if (readBytes == 0)
-                {
-                    readBytes = stream.Read(buffer);
-                    i = 0;
-                    len += (ulong)readBytes;
-                }
-            }
-            while (readBytes >= stripeLength);
-        }
-        else
+        int offset = 0;
+        if (readBytes < stripeLength)
         {
             acc = seed + prime64v5;
+            goto Exit;
         }
 
+        var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
+        do
+        {
+            do
+            {
+                int end = offset + stripeLength;
+                acc = processStripe64(
+                    buffer[offset..end],
+                    ref acc1,
+                    ref acc2,
+                    ref acc3,
+                    ref acc4);
+                offset = end;
+                readBytes -= stripeLength;
+            }
+            while (readBytes >= stripeLength);
+
+            // read more if the alignment is intact
+            if (readBytes == 0)
+            {
+                readBytes = stream.Read(buffer);
+                offset = 0;
+                len += (ulong)readBytes;
+            }
+        }
+        while (readBytes >= stripeLength);
+
+    Exit:
         acc += len;
-        acc = processRemaining64(buffer[i..(i + readBytes)], acc);
+        acc = processRemaining64(buffer[offset..(offset + readBytes)], acc);
 
         return avalanche64(acc);
     }
@@ -249,7 +248,7 @@ public static class XXHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void processLane64(ref ulong accn, ReadOnlySpan<byte> buf)
     {
-        ulong lane = BitConverter.ToUInt64(buf);
+        ulong lane = Bits.ToUInt64(buf);
         accn = round64(accn, lane);
     }
 
@@ -262,7 +261,7 @@ public static class XXHash
         int i = 0;
         for (ulong lane; remainingLen >= 8; remainingLen -= 8, i += 8)
         {
-            lane = BitConverter.ToUInt64(remaining[i..(i + 8)]);
+            lane = Bits.ToUInt64(remaining[i..(i + 8)]);
             acc ^= round64(0, lane);
             acc = Bits.RotateLeft(acc, 27) * prime64v1;
             acc += prime64v4;
@@ -270,7 +269,7 @@ public static class XXHash
 
         for (uint lane32; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane32 = BitConverter.ToUInt32(remaining[i..(i + 4)]);
+            lane32 = Bits.ToUInt32(remaining[i..(i + 4)]);
             acc ^= lane32 * prime64v1;
             acc = Bits.RotateLeft(acc, 23) * prime64v2;
             acc += prime64v3;
@@ -341,7 +340,7 @@ public static class XXHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void processLane32(ReadOnlySpan<byte> buf, ref uint accn)
     {
-        uint lane = BitConverter.ToUInt32(buf);
+        uint lane = Bits.ToUInt32(buf);
         accn = round32(accn, lane);
     }
 
@@ -354,7 +353,7 @@ public static class XXHash
         int remainingLen = remaining.Length;
         for (uint lane; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane = BitConverter.ToUInt32(remaining[i..]);
+            lane = Bits.ToUInt32(remaining[i..]);
             acc += lane * prime32v3;
             acc = Bits.RotateLeft(acc, 17) * prime32v4;
         }

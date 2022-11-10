@@ -5,6 +5,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace HashDepot;
 
@@ -38,6 +39,18 @@ internal static class Bits
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static ulong ToUInt64(ReadOnlySpan<byte> bytes)
+    {
+        return Unsafe.ReadUnaligned<ulong>(ref MemoryMarshal.GetReference(bytes));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static uint ToUInt32(ReadOnlySpan<byte> bytes)
+    {
+        return Unsafe.ReadUnaligned<uint>(ref MemoryMarshal.GetReference(bytes));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static ulong PartialBytesToUInt64(ReadOnlySpan<byte> remainingBytes)
     {
         // a switch/case approach is slightly faster than the loop but .net
@@ -60,7 +73,7 @@ internal static class Bits
         int len = remainingBytes.Length;
         if (len > 3)
         {
-            return BitConverter.ToUInt32(remainingBytes);
+            return Bits.ToUInt32(remainingBytes);
         }
 
         // a switch/case approach is slightly faster than the loop but .net

@@ -4,6 +4,8 @@
 // </copyright>
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace HashDepot;
 
@@ -16,10 +18,14 @@ internal static class Checksum
     {
         uint result = 0;
         int offset = 0;
-        int unevenLength = buffer.Length % sizeof(uint);
-        for (; offset < buffer.Length - unevenLength; offset += sizeof(uint))
+        int len = buffer.Length;
+        int unevenLength = len % sizeof(uint);
+        int evenLength = len - unevenLength;
+        while (offset < evenLength)
         {
-            result += BitConverter.ToUInt32(buffer[offset..(offset + sizeof(uint))]);
+            int end = offset + sizeof(uint);
+            result += Unsafe.ReadUnaligned<uint>(ref MemoryMarshal.GetReference(buffer[offset..end]));
+            offset = end;
         }
 
         if (unevenLength > 0)

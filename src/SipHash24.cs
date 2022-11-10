@@ -37,8 +37,8 @@ public static class SipHash24
             throw new ArgumentException("Key must be 16-bytes long", nameof(key));
         }
 
-        ulong k0 = BitConverter.ToUInt64(key);
-        ulong k1 = BitConverter.ToUInt64(key[sizeof(ulong)..]);
+        ulong k0 = Bits.ToUInt64(key);
+        ulong k1 = Bits.ToUInt64(key[sizeof(ulong)..]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -51,7 +51,7 @@ public static class SipHash24
         var buffer = new byte[sizeof(ulong)].AsSpan();
         while ((bytesRead = stream.Read(buffer)) == sizeof(ulong))
         {
-            ulong m = BitConverter.ToUInt64(buffer);
+            ulong m = Bits.ToUInt64(buffer);
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);
             v0 ^= m;
@@ -88,8 +88,8 @@ public static class SipHash24
             throw new ArgumentException("Key must be 16-bytes long", nameof(key));
         }
 
-        ulong k0 = BitConverter.ToUInt64(key.Span);
-        ulong k1 = BitConverter.ToUInt64(key.Span[sizeof(ulong)..]);
+        ulong k0 = Bits.ToUInt64(key.Span);
+        ulong k1 = Bits.ToUInt64(key.Span[sizeof(ulong)..]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -102,7 +102,7 @@ public static class SipHash24
         var buffer = new byte[sizeof(ulong)].AsMemory();
         while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == sizeof(ulong))
         {
-            ulong m = BitConverter.ToUInt64(buffer.Span);
+            ulong m = Bits.ToUInt64(buffer.Span);
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);
             v0 ^= m;
@@ -142,8 +142,8 @@ public static class SipHash24
         ulong k0;
         ulong k1;
 
-        k0 = BitConverter.ToUInt64(key[..8]);
-        k1 = BitConverter.ToUInt64(key[8..16]);
+        k0 = Bits.ToUInt64(key[..8]);
+        k1 = Bits.ToUInt64(key[8..16]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -158,7 +158,7 @@ public static class SipHash24
         int end = length - leftBytes;
         while (offset < end)
         {
-            ulong m = BitConverter.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
+            ulong m = Bits.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
             offset += sizeof(ulong);
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);

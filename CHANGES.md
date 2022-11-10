@@ -3,9 +3,12 @@
 ## 3.1.0
 
 ### Breaking changes
-- This version targets .NET 6.0
+- This version targets .NET 6.0.
 - Removed APIs that received `byte[]`.
-- Removed all unsafe code.
+- Removed all unsafe code. This had slight impact on performance, but
+  thanks to the Span related optimizations, it's not as bad as it was in .NET Framework. There's
+  still some use of `Unsafe.ReadUnaligned` for some perf improvements, but all that ugly
+  pointer arithmetic has gone away for marginal cost for the better.
 - Removed .NET Standard 2.0 support (sorry, but new .NET is so nice to code, and maintaining #ifdefs is unnecessarily cumbersome)
 
 ### Improvements
