@@ -28,6 +28,7 @@
     <ItemGroup>
         <None Remove="HashDepot.ncrunchproject" />
         <None Remove="HashDepot.v2.ncrunchproject" />
+        <None Remove="HashDepot.xml" />
         <None Remove="stylecop.json" />
         <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
     </ItemGroup>

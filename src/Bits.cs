@@ -57,8 +57,8 @@ internal static class Bits
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static uint PartialBytesToUInt32(ReadOnlySpan<byte> remainingBytes)
     {
-        int leftBytes = remainingBytes.Length;
-        if (leftBytes > 3)
+        int len = remainingBytes.Length;
+        if (len > 3)
         {
             return BitConverter.ToUInt32(remainingBytes);
         }
@@ -66,12 +66,12 @@ internal static class Bits
         // a switch/case approach is slightly faster than the loop but .net
         // refuses to inline it due to larger code size.
         uint result = remainingBytes[0];
-        if (leftBytes > 1)
+        if (len > 1)
         {
             result |= (uint)(remainingBytes[1] << 8);
         }
 
-        if (leftBytes > 2)
+        if (len > 2)
         {
             result |= (uint)(remainingBytes[2] << 16);
         }
