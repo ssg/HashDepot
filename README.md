@@ -1,6 +1,6 @@
 # HashDepot
 [![NuGet Version](https://img.shields.io/nuget/v/HashDepot.svg)](https://www.nuget.org/packages/HashDepot/)
-[![Build Status](https://travis-ci.org/ssg/HashDepot.svg?branch=master)](https://travis-ci.org/ssg/HashDepot)
+![Build Status](https://github.com/ssg/HashDepot/actions/workflows/build.yml/badge.svg)
 
 I have been implementing various hash functions that are absent in .NET framework. 
 I decided to converge them into a library. My primary goals are to provide well-tested and 
