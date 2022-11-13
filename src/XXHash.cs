@@ -215,7 +215,7 @@ public static class XXHash
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static (ulong, ulong, ulong, ulong) initAccumulators64(ulong seed)
+    private static (ulong Acc1, ulong Acc2, ulong Acc3, ulong Acc4) initAccumulators64(ulong seed)
     {
         return (seed + prime64v1 + prime64v2, seed + prime64v2, seed, seed - prime64v1);
     }
@@ -312,7 +312,7 @@ public static class XXHash
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static (uint, uint, uint, uint) initAccumulators32(
+    private static (uint Acc1, uint Acc2, uint Acc3, uint Acc4) initAccumulators32(
         uint seed)
     {
         return (seed + prime32v1 + prime32v2, seed + prime32v2, seed, seed - prime32v1);
