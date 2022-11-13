@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using SimpleBase;
 
 namespace HashDepot.Test;
 
@@ -97,7 +96,7 @@ public class MurmurHash3Test
     [TestCase("I will not buy this tobacconist's, it is scratched.", "d30654abbd8227e367d73523f0079673")] // source: https://github.com/pid/murmurHash3js
     public void Hash128_Preliminary(string input, string expectedOutput)
     {
-        var expectedBuffer = Base16.Decode(expectedOutput).ToArray();
+        var expectedBuffer = Convert.FromHexString(expectedOutput);
         var buffer = Encoding.UTF8.GetBytes(input);
         uint seed = 0;
 
@@ -110,7 +109,7 @@ public class MurmurHash3Test
     [TestCase("I will not buy this tobacconist's, it is scratched.", "d30654abbd8227e367d73523f0079673")] // source: https://github.com/pid/murmurHash3js
     public void Hash128_Stream_Preliminary(string input, string expectedOutput)
     {
-        var expectedBuffer = Base16.Decode(expectedOutput).ToArray();
+        var expectedBuffer = Convert.FromHexString(expectedOutput);
         var buffer = Encoding.UTF8.GetBytes(input);
         uint seed = 0;
 
