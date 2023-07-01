@@ -8,9 +8,9 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "releaseBuild",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/benchmark/bin/Debug/net6.0/benchmark.dll",
+            "program": "${workspaceFolder}/benchmark/bin/Release/net6.0/benchmark.dll",
             "args": [],
             "cwd": "${workspaceFolder}/benchmark",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
