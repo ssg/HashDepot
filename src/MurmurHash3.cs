@@ -125,7 +125,7 @@ public static class MurmurHash3
 
         uint hash = seed;
         int length = buffer.Length;
-        var (numUInts, leftBytes) = Math.DivRem(length, uintSize);
+        var numUInts = Math.DivRem(length, uintSize, out var leftBytes);
         int i = 0;
         for (; i < numUInts * sizeof(uint); i += sizeof(uint))
         {
@@ -232,7 +232,7 @@ public static class MurmurHash3
         ulong h2 = seed;
 
         int length = buffer.Length;
-        var (numBlocks, leftBytes) = Math.DivRem(length, blockSize);
+        var numBlocks = Math.DivRem(length, blockSize, out var leftBytes);
 
         int offset = 0;
         int end = numBlocks * sizeof(ulong) * 2;
