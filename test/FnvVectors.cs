@@ -73,8 +73,8 @@ public static class FnvVectors
             .Select(n => new FnvTestVector(bytes[n], results32[n], results64[n]));
     }
 
-    private static readonly ulong[] fnv1aResults64 = new ulong[]
-    {
+    private static readonly ulong[] fnv1aResults64 =
+    [
         0xcbf29ce484222325,
         0xaf63dc4c8601ec8c,
         0xaf63df4c8601f1a5,
@@ -278,12 +278,12 @@ public static class FnvVectors
         0xc23e9fccd6f70591,
         0xc1af12bdfe16b5b5,
         0x39e9f18f2f85e221,
-    };
+    ];
 
     /* FNV-1a 32 bit test vectors */
 
-    private static readonly uint[] fnv1aResults32 = new uint[]
-    {
+    private static readonly uint[] fnv1aResults32 =
+    [
         0x811c9dc5,
         0xe40c292c,
         0xe70c2de5,
@@ -487,7 +487,7 @@ public static class FnvVectors
         0x21a27271,
         0x83c5c6d5,
         0x813b0881,
-    };
+    ];
 
     private static byte[][] getTestBytes()
     {

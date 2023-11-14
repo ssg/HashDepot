@@ -10,22 +10,22 @@ namespace HashDepot.Test;
 [TestFixture]
 public class MurmurHash3Test
 {
-    private static readonly MurmurTestVector[] smHasherTestData = new MurmurTestVector[]
-    {
-        new MurmurTestVector(Array.Empty<byte>(), 0U,                                   0),
-        new MurmurTestVector(Array.Empty<byte>(), 1U,                                   0x514E28B7),
-        new MurmurTestVector(Array.Empty<byte>(), 0xFFFFFFFF,                           0x81F16F39),
-        new MurmurTestVector(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF }, 0,          0x76293B50),
-        new MurmurTestVector(new byte[] { 0x21, 0x43, 0x65, 0x87 }, 0,          0xF55B516B),
-        new MurmurTestVector(new byte[] { 0x21, 0x43, 0x65, 0x87 }, 0x5082EDEE, 0x2362F9DE),
-        new MurmurTestVector(new byte[] { 0x21, 0x43, 0x65 }, 0,                0x7E4A8634),
-        new MurmurTestVector(new byte[] { 0x21, 0x43 }, 0,                      0xA0F7B07A),
-        new MurmurTestVector(new byte[] { 0x21 }, 0,                            0x72661CF4),
-        new MurmurTestVector(new byte[] { 0, 0, 0, 0 }, 0,                      0x2362F9DE),
-        new MurmurTestVector(new byte[] { 0, 0, 0 }, 0,                         0x85F0B427),
-        new MurmurTestVector(new byte[] { 0, 0 }, 0,                            0x30F4C306),
-        new MurmurTestVector(new byte[] { 0 }, 0,                               0x514E28B7),
-    };
+    private static readonly MurmurTestVector[] smHasherTestData =
+    [
+        new MurmurTestVector([], 0U,                               0),
+        new MurmurTestVector([], 1U,                               0x514E28B7),
+        new MurmurTestVector([], 0xFFFFFFFF,                       0x81F16F39),
+        new MurmurTestVector([0xFF, 0xFF, 0xFF, 0xFF], 0,          0x76293B50),
+        new MurmurTestVector([0x21, 0x43, 0x65, 0x87], 0,          0xF55B516B),
+        new MurmurTestVector([0x21, 0x43, 0x65, 0x87], 0x5082EDEE, 0x2362F9DE),
+        new MurmurTestVector([0x21, 0x43, 0x65], 0,                0x7E4A8634),
+        new MurmurTestVector([0x21, 0x43], 0,                      0xA0F7B07A),
+        new MurmurTestVector([0x21], 0,                            0x72661CF4),
+        new MurmurTestVector([0, 0, 0, 0], 0,                      0x2362F9DE),
+        new MurmurTestVector([0, 0, 0], 0,                         0x85F0B427),
+        new MurmurTestVector([0, 0], 0,                            0x30F4C306),
+        new MurmurTestVector([0], 0,                               0x514E28B7),
+    ];
 
     [Test]
     [TestCaseSource(nameof(smHasherTestData))]

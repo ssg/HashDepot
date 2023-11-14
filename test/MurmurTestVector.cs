@@ -1,19 +1,12 @@
-﻿using System;
+using System;
 
 namespace HashDepot.Test;
 
-public class MurmurTestVector
+public class MurmurTestVector(byte[] buffer, uint seed, uint expectedResult)
 {
-    public byte[] Buffer;
-    public uint Seed;
-    public uint ExpectedResult;
-
-    public MurmurTestVector(byte[] buffer, uint seed, uint expectedResult)
-    {
-        this.Buffer = buffer;
-        this.Seed = seed;
-        this.ExpectedResult = expectedResult;
-    }
+    public byte[] Buffer = buffer;
+    public uint Seed = seed;
+    public uint ExpectedResult = expectedResult;
 
     public override string ToString()
     {

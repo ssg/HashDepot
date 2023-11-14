@@ -13,8 +13,8 @@ namespace HashDepot.Test;
 public class SipHash24Test
 {
     // test vectors are from https://github.com/veorq/SipHash
-    private static readonly ulong[] vectors = new ulong[]
-    {
+    private static readonly ulong[] vectors =
+    [
         0x726fdb47dd0e0e31UL,
         0x74f839c593dc67fdUL,
         0x0d6c8009d9a94f5aUL,
@@ -79,9 +79,9 @@ public class SipHash24Test
         0x9f626da15c9625f3UL,
         0xe51b38608ef25f57UL,
         0x958a324ceb064572UL,
-    };
+    ];
 
-    private static readonly byte[] key = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    private static readonly byte[] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
     [Test]
     public void Hash64_Binary_TestVectors()
@@ -125,14 +125,14 @@ public class SipHash24Test
     [Test]
     public void Hash64Async_InvalidKeyLength_Throws()
     {
-        using var stream = new MemoryStream(Array.Empty<byte>());
+        using var stream = new MemoryStream([]);
         Assert.ThrowsAsync<ArgumentException>(async () => await SipHash24.Hash64Async(stream, new byte[15]));
     }
 
     [Test]
     public void Hash64_Stream_InvalidKeyLength_Throws()
     {
-        using var stream = new MemoryStream(Array.Empty<byte>());
+        using var stream = new MemoryStream([]);
         Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
     }
 
