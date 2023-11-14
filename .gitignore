@@ -10,3 +10,4 @@ _NCrunch*
 TestResult.xml
 .vs/
 HashDepot.xml
+BenchmarkDotNet.Artifacts
