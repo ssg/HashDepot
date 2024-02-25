@@ -101,7 +101,7 @@ public class MurmurHash3Test
         uint seed = 0;
 
         var result = MurmurHash3.Hash128(buffer, seed);
-        CollectionAssert.AreEquivalent(expectedBuffer, result);
+        Assert.That(result, Is.EquivalentTo(expectedBuffer));
     }
 
     [Test]
@@ -115,6 +115,6 @@ public class MurmurHash3Test
 
         using var stream = new MemoryStream(buffer);
         var result = MurmurHash3.Hash128(stream, seed);
-        CollectionAssert.AreEquivalent(expectedBuffer, result);
+        Assert.That(result, Is.EquivalentTo(expectedBuffer));
     }
 }
