@@ -12,6 +12,7 @@ public class BenchmarkSuite
     private static readonly byte[] buf = new byte[BufSize];
     private static readonly byte[] sipHashKey = new byte[16];
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static - BenchmarkDotNet requires these as instance members
 
     [Benchmark]
@@ -36,4 +37,5 @@ public class BenchmarkSuite
     public void Fnv1a_64() => Fnv1a.Hash64(buf);
 
 #pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 }
