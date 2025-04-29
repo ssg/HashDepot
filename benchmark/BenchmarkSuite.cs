@@ -3,6 +3,8 @@ using BenchmarkDotNet.Attributes;
 
 namespace benchmark;
 
+[MarkdownExporterAttribute.GitHub]
+[MemoryDiagnoser]
 public class BenchmarkSuite
 {
     public const int BufSize = 1001 * 1003;
@@ -15,7 +17,7 @@ public class BenchmarkSuite
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static - BenchmarkDotNet requires these as instance members
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void Checksum_32() => Checksum.Hash32(buf);
 
     [Benchmark]

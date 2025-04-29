@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>benchmark</AssemblyName>
@@ -10,8 +10,8 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-        <PackageReference Include="System.Memory" Version="4.5.5" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+        <PackageReference Include="System.Memory" Version="4.6.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\src\HashDepot.csproj" />
