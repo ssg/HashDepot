@@ -280,7 +280,7 @@ public static class MurmurHash3
         return makeBytes(h1, h2);
     }
 
-    private static byte[] makeBytes(ulong h1, ulong h2)
+    static byte[] makeBytes(ulong h1, ulong h2)
     {
         var result = new byte[16];
         BitConverter.TryWriteBytes(result, h1);
@@ -289,7 +289,7 @@ public static class MurmurHash3
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void round32(ref uint value, ref uint hash)
+static void round32(ref uint value, ref uint hash)
     {
         const uint c1 = 0xcc9e2d51;
         const uint c2 = 0x1b873593;
@@ -301,7 +301,7 @@ public static class MurmurHash3
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void round128(
+static void round128(
         ref ulong k,
         ref ulong h,
         ulong c1,
@@ -321,7 +321,7 @@ public static class MurmurHash3
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void fmix64(ref ulong h)
+static void fmix64(ref ulong h)
     {
         h ^= h >> 33;
         h *= 0xff51afd7ed558ccdUL;
@@ -331,7 +331,7 @@ public static class MurmurHash3
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void tailRound128(ref ulong k, ref ulong h, ulong c1, ulong c2, int rot)
+static void tailRound128(ref ulong k, ref ulong h, ulong c1, ulong c2, int rot)
     {
         k *= c1;
         k = Bits.RotateLeft(k, rot);

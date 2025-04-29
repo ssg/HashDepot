@@ -16,12 +16,12 @@ public static class FnvVectors
         return getTestVectors(fnv1aResults32, fnv1aResults64);
     }
 
-    private static byte[] toAsciiBytes(string text)
+    static byte[] toAsciiBytes(string text)
     {
         return Encoding.ASCII.GetBytes(text);
     }
 
-    private static byte[] toNullPaddedAsciiBytes(string text)
+    static byte[] toNullPaddedAsciiBytes(string text)
     {
         var result = new byte[text.Length + 1];
         var buffer = Encoding.ASCII.GetBytes(text);
@@ -29,33 +29,33 @@ public static class FnvVectors
         return result;
     }
 
-    private static byte[] repeat10(string text)
+    static byte[] repeat10(string text)
     {
         return repeat(text, 10);
     }
 
-    private static byte[] repeat500(string text)
+    static byte[] repeat500(string text)
     {
         return repeat(text, 500);
     }
 
-    private static byte[] repeat10(byte[] buffer)
+    static byte[] repeat10(byte[] buffer)
     {
         return repeat(buffer, 10);
     }
 
-    private static byte[] repeat500(byte[] buffer)
+    static byte[] repeat500(byte[] buffer)
     {
         return repeat(buffer, 500);
     }
 
-    private static byte[] repeat(string text, int count)
+    static byte[] repeat(string text, int count)
     {
         var buffer = Encoding.ASCII.GetBytes(text);
         return repeat(buffer, count);
     }
 
-    private static byte[] repeat(byte[] buffer, int count)
+    static byte[] repeat(byte[] buffer, int count)
     {
         int length = buffer.Length;
         var result = new byte[length * count];
@@ -66,14 +66,14 @@ public static class FnvVectors
         return result;
     }
 
-    private static IEnumerable<FnvTestVector> getTestVectors(uint[] results32, ulong[] results64)
+    static IEnumerable<FnvTestVector> getTestVectors(uint[] results32, ulong[] results64)
     {
         var bytes = getTestBytes();
         return Enumerable.Range(0, bytes.Length)
             .Select(n => new FnvTestVector(bytes[n], results32[n], results64[n]));
     }
 
-    private static readonly ulong[] fnv1aResults64 =
+    static readonly ulong[] fnv1aResults64 =
     [
         0xcbf29ce484222325,
         0xaf63dc4c8601ec8c,
@@ -282,7 +282,7 @@ public static class FnvVectors
 
     /* FNV-1a 32 bit test vectors */
 
-    private static readonly uint[] fnv1aResults32 =
+    static readonly uint[] fnv1aResults32 =
     [
         0x811c9dc5,
         0xe40c292c,
@@ -489,12 +489,12 @@ public static class FnvVectors
         0x813b0881,
     ];
 
-    private static byte[][] getTestBytes()
+    static byte[][] getTestBytes()
     {
         return buildBytes().ToArray();
     }
 
-    private static IEnumerable<byte[]> buildBytes()
+    static IEnumerable<byte[]> buildBytes()
     {
         yield return toAsciiBytes("");
         yield return toAsciiBytes("a");

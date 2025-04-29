@@ -10,7 +10,7 @@ namespace HashDepot.Test;
 [TestFixture]
 public class MurmurHash3Test
 {
-    private static readonly MurmurTestVector[] smHasherTestData =
+    static readonly MurmurTestVector[] smHasherTestData =
     [
         new MurmurTestVector([], 0U,                               0),
         new MurmurTestVector([], 1U,                               0x514E28B7),

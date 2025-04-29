@@ -8,7 +8,7 @@ namespace HashDepot.Test;
 public class XXHashTest
 {
     // test values are from https://asecuritysite.com/encryption/xxHash
-    private static readonly object[][] testVectors =
+    static readonly object[][] testVectors =
     [
         ["",                                              0U,     0x02cc5d05U, 0xef46db3751d8e999UL],
         ["a",                                             0U,     0x550d7456U, 0xd24ec4f1a98c6e5bUL],
@@ -75,7 +75,7 @@ public class XXHashTest
         Assert.That(XXHash.Hash64(stream), Is.EqualTo(17345881079506341799));
     }
 
-    private static byte[] getLargeBuffer()
+    static byte[] getLargeBuffer()
     {
         return new byte[64 * 1024 * 1024];
     }

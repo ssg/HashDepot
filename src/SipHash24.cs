@@ -15,14 +15,14 @@ namespace HashDepot;
 /// </summary>
 public static class SipHash24
 {
-    private const int keyLength = 16;
+    const int keyLength = 16;
 
-    private const ulong initv0 = 0x736f6d6570736575U;
-    private const ulong initv1 = 0x646f72616e646f6dU;
-    private const ulong initv2 = 0x6c7967656e657261U;
-    private const ulong initv3 = 0x7465646279746573U;
+    const ulong initv0 = 0x736f6d6570736575U;
+    const ulong initv1 = 0x646f72616e646f6dU;
+    const ulong initv2 = 0x6c7967656e657261U;
+    const ulong initv3 = 0x7465646279746573U;
 
-    private const ulong finalVectorXor = 0xFF;
+    const ulong finalVectorXor = 0xFF;
 
     /// <summary>
     /// Calculate 64-bit SipHash-2-4 algorithm using the given key and the input.
@@ -180,14 +180,14 @@ public static class SipHash24
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void sipRoundC(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+static void sipRoundC(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         sipRound(ref v0, ref v1, ref v2, ref v3);
         sipRound(ref v0, ref v1, ref v2, ref v3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         sipRound(ref v0, ref v1, ref v2, ref v3);
         sipRound(ref v0, ref v1, ref v2, ref v3);
@@ -196,7 +196,7 @@ public static class SipHash24
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         v0 += v1;
         v1 = Bits.RotateLeft(v1, 13);

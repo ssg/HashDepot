@@ -14,11 +14,11 @@ namespace HashDepot;
 /// </summary>
 public static class Fnv1a
 {
-    private const uint offsetBasis32 = 2166136261;
-    private const uint prime32 = 16777619;
+    const uint offsetBasis32 = 2166136261;
+    const uint prime32 = 16777619;
 
-    private const ulong offsetBasis64 = 14695981039346656037;
-    private const ulong prime64 = 1099511628211;
+    const ulong offsetBasis64 = 14695981039346656037;
+    const ulong prime64 = 1099511628211;
 
     /// <summary>
     /// Calculate 32-bit FNV-1a hash value.

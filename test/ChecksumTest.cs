@@ -6,7 +6,7 @@ namespace HashDepot.Test;
 [TestFixture]
 public class ChecksumTest
 {
-    private static readonly byte[] array = new byte[1001 * 1003];
+    static readonly byte[] array = new byte[1001 * 1003];
 
     [Test]
     public void Test()

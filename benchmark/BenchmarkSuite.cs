@@ -11,8 +11,8 @@ public class BenchmarkSuite
 
     public int Bits;
 
-    private static readonly byte[] buf = new byte[BufSize];
-    private static readonly byte[] sipHashKey = new byte[16];
+    static readonly byte[] buf = new byte[BufSize];
+    static readonly byte[] sipHashKey = new byte[16];
 
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static - BenchmarkDotNet requires these as instance members

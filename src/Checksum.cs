@@ -12,7 +12,7 @@ namespace HashDepot;
 /// <summary>
 /// Dummy checksum implementation for benchmark baseline. Don't use in real life.
 /// </summary>
-internal static class Checksum
+static class Checksum
 {
     public static uint Hash32(ReadOnlySpan<byte> buffer)
     {

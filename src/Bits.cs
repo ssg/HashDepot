@@ -12,7 +12,7 @@ namespace HashDepot;
 /// <summary>
 /// Bit operations.
 /// </summary>
-internal static class Bits
+static class Bits
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static ulong RotateLeft(ulong value, int bits)

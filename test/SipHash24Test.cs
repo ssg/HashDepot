@@ -13,7 +13,7 @@ namespace HashDepot.Test;
 public class SipHash24Test
 {
     // test vectors are from https://github.com/veorq/SipHash
-    private static readonly ulong[] vectors =
+    static readonly ulong[] vectors =
     [
         0x726fdb47dd0e0e31UL,
         0x74f839c593dc67fdUL,
@@ -81,7 +81,7 @@ public class SipHash24Test
         0x958a324ceb064572UL,
     ];
 
-    private static readonly byte[] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    static readonly byte[] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
     [Test]
     public void Hash64_Binary_TestVectors()
@@ -136,7 +136,7 @@ public class SipHash24Test
         Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
     }
 
-    private static byte[] getIncrementalBuffer(int i)
+    static byte[] getIncrementalBuffer(int i)
     {
         var buffer = new byte[i];
         for (int j = 0; j < i; j++)
