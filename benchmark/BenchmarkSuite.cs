@@ -17,7 +17,7 @@ public class BenchmarkSuite
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static - BenchmarkDotNet requires these as instance members
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public void Checksum_32() => Checksum.Hash32(buf);
 
     [Benchmark]
