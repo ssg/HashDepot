@@ -81,21 +81,21 @@ uint result = await MurmurHash3.Hash32Async(stream);
 # Benchmarks
 Benchmarks are performed on a 1MB buffer.
 
-BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.819)
-Snapdragon Compute Platform, 1 CPU, 8 logical and 8 physical cores
-.NET SDK=7.0.100
-  [Host]     : .NET 6.0.11 (6.0.1122.52304), Arm64 RyuJIT AdvSIMD
-  DefaultJob : .NET 6.0.11 (6.0.1122.52304), Arm64 RyuJIT AdvSIMD
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.3915)
+AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK 8.0.408
+  [Host]     : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX2
 
-|          Method |       Mean |    Error |   StdDev |     Median |
-|---------------- |-----------:|---------:|---------:|-----------:|
-|     Checksum_32 |   234.9 us |  4.61 us |  7.17 us |   231.4 us |
-|       XXHash_32 |   248.3 us |  2.13 us |  1.66 us |   248.3 us |
-|       XXHash_64 |   231.1 us |  4.40 us |  4.89 us |   231.4 us |
-| MurmurHash3_x86 |   498.9 us |  6.19 us |  5.79 us |   498.5 us |
-|    SipHash24_32 |   497.4 us |  4.30 us |  3.35 us |   498.1 us |
-|        Fnv1a_32 | 1,112.1 us | 21.93 us | 25.25 us | 1,108.1 us |
-|        Fnv1a_64 | 1,064.2 us | 10.09 us |  8.95 us | 1,065.1 us |
+| Method          | Mean        | Error    | StdDev   | Allocated |
+|---------------- |------------:|---------:|---------:|----------:|
+| Checksum_32     |    96.40 us | 0.870 us | 0.814 us |         - |
+| XXHash_32       |   229.19 us | 0.165 us | 0.129 us |         - |
+| XXHash_64       |   185.86 us | 1.450 us | 1.210 us |         - |
+| MurmurHash3_x86 |   262.45 us | 0.324 us | 0.303 us |         - |
+| SipHash24_32    |   285.01 us | 0.419 us | 0.372 us |         - |
+| Fnv1a_32        | 1,009.56 us | 0.269 us | 0.252 us |       1 B |
+| Fnv1a_64        | 1,010.93 us | 1.157 us | 1.026 us |       1 B |
 
 # Contributing
 You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
