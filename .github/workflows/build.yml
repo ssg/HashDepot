@@ -1,25 +1,32 @@
-name: Build
+name: Build, Test, and Deploy
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v1
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
+
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build --configuration Release 
+
+    - name: Run tests
+      run: dotnet test --no-build --configuration Release 
+
+    - name: Pack
+      run: dotnet pack src --no-build --configuration Release --output ./nupkg
+
+    - name: Publish to NuGet
+      if: startsWith(github.ref, 'refs/tags/')
+      run: dotnet nuget push ./nupkg/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish to GitHub Packages
+      if: startsWith(github.ref, 'refs/tags/')
+      run: dotnet nuget push ./nupkg/*.nupkg -k ${{ secrets.GPM_TOKEN }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
