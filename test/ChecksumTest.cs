@@ -11,6 +11,6 @@ public class ChecksumTest
     [Test]
     public void Test()
     {
-        Checksum.Hash32(array.AsSpan());
+        Assert.DoesNotThrow(() => Checksum.Hash32(array.AsSpan()));
     }
 }

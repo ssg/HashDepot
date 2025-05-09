@@ -126,14 +126,14 @@ public class SipHash24Test
     public void Hash64Async_InvalidKeyLength_Throws()
     {
         using var stream = new MemoryStream([]);
-        Assert.ThrowsAsync<ArgumentException>(async () => await SipHash24.Hash64Async(stream, new byte[15]));
+        _ = Assert.ThrowsAsync<ArgumentException>(async () => await SipHash24.Hash64Async(stream, new byte[15]));
     }
 
     [Test]
     public void Hash64_Stream_InvalidKeyLength_Throws()
     {
         using var stream = new MemoryStream([]);
-        Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
+        _ = Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
     }
 
     static byte[] getIncrementalBuffer(int i)
@@ -154,6 +154,6 @@ public class SipHash24Test
     {
         var invalidKey = new byte[keyLength];
         var buffer = Array.Empty<byte>();
-        Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
+        _ = Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
     }
 }

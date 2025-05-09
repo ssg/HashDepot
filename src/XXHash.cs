@@ -215,13 +215,13 @@ public static class XXHash
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static (ulong Acc1, ulong Acc2, ulong Acc3, ulong Acc4) initAccumulators64(ulong seed)
+    static (ulong Acc1, ulong Acc2, ulong Acc3, ulong Acc4) initAccumulators64(ulong seed)
     {
         return (seed + prime64v1 + prime64v2, seed + prime64v2, seed, seed - prime64v1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static ulong processStripe64(
+    static ulong processStripe64(
         ReadOnlySpan<byte> buf,
         ref ulong acc1,
         ref ulong acc2,
@@ -246,14 +246,14 @@ static ulong processStripe64(
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void processLane64(ref ulong accn, ReadOnlySpan<byte> buf)
+    static void processLane64(ref ulong accn, ReadOnlySpan<byte> buf)
     {
         ulong lane = Bits.ToUInt64(buf);
         accn = round64(accn, lane);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static ulong processRemaining64(
+    static ulong processRemaining64(
         ReadOnlySpan<byte> remaining,
         ulong acc)
     {
@@ -286,7 +286,7 @@ static ulong processRemaining64(
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static ulong avalanche64(ulong acc)
+    static ulong avalanche64(ulong acc)
     {
         acc ^= acc >> 33;
         acc *= prime64v2;
@@ -297,14 +297,14 @@ static ulong avalanche64(ulong acc)
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static ulong round64(ulong accn, ulong lane)
+    static ulong round64(ulong accn, ulong lane)
     {
         accn += lane * prime64v2;
         return Bits.RotateLeft(accn, 31) * prime64v1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void mergeAccumulator64(ref ulong acc, ulong accn)
+    static void mergeAccumulator64(ref ulong acc, ulong accn)
     {
         acc ^= round64(0, accn);
         acc *= prime64v1;
@@ -312,14 +312,14 @@ static void mergeAccumulator64(ref ulong acc, ulong accn)
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static (uint Acc1, uint Acc2, uint Acc3, uint Acc4) initAccumulators32(
+    static (uint Acc1, uint Acc2, uint Acc3, uint Acc4) initAccumulators32(
         uint seed)
     {
         return (seed + prime32v1 + prime32v2, seed + prime32v2, seed, seed - prime32v1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static uint processStripe32(
+    static uint processStripe32(
         ReadOnlySpan<byte> buf,
         ref uint acc1,
         ref uint acc2,
@@ -338,14 +338,14 @@ static uint processStripe32(
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void processLane32(ReadOnlySpan<byte> buf, ref uint accn)
+    static void processLane32(ReadOnlySpan<byte> buf, ref uint accn)
     {
         uint lane = Bits.ToUInt32(buf);
         accn = round32(accn, lane);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static uint processRemaining32(
+    static uint processRemaining32(
         ReadOnlySpan<byte> remaining,
         uint acc)
     {
@@ -369,7 +369,7 @@ static uint processRemaining32(
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static uint round32(uint accn, uint lane)
+    static uint round32(uint accn, uint lane)
     {
         accn += lane * prime32v2;
         accn = Bits.RotateLeft(accn, 13);
@@ -378,7 +378,7 @@ static uint round32(uint accn, uint lane)
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static uint avalanche32(uint acc)
+    static uint avalanche32(uint acc)
     {
         acc ^= acc >> 15;
         acc *= prime32v2;

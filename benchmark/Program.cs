@@ -6,6 +6,6 @@ class Program
 {
     public static void Main()
     {
-        BenchmarkRunner.Run<BenchmarkSuite>();
+        _ = BenchmarkRunner.Run<BenchmarkSuite>();
     }
 }

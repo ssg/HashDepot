@@ -180,14 +180,14 @@ public static class SipHash24
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void sipRoundC(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+    static void sipRoundC(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         sipRound(ref v0, ref v1, ref v2, ref v3);
         sipRound(ref v0, ref v1, ref v2, ref v3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+    static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         sipRound(ref v0, ref v1, ref v2, ref v3);
         sipRound(ref v0, ref v1, ref v2, ref v3);
@@ -196,7 +196,7 @@ static void sipRoundD(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+    static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         v0 += v1;
         v1 = Bits.RotateLeft(v1, 13);
