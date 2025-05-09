@@ -1,5 +1,5 @@
 // <copyright file="Checksum.cs" company="Sedat Kapanoglu">
-// Copyright (c) 2015-2022 Sedat Kapanoglu
+// Copyright (c) 2015-2025 Sedat Kapanoglu
 // MIT License (see LICENSE file for details)
 // </copyright>
 
