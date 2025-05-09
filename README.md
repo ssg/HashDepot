@@ -87,15 +87,16 @@ AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
   [Host]     : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX2
   DefaultJob : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX2
 
+
 | Method          | Mean        | Error    | StdDev   | Allocated |
 |---------------- |------------:|---------:|---------:|----------:|
-| Checksum_32     |    96.40 us | 0.870 us | 0.814 us |         - |
-| XXHash_32       |   229.19 us | 0.165 us | 0.129 us |         - |
-| XXHash_64       |   185.86 us | 1.450 us | 1.210 us |         - |
-| MurmurHash3_x86 |   262.45 us | 0.324 us | 0.303 us |         - |
-| SipHash24_32    |   285.01 us | 0.419 us | 0.372 us |         - |
-| Fnv1a_32        | 1,009.56 us | 0.269 us | 0.252 us |       1 B |
-| Fnv1a_64        | 1,010.93 us | 1.157 us | 1.026 us |       1 B |
+| Checksum_32     |    96.06 us | 0.852 us | 0.797 us |         - |
+| XXHash_32       |   229.62 us | 0.423 us | 0.375 us |         - |
+| XXHash_64       |   189.12 us | 3.637 us | 3.572 us |         - |
+| MurmurHash3_x86 |   289.55 us | 1.553 us | 1.453 us |         - |
+| SipHash24_32    |   287.39 us | 2.665 us | 2.493 us |         - |
+| Fnv1a_32        | 1,009.74 us | 0.692 us | 0.578 us |       1 B |
+| Fnv1a_64        | 1,015.10 us | 5.141 us | 4.809 us |       1 B |
 
 # Contributing
 You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
