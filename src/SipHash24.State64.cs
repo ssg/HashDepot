@@ -28,6 +28,8 @@ static partial class SipHash24
         ulong length;
         ulong lastWord;
 
+        bool finalBlockProcessed;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="State64"/> class.
         /// </summary>
@@ -56,6 +58,11 @@ static partial class SipHash24
         /// <param name="buffer">Buffer to use.</param>
         public void Update(ReadOnlySpan<byte> buffer)
         {
+            if (finalBlockProcessed)
+            {
+                throw new InvalidOperationException("Update() called after final block has been processed.");
+            }
+
             int end = buffer.Length - (buffer.Length % sizeof(ulong));
             int n;
             for (n = 0; n < end; n += sizeof(ulong))
@@ -72,6 +79,7 @@ static partial class SipHash24
             {
                 length += (ulong)remainingBlock.Length;
                 lastWord = Bits.PartialBytesToUInt64(remainingBlock);
+                finalBlockProcessed = true;
             }
         }
 
@@ -85,6 +93,9 @@ static partial class SipHash24
 
             v2 ^= finalVectorXor;
             sipRoundD(ref v0, ref v1, ref v2, ref v3);
+
+            finalBlockProcessed = true;
+
             return v0 ^ v1 ^ v2 ^ v3;
         }
     }
