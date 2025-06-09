@@ -149,54 +149,38 @@ public static partial class XXHash
     /// <returns>Computed 64-bit hash value.</returns>
     public static ulong Hash64(Stream stream, ulong seed = 0)
     {
-        const int stripeLength = 32;
-        const int readBufferSize = stripeLength * 1024; // 32kb buffer length
-
-        ulong acc;
+        const int readBufferSize = State64.StripeLength * 1024; // 32kb buffer length
 
         var buffer = new byte[readBufferSize].AsSpan();
-        int readBytes = stream.Read(buffer);
-        ulong len = (ulong)readBytes;
-
-        int offset = 0;
-        if (readBytes < stripeLength)
+        var state = new State64(seed);
+        int bytesRead;
+        while ((bytesRead = stream.Read(buffer)) > 0)
         {
-            acc = seed + prime64v5;
-            goto Exit;
+            state.Update(buffer[..bytesRead]);
         }
 
-        var (acc1, acc2, acc3, acc4) = initAccumulators64(seed);
-        do
+        return state.Result();
+    }
+
+    /// <summary>
+    /// Generate a 64-bit xxHash value from a stream.
+    /// </summary>
+    /// <param name="stream">Input stream.</param>
+    /// <param name="seed">Optional seed.</param>
+    /// <returns>Computed 64-bit hash value.</returns>
+    public static async Task<ulong> Hash64Async(Stream stream, ulong seed = 0)
+    {
+        const int readBufferSize = State64.StripeLength * 1024; // 32kb buffer length
+
+        var buffer = new byte[readBufferSize];
+        var state = new State64(seed);
+        int bytesRead;
+        while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
         {
-            do
-            {
-                int end = offset + stripeLength;
-                acc = processStripe64(
-                    buffer[offset..end],
-                    ref acc1,
-                    ref acc2,
-                    ref acc3,
-                    ref acc4);
-                offset = end;
-                readBytes -= stripeLength;
-            }
-            while (readBytes >= stripeLength);
-
-            // read more if the alignment is intact
-            if (readBytes == 0)
-            {
-                readBytes = stream.Read(buffer);
-                offset = 0;
-                len += (ulong)readBytes;
-            }
+            state.Update(buffer.AsSpan(0, bytesRead));
         }
-        while (readBytes >= stripeLength);
 
-    Exit:
-        acc += len;
-        acc = processRemaining64(buffer[offset..(offset + readBytes)], acc);
-
-        return avalanche64(acc);
+        return state.Result();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

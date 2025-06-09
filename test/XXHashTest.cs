@@ -73,6 +73,16 @@ public class XXHashTest
     }
 
     [Test]
+    [TestCaseSource(nameof(testVectors))]
+    public async Task Hash64Async_StreamTests(string text, uint seed, uint _, ulong hash64)
+    {
+        var buffer = Encoding.UTF8.GetBytes(text);
+        using var stream = new MemoryStream(buffer);
+        var result = await XXHash.Hash64Async(stream, seed);
+        Assert.That(result, Is.EqualTo(hash64));
+    }
+
+    [Test]
     public void Hash32_LongStream_ReturnsExpected()
     {
         var buffer = getLargeBuffer();
