@@ -2,6 +2,7 @@
 // MIT License - see LICENSE file for details
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -83,43 +84,49 @@ public class SipHash24Test
 
     static readonly byte[] key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-    [Test]
-    public void Hash64_Binary_TestVectors()
+    static IEnumerable<object[]> testInput()
     {
         for (int i = 0; i < vectors.Length; ++i)
         {
-            var buffer = getIncrementalBuffer(i);
-            var result = SipHash24.Hash64(buffer, key);
-            var expectedResult = vectors[i];
-            Debug.WriteLine("testing iteration #" + i);
-            Assert.That(result, Is.EqualTo(expectedResult));
+            yield return new object[] { getIncrementalBuffer(i), vectors[i] };
         }
     }
 
-    [Test]
-    public void Hash64_Stream_TestVectors()
+    static byte[] getIncrementalBuffer(int i)
     {
-        for (int i = 0; i < vectors.Length; ++i)
+        var buffer = new byte[i];
+        for (int j = 0; j < i; j++)
         {
-            var buffer = getIncrementalBuffer(i);
-            using var stream = new MemoryStream(buffer);
-            ulong result = SipHash24.Hash64(stream, key);
-            ulong expectedResult = vectors[i];
-            Assert.That(result, Is.EqualTo(expectedResult));
+            buffer[j] = (byte)j;
         }
+
+        return buffer;
     }
 
     [Test]
-    public async Task Hash64Async_TestVectors()
+    [TestCaseSource(nameof(testInput))]
+    public void Hash64_Binary_TestVectors(byte[] buffer, ulong expectedResult)
     {
-        for (int i = 0; i < vectors.Length; ++i)
-        {
-            var buffer = getIncrementalBuffer(i);
-            using var stream = new MemoryStream(buffer);
-            ulong result = await SipHash24.Hash64Async(stream, key);
-            ulong expectedResult = vectors[i];
-            Assert.That(result, Is.EqualTo(expectedResult));
-        }
+        var result = SipHash24.Hash64(buffer, key);
+        Assert.That(result, Is.EqualTo(expectedResult));
+    }
+
+    [Test]
+    [TestCaseSource(nameof(testInput))]
+    public void Hash64_Stream_TestVectors(byte[] buffer, ulong expectedResult)
+    {
+        using var stream = new MemoryStream(buffer);
+        ulong result = SipHash24.Hash64(stream, key);
+        Assert.That(result, Is.EqualTo(expectedResult));
+    }
+
+    [Test]
+    [TestCaseSource(nameof(testInput))]
+    public async Task Hash64Async_TestVectors(byte[] buffer, ulong expectedResult)
+    {
+        using var stream = new MemoryStream(buffer);
+        ulong result = await SipHash24.Hash64Async(stream, key);
+        Assert.That(result, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -134,17 +141,6 @@ public class SipHash24Test
     {
         using var stream = new MemoryStream([]);
         _ = Assert.Throws<ArgumentException>(() => SipHash24.Hash64(stream, new byte[15]));
-    }
-
-    static byte[] getIncrementalBuffer(int i)
-    {
-        var buffer = new byte[i];
-        for (int j = 0; j < i; j++)
-        {
-            buffer[j] = (byte)j;
-        }
-
-        return buffer;
     }
 
     [Test]
