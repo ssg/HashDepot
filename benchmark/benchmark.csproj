@@ -10,7 +10,7 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.15.1" />
         <PackageReference Include="System.Memory" Version="4.6.3" />
     </ItemGroup>
     <ItemGroup>
