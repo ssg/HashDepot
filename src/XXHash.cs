@@ -6,13 +6,14 @@
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace HashDepot;
 
 /// <summary>
 /// XXHash implementation.
 /// </summary>
-public static class XXHash
+public static partial class XXHash
 {
     const ulong prime64v1 = 11400714785074694791ul;
     const ulong prime64v2 = 14029467366897019727ul;
@@ -71,54 +72,38 @@ public static class XXHash
     /// <returns>32-bit hash value.</returns>
     public static uint Hash32(Stream stream, uint seed = 0)
     {
-        const int stripeLength = 16;
-        const int readBufferSize = stripeLength * 1024; // 16kb read buffer - has to be stripe aligned
+        const int readBufferSize = State32.StripeLength * 1024; // 16kb read buffer - has to be stripe aligned
 
         var buffer = new byte[readBufferSize].AsSpan();
-        uint acc;
-
-        int readBytes = stream.Read(buffer);
-        int len = readBytes;
-
-        int offset = 0;
-        if (readBytes < stripeLength)
+        var state = new State32(seed);
+        int readBytes;
+        while ((readBytes = stream.Read(buffer)) > 0)
         {
-            acc = seed + prime32v5;
-            goto Exit;
+            state.Update(buffer[..readBytes]);
         }
 
-        var (acc1, acc2, acc3, acc4) = initAccumulators32(seed);
-        do
+        return state.Result();
+    }
+
+    /// <summary>
+    /// Generate a 32-bit xxHash value from a stream.
+    /// </summary>
+    /// <param name="stream">Input stream.</param>
+    /// <param name="seed">Optional seed.</param>
+    /// <returns>32-bit hash value.</returns>
+    public static async Task<uint> Hash32Async(Stream stream, uint seed = 0)
+    {
+        const int readBufferSize = State32.StripeLength * 1024; // 16kb read buffer - has to be stripe aligned
+
+        var buffer = new byte[readBufferSize];
+        var state = new State32(seed);
+        int bytesRead;
+        while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
         {
-            do
-            {
-                int end = offset + stripeLength;
-                acc = processStripe32(
-                    buffer[offset..end],
-                    ref acc1,
-                    ref acc2,
-                    ref acc3,
-                    ref acc4);
-                offset = end;
-                readBytes -= stripeLength;
-            }
-            while (readBytes >= stripeLength);
-
-            // read more if the alignment is still intact
-            if (readBytes == 0)
-            {
-                readBytes = stream.Read(buffer);
-                offset = 0;
-                len += readBytes;
-            }
+            state.Update(buffer.AsSpan(0, bytesRead));
         }
-        while (readBytes >= stripeLength);
 
-    Exit:
-        acc += (uint)len;
-        acc = processRemaining32(buffer[offset..(offset + readBytes)], acc);
-
-        return avalanche32(acc);
+        return state.Result();
     }
 
     /// <summary>

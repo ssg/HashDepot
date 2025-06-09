@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HashDepot.Test;
 
@@ -37,6 +38,16 @@ public class XXHashTest
         var buffer = Encoding.UTF8.GetBytes(text);
         using var stream = new MemoryStream(buffer);
         var result = XXHash.Hash32(stream, seed);
+        Assert.That(result, Is.EqualTo(hash32));
+    }
+
+    [Test]
+    [TestCaseSource(nameof(testVectors))]
+    public async Task Hash32Async_StreamTests(string text, uint seed, uint hash32, ulong _)
+    {
+        var buffer = Encoding.UTF8.GetBytes(text);
+        using var stream = new MemoryStream(buffer);
+        var result = await XXHash.Hash32Async(stream, seed);
         Assert.That(result, Is.EqualTo(hash32));
     }
 
