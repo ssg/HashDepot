@@ -12,7 +12,9 @@ public class XXHashTest
     static readonly object[][] testVectors =
     [
         ["",                                              0U,     0x02cc5d05U, 0xef46db3751d8e999UL],
+        ["",                                              123U,   0x3930C86EU, 0xE0DB84DE91F3E198UL],
         ["a",                                             0U,     0x550d7456U, 0xd24ec4f1a98c6e5bUL],
+        ["a",                                             123U,   0xA2BCDA53U, 0x5E820EB0DDEB5AEBUL],
         ["123",                                           0U,     0xb6855437U, 0x3c697d223fa7e885UL],
         ["1234",                                          0U,     0x01543429U, 0xd8316e61d84f6ba4UL],
         ["123456789012345",                               0U,     0xda7b17e8U, 0xc377d78ade001a3cUL],
