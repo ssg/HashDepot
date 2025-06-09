@@ -13,7 +13,7 @@ namespace HashDepot;
 /// <summary>
 /// SipHash 2-4 algorithm, the most common SipHash variant.
 /// </summary>
-public static class SipHash24
+public static partial class SipHash24
 {
     const int keyLength = 16;
 
@@ -32,47 +32,16 @@ public static class SipHash24
     /// <returns>64-bit hash value.</returns>
     public static ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
     {
-        if (key.Length != keyLength)
-        {
-            throw new ArgumentException("Key must be 16-bytes long", nameof(key));
-        }
-
-        ulong k0 = Bits.ToUInt64(key);
-        ulong k1 = Bits.ToUInt64(key[sizeof(ulong)..]);
-
-        ulong v0 = initv0 ^ k0;
-        ulong v1 = initv1 ^ k1;
-        ulong v2 = initv2 ^ k0;
-        ulong v3 = initv3 ^ k1;
-
-        ulong length = 0;
-
+        var state = new State64(key);
+        const int blockSize = 256;
+        Span<byte> buffer = stackalloc byte[blockSize * sizeof(ulong)];
         int bytesRead;
-        var buffer = new byte[sizeof(ulong)].AsSpan();
-        while ((bytesRead = stream.Read(buffer)) == sizeof(ulong))
+        while ((bytesRead = stream.Read(buffer)) > 0)
         {
-            ulong m = Bits.ToUInt64(buffer);
-            v3 ^= m;
-            sipRoundC(ref v0, ref v1, ref v2, ref v3);
-            v0 ^= m;
-            length += (ulong)bytesRead;
+            state.Update(buffer[..bytesRead]);
         }
 
-        length += (ulong)bytesRead;
-        ulong lastWord = length << 56;
-
-        if (bytesRead > 0)
-        {
-            lastWord |= Bits.PartialBytesToUInt64(buffer[..bytesRead]);
-        }
-
-        v3 ^= lastWord;
-        sipRoundC(ref v0, ref v1, ref v2, ref v3);
-        v0 ^= lastWord;
-
-        v2 ^= finalVectorXor;
-        sipRoundD(ref v0, ref v1, ref v2, ref v3);
-        return v0 ^ v1 ^ v2 ^ v3;
+        return state.Result();
     }
 
     /// <summary>
@@ -83,47 +52,16 @@ public static class SipHash24
     /// <returns>A Task representing the 64-bit hash computation.</returns>
     public static async Task<ulong> Hash64Async(Stream stream, ReadOnlyMemory<byte> key)
     {
-        if (key.Length != keyLength)
-        {
-            throw new ArgumentException("Key must be 16-bytes long", nameof(key));
-        }
-
-        ulong k0 = Bits.ToUInt64(key.Span);
-        ulong k1 = Bits.ToUInt64(key.Span[sizeof(ulong)..]);
-
-        ulong v0 = initv0 ^ k0;
-        ulong v1 = initv1 ^ k1;
-        ulong v2 = initv2 ^ k0;
-        ulong v3 = initv3 ^ k1;
-
-        ulong length = 0;
-
+        var state = new State64(key.Span);
+        const int blockSize = 256;
+        byte[] buffer = new byte[blockSize * sizeof(ulong)]; // 4KB buffers
         int bytesRead;
-        var buffer = new byte[sizeof(ulong)].AsMemory();
-        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == sizeof(ulong))
+        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
-            ulong m = Bits.ToUInt64(buffer.Span);
-            v3 ^= m;
-            sipRoundC(ref v0, ref v1, ref v2, ref v3);
-            v0 ^= m;
-            length += (ulong)bytesRead;
+            state.Update(buffer.AsSpan(0, bytesRead));
         }
 
-        length += (ulong)bytesRead;
-        ulong lastWord = length << 56;
-
-        if (bytesRead > 0)
-        {
-            lastWord |= Bits.PartialBytesToUInt64(buffer.Span[..bytesRead]);
-        }
-
-        v3 ^= lastWord;
-        sipRoundC(ref v0, ref v1, ref v2, ref v3);
-        v0 ^= lastWord;
-
-        v2 ^= finalVectorXor;
-        sipRoundD(ref v0, ref v1, ref v2, ref v3);
-        return v0 ^ v1 ^ v2 ^ v3;
+        return state.Result();
     }
 
     /// <summary>
