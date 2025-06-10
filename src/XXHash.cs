@@ -16,17 +16,17 @@ namespace HashDepot;
 /// </summary>
 public static partial class XXHash
 {
-    const ulong prime64v1 = 11400714785074694791ul;
-    const ulong prime64v2 = 14029467366897019727ul;
-    const ulong prime64v3 = 1609587929392839161ul;
-    const ulong prime64v4 = 9650029242287828579ul;
-    const ulong prime64v5 = 2870177450012600261ul;
+    const ulong prime64v1 = 0x9E3779B185EBCA87ul;
+    const ulong prime64v2 = 0xC2B2AE3D27D4EB4Ful;
+    const ulong prime64v3 = 0x165667B19E3779F9ul;
+    const ulong prime64v4 = 0x85EBCA77C2B2AE63ul;
+    const ulong prime64v5 = 0x27D4EB2F165667C5ul;
 
-    const uint prime32v1 = 2654435761u;
-    const uint prime32v2 = 2246822519u;
-    const uint prime32v3 = 3266489917u;
-    const uint prime32v4 = 668265263u;
-    const uint prime32v5 = 374761393u;
+    const uint prime32v1 = 0x9E3779B1u;
+    const uint prime32v2 = 0x85EBCA77u;
+    const uint prime32v3 = 0xC2B2AE3Du;
+    const uint prime32v4 = 0x27D4EB2Fu;
+    const uint prime32v5 = 0x165667B1u;
 
     /// <summary>
     /// Generate a 32-bit xxHash value.
