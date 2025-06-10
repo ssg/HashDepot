@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -80,8 +81,8 @@ public static partial class SipHash24
         ulong k0;
         ulong k1;
 
-        k0 = Bits.ToUInt64(key[..8]);
-        k1 = Bits.ToUInt64(key[8..16]);
+        k0 = BitConverter.ToUInt64(key[..8]);
+        k1 = BitConverter.ToUInt64(key[8..16]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -96,7 +97,7 @@ public static partial class SipHash24
         int end = length - leftBytes;
         while (offset < end)
         {
-            ulong m = Bits.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
+            ulong m = BitConverter.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
             offset += sizeof(ulong);
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);
@@ -137,21 +138,21 @@ public static partial class SipHash24
     static void sipRound(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
     {
         v0 += v1;
-        v1 = Bits.RotateLeft(v1, 13);
+        v1 = BitOperations.RotateLeft(v1, 13);
         v1 ^= v0;
-        v0 = Bits.RotateLeft(v0, 32);
+        v0 = BitOperations.RotateLeft(v0, 32);
 
         v2 += v3;
-        v3 = Bits.RotateLeft(v3, 16);
+        v3 = BitOperations.RotateLeft(v3, 16);
         v3 ^= v2;
 
         v2 += v1;
-        v1 = Bits.RotateLeft(v1, 17);
+        v1 = BitOperations.RotateLeft(v1, 17);
         v1 ^= v2;
-        v2 = Bits.RotateLeft(v2, 32);
+        v2 = BitOperations.RotateLeft(v2, 32);
 
         v0 += v3;
-        v3 = Bits.RotateLeft(v3, 21);
+        v3 = BitOperations.RotateLeft(v3, 21);
         v3 ^= v0;
     }
 }

@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -202,10 +203,10 @@ public static partial class XXHash
         processLane64(ref acc3, buf[16..24]);
         processLane64(ref acc4, buf[24..32]);
 
-        ulong acc = Bits.RotateLeft(acc1, 1)
-                  + Bits.RotateLeft(acc2, 7)
-                  + Bits.RotateLeft(acc3, 12)
-                  + Bits.RotateLeft(acc4, 18);
+        ulong acc = BitOperations.RotateLeft(acc1, 1)
+                  + BitOperations.RotateLeft(acc2, 7)
+                  + BitOperations.RotateLeft(acc3, 12)
+                  + BitOperations.RotateLeft(acc4, 18);
 
         mergeAccumulator64(ref acc, acc1);
         mergeAccumulator64(ref acc, acc2);
@@ -217,7 +218,7 @@ public static partial class XXHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static void processLane64(ref ulong accn, ReadOnlySpan<byte> buf)
     {
-        ulong lane = Bits.ToUInt64(buf);
+        ulong lane = BitConverter.ToUInt64(buf);
         accn = round64(accn, lane);
     }
 
@@ -230,17 +231,17 @@ public static partial class XXHash
         int i = 0;
         for (ulong lane; remainingLen >= 8; remainingLen -= 8, i += 8)
         {
-            lane = Bits.ToUInt64(remaining[i..(i + 8)]);
+            lane = BitConverter.ToUInt64(remaining[i..(i + 8)]);
             acc ^= round64(0, lane);
-            acc = Bits.RotateLeft(acc, 27) * prime64v1;
+            acc = BitOperations.RotateLeft(acc, 27) * prime64v1;
             acc += prime64v4;
         }
 
         for (uint lane32; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane32 = Bits.ToUInt32(remaining[i..(i + 4)]);
+            lane32 = BitConverter.ToUInt32(remaining[i..(i + 4)]);
             acc ^= lane32 * prime64v1;
-            acc = Bits.RotateLeft(acc, 23) * prime64v2;
+            acc = BitOperations.RotateLeft(acc, 23) * prime64v2;
             acc += prime64v3;
         }
 
@@ -248,7 +249,7 @@ public static partial class XXHash
         {
             lane8 = remaining[i];
             acc ^= lane8 * prime64v5;
-            acc = Bits.RotateLeft(acc, 11) * prime64v1;
+            acc = BitOperations.RotateLeft(acc, 11) * prime64v1;
         }
 
         return acc;
@@ -269,7 +270,7 @@ public static partial class XXHash
     static ulong round64(ulong accn, ulong lane)
     {
         accn += lane * prime64v2;
-        return Bits.RotateLeft(accn, 31) * prime64v1;
+        return BitOperations.RotateLeft(accn, 31) * prime64v1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -300,16 +301,16 @@ public static partial class XXHash
         processLane32(buf[8..12], ref acc3);
         processLane32(buf[12..16], ref acc4);
 
-        return Bits.RotateLeft(acc1, 1)
-             + Bits.RotateLeft(acc2, 7)
-             + Bits.RotateLeft(acc3, 12)
-             + Bits.RotateLeft(acc4, 18);
+        return BitOperations.RotateLeft(acc1, 1)
+             + BitOperations.RotateLeft(acc2, 7)
+             + BitOperations.RotateLeft(acc3, 12)
+             + BitOperations.RotateLeft(acc4, 18);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static void processLane32(ReadOnlySpan<byte> buf, ref uint accn)
     {
-        uint lane = Bits.ToUInt32(buf);
+        uint lane = BitConverter.ToUInt32(buf);
         accn = round32(accn, lane);
     }
 
@@ -322,16 +323,16 @@ public static partial class XXHash
         int remainingLen = remaining.Length;
         for (uint lane; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane = Bits.ToUInt32(remaining[i..]);
+            lane = BitConverter.ToUInt32(remaining[i..]);
             acc += lane * prime32v3;
-            acc = Bits.RotateLeft(acc, 17) * prime32v4;
+            acc = BitOperations.RotateLeft(acc, 17) * prime32v4;
         }
 
         for (byte lane; remainingLen >= 1; remainingLen--, i++)
         {
             lane = remaining[i];
             acc += lane * prime32v5;
-            acc = Bits.RotateLeft(acc, 11) * prime32v1;
+            acc = BitOperations.RotateLeft(acc, 11) * prime32v1;
         }
 
         return acc;
@@ -341,7 +342,7 @@ public static partial class XXHash
     static uint round32(uint accn, uint lane)
     {
         accn += lane * prime32v2;
-        accn = Bits.RotateLeft(accn, 13);
+        accn = BitOperations.RotateLeft(accn, 13);
         accn *= prime32v1;
         return accn;
     }

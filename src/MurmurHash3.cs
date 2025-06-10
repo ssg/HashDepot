@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -35,9 +36,9 @@ public static class MurmurHash3
         int bytesRead;
         while ((bytesRead = stream.Read(buffer)) == uintSize)
         {
-            uint k = Bits.ToUInt32(buffer);
+            uint k = BitConverter.ToUInt32(buffer);
             round32(ref k, ref hash);
-            hash = Bits.RotateLeft(hash, 13);
+            hash = BitOperations.RotateLeft(hash, 13);
             hash *= m;
             hash += n;
             length += (uint)bytesRead;
@@ -82,9 +83,9 @@ public static class MurmurHash3
         int bytesRead;
         while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == uintSize)
         {
-            uint k = Bits.ToUInt32(buffer.Span);
+            uint k = BitConverter.ToUInt32(buffer.Span);
             round32(ref k, ref hash);
-            hash = Bits.RotateLeft(hash, 13);
+            hash = BitOperations.RotateLeft(hash, 13);
             hash *= m;
             hash += n;
             length += (uint)bytesRead;
@@ -129,9 +130,9 @@ public static class MurmurHash3
         int i = 0;
         for (; i < numUInts * sizeof(uint); i += sizeof(uint))
         {
-            uint k = Bits.ToUInt32(buffer[i..(i + sizeof(uint))]);
+            uint k = BitConverter.ToUInt32(buffer[i..(i + sizeof(uint))]);
             round32(ref k, ref hash);
-            hash = Bits.RotateLeft(hash, 13);
+            hash = BitOperations.RotateLeft(hash, 13);
             hash *= m;
             hash += n;
         }
@@ -174,8 +175,8 @@ public static class MurmurHash3
         int readBytes;
         while ((readBytes = stream.Read(buffer)) == blockSize)
         {
-            ulong ik1 = Bits.ToUInt64(buffer);
-            ulong ik2 = Bits.ToUInt64(buffer[ulongSize..]);
+            ulong ik1 = BitConverter.ToUInt64(buffer);
+            ulong ik2 = BitConverter.ToUInt64(buffer[ulongSize..]);
 
             round128(ref ik1, ref h1, c1, c2, h2, 31, 27, 0x52dce729U);
             round128(ref ik2, ref h2, c2, c1, h1, 33, 31, 0x38495ab5U);
@@ -238,9 +239,9 @@ public static class MurmurHash3
         int end = numBlocks * sizeof(ulong) * 2;
         while (offset != end)
         {
-            ulong ik1 = Bits.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
+            ulong ik1 = BitConverter.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
             offset += sizeof(ulong);
-            ulong ik2 = Bits.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
+            ulong ik2 = BitConverter.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
             offset += sizeof(ulong);
 
             round128(ref ik1, ref h1, c1, c2, h2, 31, 27, 0x52dce729U);
@@ -295,7 +296,7 @@ public static class MurmurHash3
         const uint c2 = 0x1b873593;
 
         value *= c1;
-        value = Bits.RotateLeft(value, 15);
+        value = BitOperations.RotateLeft(value, 15);
         value *= c2;
         hash ^= value;
     }
@@ -312,10 +313,10 @@ public static class MurmurHash3
         uint x)
     {
         k *= c1;
-        k = Bits.RotateLeft(k, krot);
+        k = BitOperations.RotateLeft(k, krot);
         k *= c2;
         h ^= k;
-        h = Bits.RotateLeft(h, hrot);
+        h = BitOperations.RotateLeft(h, hrot);
         h += hn;
         h = (h * 5) + x;
     }
@@ -334,7 +335,7 @@ public static class MurmurHash3
     static void tailRound128(ref ulong k, ref ulong h, ulong c1, ulong c2, int rot)
     {
         k *= c1;
-        k = Bits.RotateLeft(k, rot);
+        k = BitOperations.RotateLeft(k, rot);
         k *= c2;
         h ^= k;
     }
