@@ -15,7 +15,13 @@
         <Optimize>True</Optimize>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="XXH3Test.OtherVectors.cs" />
+    </ItemGroup>
+    <ItemGroup>
         <None Remove="HashDepotTest.v3.ncrunchproject" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="XXH3Test.OtherVectors.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
