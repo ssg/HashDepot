@@ -310,7 +310,7 @@ static partial class XXHash
         static void hashLongInternalLoop(Span<ulong> acc, ReadOnlySpan<byte> input, ReadOnlySpan<byte> secret)
         {
             int nbStripesPerBlock = (secret.Length - stripeLength) / secretConsumeRate;
-            int blockLen = stripeLength / nbStripesPerBlock;
+            int blockLen = stripeLength * nbStripesPerBlock;
             int nbBlocks = (input.Length - 1) / blockLen;
 
             for (int n = 0; n < nbBlocks; n++)
@@ -319,8 +319,11 @@ static partial class XXHash
                 scrambleAcc(acc, secret[^stripeLength..]);
             }
 
-            int nbStripes = (input.Length - 1 - (blockLen - nbBlocks)) / stripeLength;
-            accumulate(acc, input[(nbBlocks * blockLen)..], secret, nbStripes);
+            // Process remaining stripes
+            int nbStripesLeft = ((input.Length - 1) - (nbBlocks * blockLen)) / stripeLength;
+            accumulate(acc, input[(nbBlocks * blockLen)..], secret, nbStripesLeft);
+
+            // last stripe
             accumulate512(acc, input[^stripeLength..], secret[^(stripeLength + secretLastAccStart)..]);
         }
 
