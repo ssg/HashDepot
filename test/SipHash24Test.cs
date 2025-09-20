@@ -166,7 +166,7 @@ public class SipHash24Test
         
         // Attempting to update again should throw
         byte[] secondBuffer = [6, 7, 8];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -184,7 +184,7 @@ public class SipHash24Test
         
         // Attempting to update after Result() should throw
         byte[] secondBuffer = [9, 10, 11];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -212,10 +212,10 @@ public class SipHash24Test
     {
         // Test with key that's too short
         byte[] shortKey = [1, 2, 3, 4, 5];
-        var ex = Assert.Throws<ArgumentException>(() => new SipHash24.State64(shortKey));
+        _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(shortKey));
         
         // Test with key that's too long
         byte[] longKey = new byte[20];
-        ex = Assert.Throws<ArgumentException>(() => new SipHash24.State64(longKey));
+        _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(longKey));
     }
 }

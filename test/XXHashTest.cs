@@ -113,7 +113,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] secondBuffer = [6, 7, 8];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -131,7 +131,7 @@ public class XXHashTest
         
         // Attempting to update after Result() should throw
         byte[] secondBuffer = [17, 18, 19];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -151,7 +151,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] buffer3 = [22, 23, 24];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(buffer3));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(buffer3));
     }
 
     [Test]
@@ -187,7 +187,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] secondBuffer = [1, 2, 3];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     // Tests for State64 streaming API
@@ -204,7 +204,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] secondBuffer = [11, 12, 13];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -223,7 +223,7 @@ public class XXHashTest
         
         // Attempting to update after Result() should throw
         byte[] secondBuffer = [33, 34, 35];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -244,7 +244,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] buffer3 = [43, 44, 45];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(buffer3));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(buffer3));
     }
 
     [Test]
@@ -285,7 +285,7 @@ public class XXHashTest
         
         // Attempting to update again should throw
         byte[] secondBuffer = [1, 2, 3];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     [Test]
@@ -306,7 +306,7 @@ public class XXHashTest
         
         // Attempting to update after multiple Result() calls should still throw
         byte[] secondBuffer = [65, 66, 67];
-        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+        _ = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
     }
 
     static byte[] getLargeBuffer()
