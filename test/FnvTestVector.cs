@@ -4,7 +4,7 @@
 using System;
 namespace HashDepot.Test;
 
-public class FnvTestVector(byte[] Buffer, uint ExpectedResult32, ulong ExpectedResult64)
+public record FnvTestVector(byte[] Buffer, uint ExpectedResult32, ulong ExpectedResult64)
 {
     public override string ToString()
     {
