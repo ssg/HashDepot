@@ -12,7 +12,7 @@ namespace HashDepot;
 /// </summary>
 public static partial class XXHash
 {
-    class State64
+    internal class State64
     {
         public const int StripeLength = 32;
         readonly ulong seed;

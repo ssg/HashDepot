@@ -29,11 +29,4 @@ static class Bits
         remainingBytes.CopyTo(buffer);
         return BitConverter.ToUInt32(buffer);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static ulong XxhXorShift64(ulong v64, int shift)
-    {
-        Debug.Assert(shift is >= 0 and < 64, "Shift must be between 0 and 63 inclusive.");
-        return v64 ^ (v64 >> shift);
-    }
 }

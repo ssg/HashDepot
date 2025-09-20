@@ -152,4 +152,70 @@ public class SipHash24Test
         var buffer = Array.Empty<byte>();
         _ = Assert.Throws<ArgumentException>(() => SipHash24.Hash64(buffer, invalidKey));
     }
+
+    [Test]
+    public void State64_UpdateAfterFinalBlock_ThrowsInvalidOperationException()
+    {
+        // Create a state with valid key
+        var state = new SipHash24.State64(key);
+        
+        // Update with a buffer that has remaining bytes (not multiple of 8)
+        // This will process the final block
+        byte[] buffer = [1, 2, 3, 4, 5]; // 5 bytes - not multiple of 8
+        state.Update(buffer);
+        
+        // Attempting to update again should throw
+        byte[] secondBuffer = [6, 7, 8];
+        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+    }
+
+    [Test]
+    public void State64_UpdateAfterResult_ThrowsInvalidOperationException()
+    {
+        // Create a state with valid key
+        var state = new SipHash24.State64(key);
+        
+        // Update with a buffer that is multiple of 8 bytes
+        byte[] buffer = [1, 2, 3, 4, 5, 6, 7, 8]; // 8 bytes - multiple of 8
+        state.Update(buffer);
+        
+        // Call Result() which processes the final block
+        _ = state.Result();
+        
+        // Attempting to update after Result() should throw
+        byte[] secondBuffer = [9, 10, 11];
+        var ex = Assert.Throws<InvalidOperationException>(() => state.Update(secondBuffer));
+    }
+
+    [Test]
+    public void State64_MultipleUpdatesWithCompleteBlocks_Works()
+    {
+        // Create a state with valid key
+        var state = new SipHash24.State64(key);
+        
+        // Multiple updates with buffers that are multiples of 8 should work
+        byte[] buffer1 = [1, 2, 3, 4, 5, 6, 7, 8];       // 8 bytes
+        byte[] buffer2 = [9, 10, 11, 12, 13, 14, 15, 16]; // 8 bytes
+        
+        // These should not throw
+        Assert.DoesNotThrow(() => state.Update(buffer1));
+        Assert.DoesNotThrow(() => state.Update(buffer2));
+        
+        // Result should work normally
+        ulong result = 0;
+        Assert.DoesNotThrow(() => result = state.Result());
+        Assert.That(result, Is.Not.Zero); // Just verify we get some result
+    }
+
+    [Test]
+    public void State64_InvalidKeyLength_ThrowsArgumentException()
+    {
+        // Test with key that's too short
+        byte[] shortKey = [1, 2, 3, 4, 5];
+        var ex = Assert.Throws<ArgumentException>(() => new SipHash24.State64(shortKey));
+        
+        // Test with key that's too long
+        byte[] longKey = new byte[20];
+        ex = Assert.Throws<ArgumentException>(() => new SipHash24.State64(longKey));
+    }
 }

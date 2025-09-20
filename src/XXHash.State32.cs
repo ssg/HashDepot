@@ -12,7 +12,7 @@ namespace HashDepot;
 /// </summary>
 public static partial class XXHash
 {
-    class State32
+    internal class State32
     {
         public const int StripeLength = 16;
         readonly uint seed;

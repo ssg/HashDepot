@@ -15,7 +15,7 @@ static partial class SipHash24
     /// <summary>
     /// State machine for streaming functions of 64-bit SipHash 2-4.
     /// </summary>
-    class State64
+    internal class State64
     {
         readonly ulong k0;
         readonly ulong k1;
