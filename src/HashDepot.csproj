@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <AssemblyName>HashDepot</AssemblyName>
-        <Version>3.1.0</Version>
+        <Version>3.2.0</Version>
         <Description>Tested and performant implementations of xxHash, SipHash (SipHash-2-4), MurmurHash (MurmurHash3), FNV (FNV-1, FNV-1a)</Description>
         <Authors>Sedat Kapanoglu</Authors>
         <OutputType>Library</OutputType>
@@ -16,9 +16,16 @@
         <RepositoryUrl>https://github.com/ssg/HashDepot</RepositoryUrl>
         <PackageReleaseNotes>
         <![CDATA[
-# Breaking changes
-- Removed all unsafe code.
-- Removed API endpoints receiving "byte[]"
+## 3.2.0
+
+### New features
+- New function XXHash.Hash64Async() and XXHash.Hash32Async()
+- Now targets .NET 9 and .NET 10 along with .NET 8
+
+## Improvements
+- Removed dependencies to System.Memory and System.Runtime (thanks to @thompson-tomo)
+- SipHash24's state machine now correctly handles unexpected Update cases
+- Tests now have 100% code coverage        
         ]]>
         </PackageReleaseNotes>
     </PropertyGroup>

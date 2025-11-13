@@ -1,5 +1,16 @@
 # Changes
 
+## 3.2.0
+
+### New features
+- New function XXHash.Hash64Async() and XXHash.Hash32Async()
+- Now targets .NET 9 and .NET 10 along with .NET 8
+
+## Improvements
+- Removed dependencies to System.Memory and System.Runtime (thanks to @thompson-tomo)
+- SipHash24's state machine now correctly handles unexpected Update cases
+- Tests now have 100% code coverage
+
 ## 3.1.0
 
 ### Breaking changes
