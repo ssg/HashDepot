@@ -175,11 +175,9 @@ public class SipHash24Test
         // Create a state with valid key
         var state = new SipHash24.State64(key);
         
-        // Update with a buffer that is multiple of 8 bytes
-        byte[] buffer = [1, 2, 3, 4, 5, 6, 7, 8]; // 8 bytes - multiple of 8
+        byte[] buffer = [1, 2, 3, 4, 5, 6, 7, 8]; // 8 bytes 
         state.Update(buffer);
         
-        // Call Result() which processes the final block
         _ = state.Result();
         
         // Attempting to update after Result() should throw
@@ -197,25 +195,26 @@ public class SipHash24Test
         byte[] buffer1 = [1, 2, 3, 4, 5, 6, 7, 8];       // 8 bytes
         byte[] buffer2 = [9, 10, 11, 12, 13, 14, 15, 16]; // 8 bytes
         
-        // These should not throw
         Assert.DoesNotThrow(() => state.Update(buffer1));
         Assert.DoesNotThrow(() => state.Update(buffer2));
         
-        // Result should work normally
         ulong result = 0;
         Assert.DoesNotThrow(() => result = state.Result());
-        Assert.That(result, Is.Not.Zero); // Just verify we get some result
+        Assert.That(result, Is.Not.Zero);
     }
 
     [Test]
     public void State64_InvalidKeyLength_ThrowsArgumentException()
     {
-        // Test with key that's too short
-        byte[] shortKey = [1, 2, 3, 4, 5];
-        _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(shortKey));
-        
-        // Test with key that's too long
-        byte[] longKey = new byte[20];
-        _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(longKey));
+        Assert.Multiple(() =>
+        {
+            // Test with key that's too short
+            byte[] shortKey = [1, 2, 3, 4, 5];
+            _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(shortKey));
+
+            // Test with key that's too long
+            byte[] longKey = new byte[20];
+            _ = Assert.Throws<ArgumentException>(() => new SipHash24.State64(longKey));
+        });
     }
 }
