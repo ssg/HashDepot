@@ -8,10 +8,6 @@ public record FnvTestVector(byte[] Buffer, uint ExpectedResult32, ulong Expected
 {
     public override string ToString()
     {
-        return BitConverter.ToString(Buffer) 
-            + "_"
-            + ExpectedResult32.ToString() 
-            + "_"
-            + ExpectedResult64.ToString();
+        return $"{BitConverter.ToString(Buffer)}_{ExpectedResult32}_{ExpectedResult64}";
     }
 }
