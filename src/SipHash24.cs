@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
@@ -56,14 +57,21 @@ public static partial class SipHash24
     {
         var state = new State64(key.Span);
         const int blockSize = 256;
-        byte[] buffer = new byte[blockSize * sizeof(ulong)]; // 4KB buffers
-        int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(blockSize * sizeof(ulong));
+        try
         {
-            state.Update(buffer.AsSpan(0, bytesRead));
-        }
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory(0, blockSize * sizeof(ulong))).ConfigureAwait(false)) > 0)
+            {
+                state.Update(buffer.AsSpan(0, bytesRead));
+            }
 
-        return state.Result();
+            return state.Result();
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
     }
 
     /// <summary>
