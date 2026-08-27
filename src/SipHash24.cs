@@ -105,9 +105,9 @@ public static partial class SipHash24
             v0 ^= m;
         }
 
-        if (leftBytes > 0)
+        for (int i = 0; i < leftBytes; i++)
         {
-            lastWord |= Bits.PartialBytesToUInt64(buffer[offset..]);
+            lastWord |= (ulong)buffer[offset + i] << (i * 8);
         }
 
         v3 ^= lastWord;
