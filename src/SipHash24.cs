@@ -36,8 +36,8 @@ public static partial class SipHash24
     public static ulong Hash64(Stream stream, ReadOnlySpan<byte> key)
     {
         var state = new State64(key);
-        const int blockSize = 256;
-        Span<byte> buffer = stackalloc byte[blockSize * sizeof(ulong)];
+        const int streamBufferSize = 2 * 1024;
+        Span<byte> buffer = stackalloc byte[streamBufferSize];
         int bytesRead;
         while ((bytesRead = stream.Read(buffer)) > 0)
         {
@@ -56,12 +56,12 @@ public static partial class SipHash24
     public static async Task<ulong> Hash64Async(Stream stream, ReadOnlyMemory<byte> key)
     {
         var state = new State64(key.Span);
-        const int blockSize = 256;
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(blockSize * sizeof(ulong));
+        const int streamBufferSize = 2 * 1024;
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(streamBufferSize);
         try
         {
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory(0, blockSize * sizeof(ulong))).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer.AsMemory(0, streamBufferSize)).ConfigureAwait(false)) > 0)
             {
                 state.Update(buffer.AsSpan(0, bytesRead));
             }
