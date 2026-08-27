@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -81,8 +82,8 @@ public static partial class SipHash24
         ulong k0;
         ulong k1;
 
-        k0 = BitConverter.ToUInt64(key[..8]);
-        k1 = BitConverter.ToUInt64(key[8..16]);
+        k0 = BinaryPrimitives.ReadUInt64LittleEndian(key[..8]);
+        k1 = BinaryPrimitives.ReadUInt64LittleEndian(key[8..16]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -97,7 +98,7 @@ public static partial class SipHash24
         int end = length - leftBytes;
         while (offset < end)
         {
-            ulong m = BitConverter.ToUInt64(buffer[offset..(offset + sizeof(ulong))]);
+            ulong m = BinaryPrimitives.ReadUInt64LittleEndian(buffer[offset..(offset + sizeof(ulong))]);
             offset += sizeof(ulong);
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);

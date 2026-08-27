@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers.Binary;
 
 namespace HashDepot;
 
@@ -42,8 +43,8 @@ static partial class SipHash24
                 throw new ArgumentException("Key must be 16-bytes long", nameof(key));
             }
 
-            k0 = BitConverter.ToUInt64(key);
-            k1 = BitConverter.ToUInt64(key[sizeof(ulong)..]);
+            k0 = BinaryPrimitives.ReadUInt64LittleEndian(key);
+            k1 = BinaryPrimitives.ReadUInt64LittleEndian(key[sizeof(ulong)..]);
 
             v0 = initv0 ^ k0;
             v1 = initv1 ^ k1;
@@ -67,7 +68,7 @@ static partial class SipHash24
             int n;
             for (n = 0; n < end; n += sizeof(ulong))
             {
-                ulong m = BitConverter.ToUInt64(buffer[n..]);
+                ulong m = BinaryPrimitives.ReadUInt64LittleEndian(buffer[n..]);
                 v3 ^= m;
                 sipRoundC(ref v0, ref v1, ref v2, ref v3);
                 v0 ^= m;
