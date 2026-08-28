@@ -9,6 +9,7 @@ using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace HashDepot;
@@ -90,8 +91,8 @@ public static partial class SipHash24
         ulong k0;
         ulong k1;
 
-        k0 = BinaryPrimitives.ReadUInt64LittleEndian(key[..8]);
-        k1 = BinaryPrimitives.ReadUInt64LittleEndian(key[8..16]);
+        k0 = ReadUInt64LittleEndian(key);
+        k1 = ReadUInt64LittleEndian(key[sizeof(ulong)..]);
 
         ulong v0 = initv0 ^ k0;
         ulong v1 = initv1 ^ k1;
@@ -104,10 +105,17 @@ public static partial class SipHash24
 
         int offset = 0;
         int end = length - leftBytes;
+        ref byte source = ref MemoryMarshal.GetReference(buffer);
         while (offset < end)
         {
-            ulong m = BinaryPrimitives.ReadUInt64LittleEndian(buffer[offset..(offset + sizeof(ulong))]);
+            ulong m = Unsafe.ReadUnaligned<ulong>(ref Unsafe.Add(ref source, offset));
+            if (!BitConverter.IsLittleEndian)
+            {
+                m = BinaryPrimitives.ReverseEndianness(m);
+            }
+
             offset += sizeof(ulong);
+
             v3 ^= m;
             sipRoundC(ref v0, ref v1, ref v2, ref v3);
             v0 ^= m;
@@ -125,6 +133,13 @@ public static partial class SipHash24
         v2 ^= finalVectorXor;
         sipRoundD(ref v0, ref v1, ref v2, ref v3);
         return v0 ^ v1 ^ v2 ^ v3;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static ulong ReadUInt64LittleEndian(ReadOnlySpan<byte> buffer)
+    {
+        ulong value = Unsafe.ReadUnaligned<ulong>(ref MemoryMarshal.GetReference(buffer));
+        return BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

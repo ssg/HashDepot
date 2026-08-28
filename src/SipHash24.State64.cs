@@ -5,6 +5,8 @@
 
 using System;
 using System.Buffers.Binary;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace HashDepot;
 
@@ -43,8 +45,8 @@ static partial class SipHash24
                 throw new ArgumentException("Key must be 16-bytes long", nameof(key));
             }
 
-            k0 = BinaryPrimitives.ReadUInt64LittleEndian(key);
-            k1 = BinaryPrimitives.ReadUInt64LittleEndian(key[sizeof(ulong)..]);
+            k0 = ReadUInt64LittleEndian(key);
+            k1 = ReadUInt64LittleEndian(key[sizeof(ulong)..]);
 
             v0 = initv0 ^ k0;
             v1 = initv1 ^ k1;
@@ -68,7 +70,7 @@ static partial class SipHash24
             int n;
             for (n = 0; n < end; n += sizeof(ulong))
             {
-                ulong m = BinaryPrimitives.ReadUInt64LittleEndian(buffer[n..]);
+                ulong m = ReadUInt64LittleEndian(buffer[n..]);
                 v3 ^= m;
                 sipRoundC(ref v0, ref v1, ref v2, ref v3);
                 v0 ^= m;
@@ -98,6 +100,13 @@ static partial class SipHash24
             finalBlockProcessed = true;
 
             return v0 ^ v1 ^ v2 ^ v3;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static ulong ReadUInt64LittleEndian(ReadOnlySpan<byte> buffer)
+        {
+            ulong value = Unsafe.ReadUnaligned<ulong>(ref MemoryMarshal.GetReference(buffer));
+            return BitConverter.IsLittleEndian ? value : BinaryPrimitives.ReverseEndianness(value);
         }
     }
 }
