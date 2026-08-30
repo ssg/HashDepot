@@ -2,6 +2,7 @@
 // MIT License - see LICENSE file for details
 
 using System;
+using System.Buffers.Binary;
 using NUnit.Framework;
 
 namespace HashDepot.Test;
@@ -17,10 +18,11 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public void PartialBytesToUInt64(ulong input, int len)
+    public void PartialBytesToUInt64LE(ulong input, int len)
     {
-        var buffer = BitConverter.GetBytes(input);
-        Assert.That(Bits.PartialBytesToUInt64(buffer.AsSpan()[..len]), Is.EqualTo(input));
+        var buffer = new byte[8];
+        BinaryPrimitives.WriteUInt64LittleEndian(buffer, input);
+        Assert.That(Bits.PartialBytesToUInt64LE(buffer.AsSpan()[..len]), Is.EqualTo(input));
     }
 
     [Test]
@@ -28,10 +30,11 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public void PartialBytesToUInt32(uint input, int len)
+    public void PartialBytesToUInt32LE(uint input, int len)
     {
-        var buffer = BitConverter.GetBytes(input).AsSpan();
-        Assert.That(Bits.PartialBytesToUInt32(buffer[..len]), Is.EqualTo(input));
+        var buffer = new byte[4];
+        BinaryPrimitives.WriteUInt32LittleEndian(buffer, input);
+        Assert.That(Bits.PartialBytesToUInt32LE(buffer.AsSpan()[..len]), Is.EqualTo(input));
     }
 
     [Test]
@@ -39,9 +42,10 @@ public class BitsTest
     [TestCase(0xAABBCCU, 3)]
     [TestCase(0xAABBU, 2)]
     [TestCase(0xAAU, 1)]
-    public void PartialBytesToUInt32_Array(uint input, int len)
+    public void PartialBytesToUInt32LE_Array(uint input, int len)
     {
-        var buffer = BitConverter.GetBytes(input).AsSpan();
-        Assert.That(Bits.PartialBytesToUInt32(buffer[..len]), Is.EqualTo(input));
+        var buffer = new byte[4];
+        BinaryPrimitives.WriteUInt32LittleEndian(buffer, input);
+        Assert.That(Bits.PartialBytesToUInt32LE(buffer.AsSpan()[..len]), Is.EqualTo(input));
     }
 }

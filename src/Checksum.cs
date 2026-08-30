@@ -30,7 +30,7 @@ static class Checksum
 
         if (unevenLength > 0)
         {
-            result += Bits.PartialBytesToUInt32(buffer[offset..(offset + unevenLength)]);
+            result += Bits.PartialBytesToUInt32LE(buffer[offset..(offset + unevenLength)]);
         }
 
         return result;
