@@ -4,7 +4,7 @@
 // </copyright>
 
 using System;
-using System.Diagnostics;
+using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 
 namespace HashDepot;
@@ -33,4 +33,25 @@ static class Bits
         remainingBytes.CopyTo(buffer);
         return BitConverter.ToUInt32(buffer);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static ulong PartialBytesToUInt64LE(ReadOnlySpan<byte> remainingBytes)
+    {
+#pragma warning disable IDE0302 // Simplify collection initialization - we want to keep stackalloc for pre-.NET10
+        Span<byte> buffer = stackalloc byte[sizeof(ulong)] { 0, 0, 0, 0, 0, 0, 0, 0 };
+#pragma warning restore IDE0302 // Simplify collection initialization
+        remainingBytes.CopyTo(buffer);
+        return BinaryPrimitives.ReadUInt64LittleEndian(buffer);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static uint PartialBytesToUInt32LE(ReadOnlySpan<byte> remainingBytes)
+    {
+#pragma warning disable IDE0302 // Simplify collection initialization - we want to keep stackalloc for pre-.NET10
+        Span<byte> buffer = stackalloc byte[sizeof(uint)] { 0, 0, 0, 0 };
+#pragma warning restore IDE0302 // Simplify collection initialization
+        remainingBytes.CopyTo(buffer);
+        return BinaryPrimitives.ReadUInt32LittleEndian(buffer);
+    }
+
 }
