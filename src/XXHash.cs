@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -218,7 +219,7 @@ public static partial class XXHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static void processLane64(ref ulong accn, ReadOnlySpan<byte> buf)
     {
-        ulong lane = BitConverter.ToUInt64(buf);
+        ulong lane = BinaryPrimitives.ReadUInt64LittleEndian(buf);
         accn = round64(accn, lane);
     }
 
@@ -231,7 +232,7 @@ public static partial class XXHash
         int i = 0;
         for (ulong lane; remainingLen >= 8; remainingLen -= 8, i += 8)
         {
-            lane = BitConverter.ToUInt64(remaining[i..(i + 8)]);
+            lane = BinaryPrimitives.ReadUInt64LittleEndian(remaining[i..(i + 8)]);
             acc ^= round64(0, lane);
             acc = BitOperations.RotateLeft(acc, 27) * prime64v1;
             acc += prime64v4;
@@ -239,7 +240,7 @@ public static partial class XXHash
 
         for (uint lane32; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane32 = BitConverter.ToUInt32(remaining[i..(i + 4)]);
+            lane32 = BinaryPrimitives.ReadUInt32LittleEndian(remaining[i..(i + 4)]);
             acc ^= lane32 * prime64v1;
             acc = BitOperations.RotateLeft(acc, 23) * prime64v2;
             acc += prime64v3;
@@ -310,7 +311,7 @@ public static partial class XXHash
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static void processLane32(ReadOnlySpan<byte> buf, ref uint accn)
     {
-        uint lane = BitConverter.ToUInt32(buf);
+        uint lane = BinaryPrimitives.ReadUInt32LittleEndian(buf);
         accn = round32(accn, lane);
     }
 
@@ -323,7 +324,7 @@ public static partial class XXHash
         int remainingLen = remaining.Length;
         for (uint lane; remainingLen >= 4; remainingLen -= 4, i += 4)
         {
-            lane = BitConverter.ToUInt32(remaining[i..]);
+            lane = BinaryPrimitives.ReadUInt32LittleEndian(remaining[i..(i + 4)]);
             acc += lane * prime32v3;
             acc = BitOperations.RotateLeft(acc, 17) * prime32v4;
         }
