@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -46,17 +47,26 @@ public static class Fnv1a
     {
         const int bufferSize = 4096;
         uint result = offsetBasis32;
-        var buffer = new byte[bufferSize];
-        int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
+        var rentedBuffer = ArrayPool<byte>.Shared.Rent(bufferSize);
+        try
         {
-            for (int i = 0; i < bytesRead; i++)
+            var buffer = rentedBuffer.AsMemory(0, bufferSize);
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
             {
-                result = prime32 * (result ^ buffer[i]);
+                var span = buffer.Span;
+                for (int i = 0; i < bytesRead; i++)
+                {
+                    result = prime32 * (result ^ span[i]);
+                }
             }
-        }
 
-        return result;
+            return result;
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(rentedBuffer);
+        }
     }
 
     /// <summary>
@@ -102,17 +112,26 @@ public static class Fnv1a
         const int bufferSize = 4096;
 
         ulong result = offsetBasis64;
-        var buffer = new byte[bufferSize];
-        int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
+        var rentedBuffer = ArrayPool<byte>.Shared.Rent(bufferSize);
+        try
         {
-            for (int i = 0; i < bytesRead; i++)
+            var buffer = rentedBuffer.AsMemory(0, bufferSize);
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
             {
-                result = prime64 * (result ^ (uint)buffer[i]);
+                var span = buffer.Span;
+                for (int i = 0; i < bytesRead; i++)
+                {
+                    result = prime64 * (result ^ (uint)span[i]);
+                }
             }
-        }
 
-        return result;
+            return result;
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(rentedBuffer);
+        }
     }
 
     /// <summary>
