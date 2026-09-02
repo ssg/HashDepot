@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
@@ -79,36 +80,44 @@ public static class MurmurHash3
         const uint m = 5;
 
         uint hash = seed;
-        var buffer = new byte[uintSize].AsMemory();
-        uint length = 0;
-        int bytesRead;
-        while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == uintSize)
+        var rentedBuffer = ArrayPool<byte>.Shared.Rent(uintSize);
+        try
         {
-            uint k = BinaryPrimitives.ReadUInt32LittleEndian(buffer.Span);
-            round32(ref k, ref hash);
-            hash = BitOperations.RotateLeft(hash, 13);
-            hash *= m;
-            hash += n;
-            length += (uint)bytesRead;
-        }
+            var buffer = rentedBuffer.AsMemory(0, uintSize);
+            uint length = 0;
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false)) == uintSize)
+            {
+                uint k = BinaryPrimitives.ReadUInt32LittleEndian(buffer.Span);
+                round32(ref k, ref hash);
+                hash = BitOperations.RotateLeft(hash, 13);
+                hash *= m;
+                hash += n;
+                length += (uint)bytesRead;
+            }
 
-        // process remaning bytes
-        if (bytesRead > 0)
+            // process remaning bytes
+            if (bytesRead > 0)
+            {
+                uint remaining = Bits.PartialBytesToUInt32LE(buffer.Span[..bytesRead]);
+                round32(ref remaining, ref hash);
+                length += (uint)bytesRead;
+            }
+
+            hash ^= length;
+
+            // finalization mix
+            hash ^= hash >> 16;
+            hash *= final1;
+            hash ^= hash >> 13;
+            hash *= final2;
+            hash ^= hash >> 16;
+            return hash;
+        }
+        finally
         {
-            uint remaining = Bits.PartialBytesToUInt32LE(buffer[..bytesRead].Span);
-            round32(ref remaining, ref hash);
-            length += (uint)bytesRead;
+            ArrayPool<byte>.Shared.Return(rentedBuffer);
         }
-
-        hash ^= length;
-
-        // finalization mix
-        hash ^= hash >> 16;
-        hash *= final1;
-        hash ^= hash >> 13;
-        hash *= final2;
-        hash ^= hash >> 16;
-        return hash;
     }
 
     /// <summary>
@@ -284,9 +293,9 @@ public static class MurmurHash3
 
     static byte[] makeBytes(ulong h1, ulong h2)
     {
-        var result = new byte[16];
+        var result = new byte[sizeof(ulong) * 2];
         _ = BitConverter.TryWriteBytes(result, h1);
-        _ = BitConverter.TryWriteBytes(result.AsSpan()[8..], h2);
+        _ = BitConverter.TryWriteBytes(result.AsSpan()[sizeof(ulong)..], h2);
         return result;
     }
 
