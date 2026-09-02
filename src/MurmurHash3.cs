@@ -32,7 +32,7 @@ public static class MurmurHash3
         const uint m = 5;
 
         uint hash = seed;
-        var buffer = new byte[uintSize].AsSpan();
+        Span<byte> buffer = stackalloc byte[uintSize];
         uint length = 0;
         int bytesRead;
         while ((bytesRead = stream.Read(buffer)) == uintSize)
@@ -171,7 +171,7 @@ public static class MurmurHash3
 
         ulong h1 = seed;
         ulong h2 = seed;
-        var buffer = new byte[blockSize].AsSpan();
+        Span<byte> buffer = stackalloc byte[blockSize];
         int outputLength = 0;
         int readBytes;
         while ((readBytes = stream.Read(buffer)) == blockSize)
