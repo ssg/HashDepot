@@ -81,22 +81,21 @@ uint result = await MurmurHash3.Hash32Async(stream);
 # Benchmarks
 Benchmarks are performed on a 1MB buffer.
 
-BenchmarkDotNet v0.15.1, Windows 11 (10.0.26100.4202/24H2/2024Update/HudsonValley)
-AMD Ryzen 9 5950X 4.00GHz, 1 CPU, 32 logical and 16 physical cores
-.NET SDK 9.0.300
-  [Host]     : .NET 8.0.16 (8.0.1625.21506), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.16 (8.0.1625.21506), X64 RyuJIT AVX2
+BenchmarkDotNet v0.15.6, Windows 11 (10.0.26200.9278)
+Snapdragon X Elite - X1E78100 - Qualcomm Oryon CPU 3.42GHz, 1 CPU, 12 logical and 12 physical cores
+.NET SDK 10.0.400
+  [Host]     : .NET 8.0.30 (8.0.30, 8.0.3026.36720), Arm64 RyuJIT armv8.0-a
+  DefaultJob : .NET 8.0.30 (8.0.30, 8.0.3026.36720), Arm64 RyuJIT armv8.0-a
 
-
-| Method          | Mean        | Error    | StdDev   | Allocated |
-|---------------- |------------:|---------:|---------:|----------:|
-| Checksum_32     |    95.80 us | 1.507 us | 1.336 us |         - |
-| XXHash_32       |   201.34 us | 1.353 us | 1.266 us |         - |
-| XXHash_64       |   185.41 us | 0.759 us | 0.634 us |         - |
-| MurmurHash3_x86 |   288.00 us | 0.820 us | 0.684 us |         - |
-| SipHash24_32    |   284.99 us | 0.881 us | 0.736 us |         - |
-| Fnv1a_32        | 1,009.49 us | 0.144 us | 0.121 us |       1 B |
-| Fnv1a_64        | 1,009.56 us | 0.136 us | 0.113 us |       1 B |
+| Method          | Mean       | Error   | StdDev  | Allocated |
+|---------------- |-----------:|--------:|--------:|----------:|
+| Checksum_32     |   179.8 us | 0.06 us | 0.06 us |         - |
+| XXHash_32       |   143.5 us | 0.04 us | 0.03 us |         - |
+| XXHash_64       |   114.2 us | 0.19 us | 0.17 us |         - |
+| MurmurHash3_x86 |   370.8 us | 0.19 us | 0.17 us |         - |
+| SipHash24_32    |   334.0 us | 0.44 us | 0.41 us |         - |
+| Fnv1a_32        | 1,181.2 us | 1.46 us | 1.22 us |         - |
+| Fnv1a_64        | 1,182.0 us | 1.90 us | 1.68 us |         - |
 
 # Contributing
 You're more than welcome to contribute fixes or new hash algorithms. Please keep these in mind:
