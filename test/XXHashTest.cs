@@ -215,7 +215,10 @@ public class XXHashTest
         
         // Update with a buffer that is multiple of stripe length (32 bytes)
         byte[] buffer = new byte[32]; // 32 bytes
-        for (int i = 0; i < buffer.Length; i++) buffer[i] = (byte)(i + 1);
+        for (int i = 0; i < buffer.Length; i++)
+        {
+            buffer[i] = (byte)(i + 1);
+        }
         state.Update(buffer);
         
         // Call Result() which processes the final block
@@ -234,7 +237,10 @@ public class XXHashTest
         
         // Update with a buffer that is multiple of stripe length
         byte[] buffer1 = new byte[32]; // 32 bytes
-        for (int i = 0; i < buffer1.Length; i++) buffer1[i] = (byte)(i + 1);
+        for (int i = 0; i < buffer1.Length; i++)
+        { 
+            buffer1[i] = (byte)(i + 1);
+        }
         state.Update(buffer1);
         
         // Update with a buffer that has remaining bytes (not multiple of stripe length)
@@ -296,7 +302,10 @@ public class XXHashTest
         
         // Update with a buffer that is multiple of stripe length (32 bytes)
         byte[] buffer = new byte[64]; // 64 bytes (2 complete stripes)
-        for (int i = 0; i < buffer.Length; i++) buffer[i] = (byte)(i + 1);
+        for (int i = 0; i < buffer.Length; i++)
+        {
+            buffer[i] = (byte)(i + 1);
+        }
         state.Update(buffer);
         
         // Call Result() multiple times (should be allowed)
